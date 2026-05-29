@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<title>Saber's Daily System</title>
+<title>Saber's Life System</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,186 +14,594 @@
 <style>
   :root {
     --bg: #000000;
-    --surface: #0E0E0E;
-    --surface-2: #1A1A1A;
-    --surface-3: #242424;
-    --border: rgba(255,255,255,0.08);
-    --border-strong: rgba(255,255,255,0.14);
+    --surface: #0A0A0A;
+    --surface-2: #141414;
+    --surface-3: #1F1F1F;
+    --surface-4: #2A2A2A;
+    --border: rgba(255,255,255,0.06);
+    --border-strong: rgba(255,255,255,0.12);
     --text: #FFFFFF;
-    --text-mid: #BFBFBF;
-    --text-muted: #6B6B6B;
+    --text-mid: #C7C7C7;
+    --text-muted: #7A7A7A;
+    --text-dim: #4D4D4D;
     --green: #06C167;
+    --green-soft: rgba(6,193,103,0.12);
     --yellow: #FFC043;
+    --yellow-soft: rgba(255,192,67,0.12);
     --red: #E11900;
+    --red-soft: rgba(225,25,0,0.12);
+    --blue: #057AFF;
     --chaldal: #7533CB;
     --safe-top: env(safe-area-inset-top);
     --safe-bottom: env(safe-area-inset-bottom);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { -webkit-text-size-adjust: 100%; }
-  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; min-height: 100vh; overflow-x: hidden; padding-bottom: calc(80px + var(--safe-bottom)); }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; min-height: 100vh; overflow-x: hidden; padding-bottom: calc(86px + var(--safe-bottom)); font-feature-settings: 'cv11'; }
 
-  .header { position: sticky; top: 0; z-index: 50; background: rgba(0,0,0,0.85); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); padding: calc(var(--safe-top) + 14px) 20px 14px; border-bottom: 1px solid var(--border); }
+  /* ─── HEADER ─── */
+  .header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    padding: calc(var(--safe-top) + 16px) 20px 16px;
+    border-bottom: 1px solid var(--border);
+  }
   .header-row { display: flex; align-items: center; justify-content: space-between; }
-  .greeting-day { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
-  .greeting-name { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
-  .protein-ring { width: 44px; height: 44px; position: relative; }
-  .protein-ring svg { transform: rotate(-90deg); }
-  .protein-ring-track { stroke: var(--surface-3); }
-  .protein-ring-fill { stroke: var(--green); }
-  .protein-ring-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+  .greeting-day { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+  .greeting-name { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .header-avatar {
+    width: 40px; height: 40px;
+    background: var(--surface-3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 800;
+    color: var(--text);
+  }
 
+  /* ─── MAIN ─── */
   .main { max-width: 560px; margin: 0 auto; padding: 20px; }
   .section { display: none; }
   .section.active { display: block; animation: fadeUp 0.3s ease; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  .hero-stack { display: grid; grid-template-columns: 1.6fr 1fr; gap: 10px; margin-bottom: 12px; }
-  .hero-tile { background: var(--surface); border-radius: 16px; padding: 16px; }
-  .hero-tile.big { background: var(--text); color: #000; }
-  .tile-label { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.7; margin-bottom: 12px; }
-  .tile-big-num { font-size: 44px; font-weight: 800; line-height: 0.95; letter-spacing: -0.04em; }
-  .tile-sub { font-size: 12px; font-weight: 500; opacity: 0.6; margin-top: 6px; }
-  .tile-small-num { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  /* ─── PAGE TITLE ─── */
+  .page-title { font-size: 32px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; margin-bottom: 4px; }
+  .page-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
 
-  .macro-bar { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 20px; }
-  .mb-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .mb-title { font-size: 13px; font-weight: 700; }
-  .mb-val { font-size: 13px; font-weight: 700; color: var(--green); }
-  .mb-track { height: 8px; background: var(--surface-3); border-radius: 99px; overflow: hidden; }
-  .mb-fill { height: 100%; background: linear-gradient(90deg, var(--green), #00E676); border-radius: 99px; }
-  .mb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
-  .mb-cell { text-align: center; padding: 8px 0; background: var(--surface-2); border-radius: 10px; }
-  .mb-cell-val { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
-  .mb-cell-lbl { font-size: 9px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
+  /* ─── HERO TILES ─── */
+  .hero-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .hero-tile { background: var(--surface); border-radius: 18px; padding: 18px; }
+  .hero-tile.solid { background: var(--text); color: #000; }
+  .ht-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.55; margin-bottom: 16px; }
+  .ht-num-big { font-size: 48px; font-weight: 800; line-height: 0.9; letter-spacing: -0.05em; }
+  .ht-num-mid { font-size: 32px; font-weight: 800; line-height: 0.9; letter-spacing: -0.04em; }
+  .ht-sub { font-size: 12px; font-weight: 500; opacity: 0.55; margin-top: 6px; }
 
-  .sec-head { display: flex; align-items: center; justify-content: space-between; margin: 24px 0 12px; }
-  .sec-title { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
-  .sec-count { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+  /* ─── PROGRESS CARDS ─── */
+  .prog-card { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 10px; }
+  .prog-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .prog-title { font-size: 13px; font-weight: 700; }
+  .prog-val { font-size: 13px; font-weight: 800; }
+  .prog-val.g { color: var(--green); }
+  .prog-track { height: 8px; background: var(--surface-3); border-radius: 99px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 99px; }
+  .prog-fill.green { background: linear-gradient(90deg, var(--green), #00E676); }
+  .prog-fill.yellow { background: var(--yellow); }
+  .prog-fill.red { background: var(--red); }
 
-  .meal-card { background: var(--surface); border-radius: 16px; margin-bottom: 10px; overflow: hidden; transition: transform 0.15s; }
-  .meal-card:active { transform: scale(0.98); }
-  .meal-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
-  .meal-emoji { width: 44px; height: 44px; background: var(--surface-2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
-  .meal-mid { flex: 1; min-width: 0; }
-  .meal-time { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
-  .meal-name { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4px; }
-  .meal-stats { display: flex; gap: 10px; font-size: 11px; color: var(--text-mid); }
-  .meal-stats b { color: var(--text); font-weight: 700; }
-  .meal-chev { color: var(--text-muted); font-size: 11px; transition: transform 0.25s; }
-  .meal-card.open .meal-chev { transform: rotate(180deg); }
-  .meal-body { display: none; padding: 4px 16px 16px; }
-  .meal-card.open .meal-body { display: block; }
-  .body-section { margin-top: 12px; }
-  .body-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
-  .ing-list { list-style: none; }
-  .ing-list li { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
-  .ing-list li:last-child { border-bottom: none; }
-  .ing-name { color: var(--text); }
-  .ing-qty { color: var(--text-muted); font-weight: 600; font-size: 12px; }
-  .cook-steps { counter-reset: step; list-style: none; }
-  .cook-steps li { counter-increment: step; padding: 8px 0 8px 28px; font-size: 13px; line-height: 1.5; color: var(--text-mid); position: relative; }
-  .cook-steps li::before { content: counter(step); position: absolute; left: 0; top: 8px; width: 20px; height: 20px; background: var(--text); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; }
+  .macro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .macro-cell { text-align: center; padding: 10px 0; background: var(--surface-2); border-radius: 12px; }
+  .macro-val { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; }
+  .macro-lbl { font-size: 9px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
 
-  .whey-card { background: linear-gradient(135deg, #0E0E0E, #1A1A1A); border: 1px solid var(--border-strong); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
-  .whey-emoji { width: 44px; height: 44px; background: var(--text); color: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
-  .whey-info { flex: 1; }
-  .whey-tag { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; background: var(--text); color: #000; padding: 2px 7px; border-radius: 4px; margin-bottom: 4px; }
-  .whey-name { font-size: 15px; font-weight: 700; }
-  .whey-sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+  /* ─── SECTION HEADERS ─── */
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin: 26px 0 12px; }
+  .sec-title { font-size: 20px; font-weight: 800; letter-spacing: -0.025em; }
+  .sec-count { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+  .sec-link { font-size: 12px; font-weight: 700; color: var(--green); }
 
-  .day-banner { background: var(--text); color: #000; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
-  .day-banner-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.6; margin-bottom: 6px; }
-  .day-banner-title { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 10px; }
-  .day-banner-sub { font-size: 13px; color: rgba(0,0,0,0.7); line-height: 1.5; }
+  /* ─── ACTION CARDS ─── */
+  .action-card {
+    background: var(--surface);
+    border-radius: 18px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: transform 0.15s, background 0.2s;
+  }
+  .action-card:active { transform: scale(0.98); }
+  .ac-head { display: flex; align-items: center; gap: 14px; padding: 16px 18px; cursor: pointer; }
+  .ac-emoji {
+    width: 48px; height: 48px;
+    background: var(--surface-2);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .ac-mid { flex: 1; min-width: 0; }
+  .ac-time {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .ac-time.green { color: var(--green); }
+  .ac-name { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; margin-bottom: 4px; }
+  .ac-stats { display: flex; gap: 12px; font-size: 12px; color: var(--text-muted); }
+  .ac-stats b { color: var(--text-mid); font-weight: 700; }
+  .ac-chev {
+    color: var(--text-muted);
+    font-size: 12px;
+    transition: transform 0.25s;
+    margin-left: 4px;
+  }
+  .action-card.open .ac-chev { transform: rotate(180deg); }
+  .ac-body { display: none; padding: 0 18px 18px; }
+  .action-card.open .ac-body { display: block; }
 
-  .timeline { position: relative; padding-left: 32px; }
-  .timeline::before { content: ''; position: absolute; left: 8px; top: 12px; bottom: 12px; width: 2px; background: var(--surface-3); }
+  .body-block { margin-top: 14px; }
+  .body-block:first-child { margin-top: 6px; }
+  .bb-label {
+    font-size: 10px; font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .item-list { list-style: none; }
+  .item-list li {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .item-list li:last-child { border-bottom: none; }
+  .item-name { color: var(--text); }
+  .item-qty { color: var(--text-muted); font-weight: 600; font-size: 12px; }
+
+  .steps-list { counter-reset: step; list-style: none; }
+  .steps-list li {
+    counter-increment: step;
+    padding: 10px 0 10px 32px;
+    font-size: 13px; line-height: 1.6;
+    color: var(--text-mid);
+    position: relative;
+  }
+  .steps-list li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 10px;
+    width: 22px; height: 22px;
+    background: var(--text); color: #000;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+  }
+
+  /* ─── WHEY CARD ─── */
+  .whey-card {
+    background: linear-gradient(135deg, #141414, #0A0A0A);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .whey-emoji {
+    width: 48px; height: 48px;
+    background: var(--text); color: #000;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+  }
+  .whey-tag {
+    display: inline-block;
+    font-size: 9px; font-weight: 800;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--text); color: #000;
+    padding: 3px 8px; border-radius: 4px;
+    margin-bottom: 5px;
+  }
+  .whey-name { font-size: 16px; font-weight: 700; letter-spacing: -0.015em; }
+  .whey-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  /* ─── DAY BANNER ─── */
+  .day-banner {
+    background: var(--text); color: #000;
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 20px;
+  }
+  .db-label { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.55; margin-bottom: 6px; }
+  .db-title { font-size: 30px; font-weight: 800; letter-spacing: -0.035em; margin-bottom: 10px; line-height: 1; }
+  .db-sub { font-size: 13px; color: rgba(0,0,0,0.65); line-height: 1.5; }
+
+  /* ─── TIMELINE ─── */
+  .timeline { position: relative; padding-left: 34px; }
+  .timeline::before {
+    content: ''; position: absolute;
+    left: 9px; top: 14px; bottom: 14px;
+    width: 2px; background: var(--surface-3);
+  }
   .tl-item { position: relative; margin-bottom: 12px; }
-  .tl-dot { position: absolute; left: -27px; top: 16px; width: 14px; height: 14px; border-radius: 50%; background: var(--surface-3); border: 3px solid var(--bg); }
-  .tl-item.active .tl-dot { background: var(--green); box-shadow: 0 0 0 3px rgba(6,193,103,0.2); }
+  .tl-dot {
+    position: absolute; left: -28px; top: 18px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--surface-3);
+    border: 3px solid var(--bg);
+  }
+  .tl-item.active .tl-dot { background: var(--green); box-shadow: 0 0 0 4px rgba(6,193,103,0.18); }
   .tl-item.gym .tl-dot { background: var(--text); }
-  .tl-card { background: var(--surface); border-radius: 14px; padding: 14px 16px; }
+  .tl-card { background: var(--surface); border-radius: 16px; padding: 14px 16px; }
   .tl-time { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
   .tl-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
   .tl-desc { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
-  .tl-pill { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: var(--surface-2); color: var(--text); padding: 3px 8px; border-radius: 4px; margin-top: 8px; }
+  .tl-pill { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: var(--surface-2); color: var(--text); padding: 3px 8px; border-radius: 5px; margin-top: 8px; }
   .tl-pill.green { background: var(--green); color: #fff; }
 
-  .toggle-seg { display: flex; background: var(--surface); border-radius: 12px; padding: 4px; margin-bottom: 16px; gap: 2px; }
-  .seg-btn { flex: 1; background: none; border: none; border-radius: 9px; color: var(--text-muted); font-family: inherit; font-size: 13px; font-weight: 700; padding: 10px 0; cursor: pointer; transition: all 0.2s; }
+  /* ─── SEGMENT CONTROL ─── */
+  .seg-ctrl {
+    display: flex;
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 4px;
+    margin-bottom: 18px;
+    gap: 2px;
+  }
+  .seg-btn {
+    flex: 1;
+    background: none; border: none;
+    border-radius: 11px;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px; font-weight: 700;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
   .seg-btn.active { background: var(--text); color: #000; }
 
-  .live-banner { background: linear-gradient(135deg, rgba(117,51,203,0.1), rgba(117,51,203,0.03)); border: 1px solid rgba(117,51,203,0.3); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-  .live-dot { width: 8px; height: 8px; background: var(--chaldal); border-radius: 50%; flex-shrink: 0; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-  .live-text { font-size: 11px; color: var(--text-mid); flex: 1; }
+  /* ─── WORKOUT DAY CARD ─── */
+  .workout-day {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .workout-day:active { transform: scale(0.98); }
+  .wd-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .wd-day-label { font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+  .wd-tag {
+    font-size: 9px; font-weight: 800;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    background: var(--surface-3); color: var(--text-mid);
+    padding: 4px 8px; border-radius: 5px;
+  }
+  .wd-tag.push { background: rgba(225,25,0,0.15); color: #FF6B58; }
+  .wd-tag.pull { background: rgba(5,122,255,0.15); color: #4A9DFF; }
+  .wd-tag.legs { background: rgba(255,192,67,0.15); color: var(--yellow); }
+  .wd-tag.full { background: var(--green-soft); color: var(--green); }
+  .wd-tag.cardio { background: rgba(117,51,203,0.15); color: #A07CE0; }
+  .wd-name { font-size: 18px; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 4px; }
+  .wd-meta { font-size: 12px; color: var(--text-muted); }
+
+  /* ─── EXERCISE LIST ─── */
+  .ex-list { list-style: none; margin-top: 12px; }
+  .ex-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface-2);
+    border-radius: 10px;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  .ex-num {
+    width: 22px; height: 22px;
+    background: var(--surface-4); color: var(--text-mid);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .ex-name { flex: 1; font-weight: 600; }
+  .ex-sets {
+    font-size: 11px; font-weight: 700;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* ─── HABIT TRACKER ─── */
+  .habit-card {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+  }
+  .hc-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .hc-emoji {
+    width: 44px; height: 44px;
+    background: var(--surface-2);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .hc-info { flex: 1; }
+  .hc-type { font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
+  .hc-type.bad { color: var(--red); }
+  .hc-type.good { color: var(--green); }
+  .hc-name { font-size: 15px; font-weight: 700; letter-spacing: -0.015em; }
+  .hc-streak {
+    text-align: right;
+    font-size: 10px; font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .hc-streak-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px; font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-top: 2px;
+  }
+
+  .hc-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 10px; }
+  .hc-day {
+    aspect-ratio: 1;
+    background: var(--surface-2);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .hc-day:active { transform: scale(0.92); }
+  .hc-day.done.good { background: var(--green); color: #fff; }
+  .hc-day.done.bad { background: var(--green); color: #fff; }
+  .hc-day.missed.good { background: var(--red-soft); color: var(--red); }
+  .hc-day.missed.bad { background: var(--red-soft); color: var(--red); }
+  .hc-day.today { box-shadow: inset 0 0 0 2px var(--text); }
+
+  .hc-pct-row { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border); }
+  .hc-pct-label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+  .hc-pct-val { font-size: 14px; font-weight: 800; }
+  .hc-pct-val.g { color: var(--green); }
+  .hc-pct-val.y { color: var(--yellow); }
+  .hc-pct-val.r { color: var(--red); }
+
+  /* ─── ADD HABIT BUTTON ─── */
+  .add-habit-btn {
+    width: 100%;
+    background: var(--surface);
+    border: 1px dashed var(--border-strong);
+    border-radius: 18px;
+    padding: 18px;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+  }
+  .add-habit-btn:active { background: var(--surface-2); }
+  .add-habit-btn:hover { color: var(--text); border-color: var(--text); }
+
+  /* ─── GROCERY ─── */
+  .live-banner {
+    background: linear-gradient(135deg, rgba(117,51,203,0.12), rgba(117,51,203,0.04));
+    border: 1px solid rgba(117,51,203,0.25);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .live-dot { width: 8px; height: 8px; background: var(--chaldal); border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .live-text { font-size: 12px; color: var(--text-mid); }
   .live-text b { color: var(--text); }
 
-  .budget-box { background: var(--surface); border-radius: 14px; padding: 14px 16px; margin-bottom: 18px; }
-  .bb-row { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
-  .bb-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
-  .bb-val { font-size: 15px; font-weight: 800; }
+  .budget-box { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 18px; }
+  .bb-row { display: flex; justify-content: space-between; margin-bottom: 12px; align-items: center; }
+  .bb-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .bb-val { font-size: 17px; font-weight: 800; letter-spacing: -0.02em; }
   .bb-val.ok { color: var(--green); }
   .bb-val.warn { color: var(--yellow); }
   .bb-track { height: 6px; background: var(--surface-3); border-radius: 99px; overflow: hidden; }
   .bb-fill { height: 100%; border-radius: 99px; }
   .bb-fill.ok { background: var(--green); }
   .bb-fill.warn { background: var(--yellow); }
-  .bb-foot { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
+  .bb-foot { font-size: 11px; color: var(--text-muted); margin-top: 10px; }
 
-  .grocery-cat { margin-bottom: 20px; }
-  .gc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .gc-name { font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-mid); }
+  .grocery-cat { margin-bottom: 22px; }
+  .gc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding: 0 4px; }
+  .gc-name { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mid); }
   .gc-total { font-size: 12px; font-weight: 700; color: var(--text-muted); }
-  .gi { display: flex; align-items: center; gap: 12px; background: var(--surface); padding: 12px 14px; border-radius: 12px; margin-bottom: 6px; transition: opacity 0.2s; }
+
+  .gi {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface);
+    padding: 13px 14px;
+    border-radius: 14px;
+    margin-bottom: 6px;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .gi:active { transform: scale(0.99); }
   .gi.done { opacity: 0.35; }
-  .gi-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; cursor: pointer; }
+  .gi-check {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--border-strong);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
   .gi.done .gi-check { background: var(--green); border-color: var(--green); }
   .gi-checkmark { display: none; color: #fff; font-size: 12px; font-weight: 800; }
   .gi.done .gi-checkmark { display: block; }
   .gi-info { flex: 1; min-width: 0; }
   .gi-name { font-size: 14px; font-weight: 600; }
   .gi-meta { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-  .gi-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-  .gi-price { font-size: 13px; font-weight: 800; white-space: nowrap; }
-  .gi-buy { display: inline-flex; align-items: center; gap: 4px; background: var(--chaldal); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; transition: opacity 0.2s; white-space: nowrap; }
+  .gi-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+  .gi-price { font-size: 13px; font-weight: 800; white-space: nowrap; letter-spacing: -0.01em; }
+  .gi-buy {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--chaldal); color: #fff;
+    font-size: 10px; font-weight: 800;
+    padding: 5px 9px;
+    border-radius: 6px;
+    text-decoration: none;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
   .gi-buy:active { opacity: 0.7; }
   .gi-buy.local { background: var(--surface-3); color: var(--text-mid); }
 
-  .grand-total { background: var(--text); color: #000; border-radius: 16px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
-  .gt-l { font-size: 14px; font-weight: 700; opacity: 0.7; }
-  .gt-v { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; }
+  .grand-total {
+    background: var(--text); color: #000;
+    border-radius: 18px;
+    padding: 20px 22px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 16px;
+  }
+  .gt-l { font-size: 14px; font-weight: 700; opacity: 0.65; }
+  .gt-v { font-size: 30px; font-weight: 800; letter-spacing: -0.035em; }
 
-  .chaldal-cta { background: var(--chaldal); color: #fff; border-radius: 14px; padding: 14px 16px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; transition: opacity 0.2s; }
+  .chaldal-cta {
+    background: var(--chaldal); color: #fff;
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin-top: 12px;
+    display: flex; align-items: center; justify-content: space-between;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
   .chaldal-cta:active { opacity: 0.85; }
-  .cta-left { display: flex; flex-direction: column; gap: 2px; }
-  .cta-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; }
-  .cta-title { font-size: 15px; font-weight: 700; }
-  .cta-arrow { font-size: 18px; font-weight: 600; }
+  .cta-label { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.65; }
+  .cta-title { font-size: 16px; font-weight: 700; margin-top: 2px; }
+  .cta-arrow { font-size: 22px; font-weight: 600; }
 
-  .portion-card { background: var(--surface); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; }
-  .pc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  /* ─── PORTION CARDS ─── */
+  .portion-card { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 8px; }
+  .pc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
   .pc-name { font-size: 14px; font-weight: 700; }
-  .pc-amt { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
-  .pc-bar { height: 4px; background: var(--surface-3); border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+  .pc-amt { font-size: 20px; font-weight: 800; letter-spacing: -0.025em; }
+  .pc-bar { height: 4px; background: var(--surface-3); border-radius: 99px; overflow: hidden; margin-bottom: 10px; }
   .pc-fill { height: 100%; background: var(--green); border-radius: 99px; }
   .pc-fill.carb { background: var(--yellow); }
   .pc-tip { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
 
-  .bot-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; z-index: 60; padding-bottom: var(--safe-bottom); }
-  .nav-btn { flex: 1; background: none; border: none; color: var(--text-muted); font-family: inherit; padding: 12px 4px 14px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: color 0.2s; }
+  /* ─── BOTTOM NAV ─── */
+  .bot-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.94);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 60;
+    padding-bottom: var(--safe-bottom);
+  }
+  .nav-btn {
+    flex: 1;
+    background: none; border: none;
+    color: var(--text-muted);
+    font-family: inherit;
+    padding: 12px 4px 14px;
+    cursor: pointer;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 4px;
+    transition: color 0.2s;
+  }
   .nav-btn.active { color: var(--text); }
-  .nav-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+  .nav-icon { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
   .nav-icon svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .nav-btn.active .nav-icon svg { fill: currentColor; stroke: none; }
   .nav-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.02em; }
 
-  .rule-card { background: var(--surface); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; display: flex; gap: 14px; align-items: flex-start; }
-  .rule-num { width: 28px; height: 28px; background: var(--text); color: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; }
-  .rule-info { flex: 1; }
+  /* ─── RULE CARDS ─── */
+  .rule-card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 6px;
+    display: flex; gap: 14px;
+    align-items: flex-start;
+  }
+  .rule-num {
+    width: 28px; height: 28px;
+    background: var(--text); color: #000;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    flex-shrink: 0;
+  }
   .rule-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
   .rule-desc { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 100;
+    display: none;
+    align-items: flex-end;
+    padding: 20px;
+    padding-bottom: calc(20px + var(--safe-bottom));
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface-2);
+    border-radius: 24px;
+    padding: 24px;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal-title { font-size: 20px; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 6px; }
+  .modal-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+
+  .habit-option {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .habit-option:active { background: var(--surface-3); }
+  .habit-option-emoji { font-size: 22px; }
+  .habit-option-info { flex: 1; }
+  .habit-option-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .habit-option-desc { font-size: 11px; color: var(--text-muted); }
+
+  .modal-actions { display: flex; gap: 8px; margin-top: 18px; }
+  .modal-btn {
+    flex: 1;
+    background: var(--surface-3);
+    border: none; border-radius: 12px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px; font-weight: 700;
+    padding: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .modal-btn.primary { background: var(--text); color: #000; }
+  .modal-btn:active { opacity: 0.8; }
 </style>
 </head>
 <body>
@@ -204,69 +612,69 @@
       <div class="greeting-day" id="hdr-day">Loading</div>
       <div class="greeting-name">Hey, Saber</div>
     </div>
-    <div class="protein-ring">
-      <svg width="44" height="44" viewBox="0 0 44 44">
-        <circle cx="22" cy="22" r="18" stroke-width="4" fill="none" class="protein-ring-track"/>
-        <circle cx="22" cy="22" r="18" stroke-width="4" fill="none" class="protein-ring-fill" stroke-dasharray="113" stroke-dashoffset="0" stroke-linecap="round"/>
-      </svg>
-      <div class="protein-ring-text">100%</div>
-    </div>
+    <div class="header-avatar">S</div>
   </div>
 </div>
 
 <div class="main">
 
-  <!-- TODAY -->
-  <section id="sec-today" class="section active">
-    <div class="hero-stack">
-      <div class="hero-tile big">
-        <div class="tile-label">Today's Plan</div>
-        <div class="tile-big-num">1,950</div>
-        <div class="tile-sub">cal · recomp target</div>
+  <!-- ═══════ HOME / TODAY ═══════ -->
+  <section id="sec-home" class="section active">
+    <div class="hero-grid">
+      <div class="hero-tile solid">
+        <div class="ht-label">Today's Calories</div>
+        <div class="ht-num-big">1,950</div>
+        <div class="ht-sub">recomp target</div>
       </div>
       <div class="hero-tile">
-        <div class="tile-label">Meals</div>
-        <div class="tile-small-num">4 + 1</div>
-        <div class="tile-sub">meals + shake</div>
+        <div class="ht-label">Workout</div>
+        <div class="ht-num-mid" id="today-workout">Push</div>
+        <div class="ht-sub" id="today-workout-sub">Chest · Shoulders · Triceps</div>
       </div>
     </div>
 
-    <div class="macro-bar">
-      <div class="mb-row"><div class="mb-title">Protein Target</div><div class="mb-val">147g / 126g</div></div>
-      <div class="mb-track"><div class="mb-fill" style="width: 100%"></div></div>
-      <div class="mb-grid">
-        <div class="mb-cell"><div class="mb-cell-val">147g</div><div class="mb-cell-lbl">Protein</div></div>
-        <div class="mb-cell"><div class="mb-cell-val">175g</div><div class="mb-cell-lbl">Carbs</div></div>
-        <div class="mb-cell"><div class="mb-cell-val">52g</div><div class="mb-cell-lbl">Fat</div></div>
+    <div class="prog-card">
+      <div class="prog-row">
+        <div class="prog-title">Protein</div>
+        <div class="prog-val g">147g / 126g</div>
+      </div>
+      <div class="prog-track"><div class="prog-fill green" style="width: 100%"></div></div>
+      <div class="macro-grid">
+        <div class="macro-cell"><div class="macro-val">147g</div><div class="macro-lbl">Protein</div></div>
+        <div class="macro-cell"><div class="macro-val">175g</div><div class="macro-lbl">Carbs</div></div>
+        <div class="macro-cell"><div class="macro-val">52g</div><div class="macro-lbl">Fat</div></div>
       </div>
     </div>
 
-    <div class="sec-head"><div class="sec-title">Your Meals</div><div class="sec-count">4 meals · 1 shake</div></div>
+    <div class="sec-head">
+      <div class="sec-title">Today's Meals</div>
+      <div class="sec-count">4 + 1 shake</div>
+    </div>
 
-    <div class="meal-card" onclick="toggleMeal(this)">
-      <div class="meal-head">
-        <div class="meal-emoji">🥣</div>
-        <div class="meal-mid">
-          <div class="meal-time">9:00 AM · Breakfast</div>
-          <div class="meal-name">Oats + Eggs + Banana</div>
-          <div class="meal-stats"><span><b>520</b> cal</span><span><b>32g</b> protein</span></div>
+    <div class="action-card" onclick="toggleCard(this)">
+      <div class="ac-head">
+        <div class="ac-emoji">🥣</div>
+        <div class="ac-mid">
+          <div class="ac-time">9:00 AM · Breakfast</div>
+          <div class="ac-name">Oats + Eggs + Banana</div>
+          <div class="ac-stats"><span><b>520</b> cal</span><span><b>32g</b> protein</span></div>
         </div>
-        <div class="meal-chev">▼</div>
+        <div class="ac-chev">▼</div>
       </div>
-      <div class="meal-body">
-        <div class="body-section">
-          <div class="body-label">Ingredients</div>
-          <ul class="ing-list">
-            <li><span class="ing-name">Rolled oats</span><span class="ing-qty">60g (dry)</span></li>
-            <li><span class="ing-name">Whole eggs</span><span class="ing-qty">3 eggs</span></li>
-            <li><span class="ing-name">Banana</span><span class="ing-qty">1 medium</span></li>
-            <li><span class="ing-name">Milk or water</span><span class="ing-qty">200ml</span></li>
-            <li><span class="ing-name">Cinnamon · honey</span><span class="ing-qty">to taste</span></li>
+      <div class="ac-body">
+        <div class="body-block">
+          <div class="bb-label">Ingredients</div>
+          <ul class="item-list">
+            <li><span class="item-name">Rolled oats</span><span class="item-qty">60g dry</span></li>
+            <li><span class="item-name">Whole eggs</span><span class="item-qty">3 eggs</span></li>
+            <li><span class="item-name">Banana</span><span class="item-qty">1 medium</span></li>
+            <li><span class="item-name">Milk or water</span><span class="item-qty">200ml</span></li>
+            <li><span class="item-name">Cinnamon · honey</span><span class="item-qty">to taste</span></li>
           </ul>
         </div>
-        <div class="body-section">
-          <div class="body-label">Method · ~10 min</div>
-          <ol class="cook-steps">
+        <div class="body-block">
+          <div class="bb-label">Method · ~10 min</div>
+          <ol class="steps-list">
             <li>Cook oats with milk in pot or microwave for 3-4 minutes</li>
             <li>Scramble 3 eggs in non-stick pan with tiny drop of oil</li>
             <li>Slice banana on top of oats; sprinkle cinnamon</li>
@@ -276,35 +684,34 @@
       </div>
     </div>
 
-    <div class="meal-card" onclick="toggleMeal(this)">
-      <div class="meal-head">
-        <div class="meal-emoji">🍗</div>
-        <div class="meal-mid">
-          <div class="meal-time">1:00 PM · Lunch</div>
-          <div class="meal-name">Air-Fried Chicken + Sweet Potato</div>
-          <div class="meal-stats"><span><b>620</b> cal</span><span><b>48g</b> protein</span></div>
+    <div class="action-card" onclick="toggleCard(this)">
+      <div class="ac-head">
+        <div class="ac-emoji">🍗</div>
+        <div class="ac-mid">
+          <div class="ac-time">1:00 PM · Lunch</div>
+          <div class="ac-name" id="lunch-name">Air-Fried Chicken + Sweet Potato</div>
+          <div class="ac-stats"><span><b>620</b> cal</span><span><b>48g</b> protein</span></div>
         </div>
-        <div class="meal-chev">▼</div>
+        <div class="ac-chev">▼</div>
       </div>
-      <div class="meal-body">
-        <div class="body-section">
-          <div class="body-label">Ingredients</div>
-          <ul class="ing-list">
-            <li><span class="ing-name">Chicken breast</span><span class="ing-qty">180g (raw)</span></li>
-            <li><span class="ing-name">Sweet potato (Misti Alu)</span><span class="ing-qty">250g</span></li>
-            <li><span class="ing-name">Olive oil</span><span class="ing-qty">1 tsp</span></li>
-            <li><span class="ing-name">Salt · pepper · paprika · garlic</span><span class="ing-qty">to taste</span></li>
-            <li><span class="ing-name">Lemon</span><span class="ing-qty">half</span></li>
+      <div class="ac-body">
+        <div class="body-block">
+          <div class="bb-label">Ingredients · varies by day (Mon/Wed/Fri chicken, Tue/Sat beef, Thu/Sun fish)</div>
+          <ul class="item-list">
+            <li><span class="item-name">Main protein</span><span class="item-qty">180g raw</span></li>
+            <li><span class="item-name">Sweet potato</span><span class="item-qty">250g</span></li>
+            <li><span class="item-name">Olive oil</span><span class="item-qty">1 tsp</span></li>
+            <li><span class="item-name">Spices · lemon</span><span class="item-qty">to taste</span></li>
           </ul>
         </div>
-        <div class="body-section">
-          <div class="body-label">Method · ~25 min (15 active)</div>
-          <ol class="cook-steps">
-            <li>Cut sweet potato into cubes; toss with ½ tsp oil + salt</li>
-            <li>Cut chicken into strips; rub with oil + spices + lemon</li>
+        <div class="body-block">
+          <div class="bb-label">Method · ~25 min</div>
+          <ol class="steps-list">
+            <li>Cut protein into strips; marinate with oil, spices, lemon</li>
+            <li>Cube sweet potato; toss with salt</li>
             <li>Air fry sweet potato at 200°C for 15 mins</li>
-            <li>Add chicken in last 10 mins (or fry separately at 180°C for 12 mins)</li>
-            <li>Flip once halfway through</li>
+            <li>Add protein in last 10 mins (180°C for chicken/fish, 200°C for beef)</li>
+            <li>Flip once; rest beef 2 min before eating</li>
           </ol>
         </div>
       </div>
@@ -312,156 +719,296 @@
 
     <div class="whey-card">
       <div class="whey-emoji">💪</div>
-      <div class="whey-info">
+      <div style="flex:1">
         <div class="whey-tag">Post-Workout · 7:00 PM</div>
         <div class="whey-name">VPA Whey Shake</div>
-        <div class="whey-sub">1 scoop (30g) + 250ml water · 23g protein · 124 cal</div>
+        <div class="whey-sub">1 scoop + 250ml water · 23g protein · 124 cal</div>
       </div>
     </div>
 
-    <div class="meal-card" onclick="toggleMeal(this)">
-      <div class="meal-head">
-        <div class="meal-emoji">🥜</div>
-        <div class="meal-mid">
-          <div class="meal-time">5:30 PM · Snack</div>
-          <div class="meal-name">Fruit + Nuts</div>
-          <div class="meal-stats"><span><b>280</b> cal</span><span><b>9g</b> protein</span></div>
+    <div class="action-card" onclick="toggleCard(this)">
+      <div class="ac-head">
+        <div class="ac-emoji">🥜</div>
+        <div class="ac-mid">
+          <div class="ac-time">5:30 PM · Snack</div>
+          <div class="ac-name">Fruit + Nuts</div>
+          <div class="ac-stats"><span><b>280</b> cal</span><span><b>9g</b> protein</span></div>
         </div>
-        <div class="meal-chev">▼</div>
+        <div class="ac-chev">▼</div>
       </div>
-      <div class="meal-body">
-        <div class="body-section">
-          <div class="body-label">Pick one combo</div>
-          <ul class="ing-list">
-            <li><span class="ing-name">Apple + 20g almonds</span><span class="ing-qty">option 1</span></li>
-            <li><span class="ing-name">Banana + 30g peanut butter</span><span class="ing-qty">option 2</span></li>
-            <li><span class="ing-name">Orange + 25g mixed nuts</span><span class="ing-qty">option 3</span></li>
-            <li><span class="ing-name">Greek yogurt + berries</span><span class="ing-qty">option 4</span></li>
+      <div class="ac-body">
+        <div class="body-block">
+          <div class="bb-label">Pick one combo</div>
+          <ul class="item-list">
+            <li><span class="item-name">Apple + 20g almonds</span><span class="item-qty">opt 1</span></li>
+            <li><span class="item-name">Banana + 30g peanut butter</span><span class="item-qty">opt 2</span></li>
+            <li><span class="item-name">Orange + 25g mixed nuts</span><span class="item-qty">opt 3</span></li>
+            <li><span class="item-name">Greek yogurt + berries</span><span class="item-qty">opt 4</span></li>
           </ul>
-        </div>
-        <div class="body-section">
-          <div class="body-label">Method · 1 min</div>
-          <ol class="cook-steps"><li>Grab fruit, grab nuts, eat. That's it.</li></ol>
         </div>
       </div>
     </div>
 
-    <div class="meal-card" onclick="toggleMeal(this)">
-      <div class="meal-head">
-        <div class="meal-emoji">🐟</div>
-        <div class="meal-mid">
-          <div class="meal-time">8:30 PM · Dinner</div>
-          <div class="meal-name">Air-Fried Fish + Kabuli Chola</div>
-          <div class="meal-stats"><span><b>530</b> cal</span><span><b>35g</b> protein</span></div>
+    <div class="action-card" onclick="toggleCard(this)">
+      <div class="ac-head">
+        <div class="ac-emoji">🐟</div>
+        <div class="ac-mid">
+          <div class="ac-time">8:30 PM · Dinner</div>
+          <div class="ac-name">Air-Fried Fish + Kabuli Chola</div>
+          <div class="ac-stats"><span><b>530</b> cal</span><span><b>35g</b> protein</span></div>
         </div>
-        <div class="meal-chev">▼</div>
+        <div class="ac-chev">▼</div>
       </div>
-      <div class="meal-body">
-        <div class="body-section">
-          <div class="body-label">Ingredients</div>
-          <ul class="ing-list">
-            <li><span class="ing-name">Rui or Catla fillet</span><span class="ing-qty">180g (raw)</span></li>
-            <li><span class="ing-name">Boiled kabuli chola</span><span class="ing-qty">120g (cooked)</span></li>
-            <li><span class="ing-name">Olive oil</span><span class="ing-qty">1 tsp</span></li>
-            <li><span class="ing-name">Cucumber · tomato · onion</span><span class="ing-qty">handful</span></li>
-            <li><span class="ing-name">Turmeric · chili · lemon · salt</span><span class="ing-qty">to taste</span></li>
+      <div class="ac-body">
+        <div class="body-block">
+          <div class="bb-label">Ingredients</div>
+          <ul class="item-list">
+            <li><span class="item-name">Rui or Catla fillet</span><span class="item-qty">180g</span></li>
+            <li><span class="item-name">Boiled kabuli chola</span><span class="item-qty">120g</span></li>
+            <li><span class="item-name">Olive oil</span><span class="item-qty">1 tsp</span></li>
+            <li><span class="item-name">Cucumber · tomato · onion</span><span class="item-qty">handful</span></li>
+            <li><span class="item-name">Turmeric · chili · lemon</span><span class="item-qty">to taste</span></li>
           </ul>
         </div>
-        <div class="body-section">
-          <div class="body-label">Method · ~20 min</div>
-          <ol class="cook-steps">
-            <li>Rub fish with oil, turmeric, chili, salt, lemon juice</li>
-            <li>Air fry at 180°C for 12-15 mins until edges crisp</li>
-            <li>Toss boiled chola with chopped veggies + lemon as salad</li>
+        <div class="body-block">
+          <div class="bb-label">Method · ~20 min</div>
+          <ol class="steps-list">
+            <li>Rub fish with oil, turmeric, chili, salt, lemon</li>
+            <li>Air fry at 180°C for 12-15 mins</li>
+            <li>Toss chola with chopped veggies + lemon</li>
             <li>Plate together; serve fresh</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-
-    <div class="sec-head"><div class="sec-title">Alt Options</div><div class="sec-count">2x/week rotation</div></div>
-
-    <div class="meal-card" onclick="toggleMeal(this)">
-      <div class="meal-head">
-        <div class="meal-emoji">🥩</div>
-        <div class="meal-mid">
-          <div class="meal-time">Beef Day · Lunch (Tue/Sat)</div>
-          <div class="meal-name">Air-Fried Lean Beef + Sweet Potato</div>
-          <div class="meal-stats"><span><b>640</b> cal</span><span><b>52g</b> protein</span></div>
-        </div>
-        <div class="meal-chev">▼</div>
-      </div>
-      <div class="meal-body">
-        <div class="body-section">
-          <div class="body-label">Ingredients</div>
-          <ul class="ing-list">
-            <li><span class="ing-name">Lean beef boneless</span><span class="ing-qty">180g (raw)</span></li>
-            <li><span class="ing-name">Sweet potato</span><span class="ing-qty">250g</span></li>
-            <li><span class="ing-name">Olive oil</span><span class="ing-qty">1 tsp</span></li>
-            <li><span class="ing-name">Garlic · pepper · paprika · salt</span><span class="ing-qty">to taste</span></li>
-            <li><span class="ing-name">Lemon · soy sauce (optional)</span><span class="ing-qty">marinade</span></li>
-          </ul>
-        </div>
-        <div class="body-section">
-          <div class="body-label">Method · ~25 min (15 active)</div>
-          <ol class="cook-steps">
-            <li>Cut beef into thin strips against the grain (key for tenderness)</li>
-            <li>Marinate 10 min in oil, garlic, pepper, soy sauce, lemon</li>
-            <li>Cut sweet potato into cubes; toss with salt</li>
-            <li>Air fry sweet potato at 200°C for 15 mins</li>
-            <li>Air fry beef at 200°C for 8-10 mins (medium); shake basket halfway</li>
-            <li>Rest beef 2 min before eating; locks in juices</li>
-          </ol>
-        </div>
-        <div class="body-section">
-          <div class="body-label">Why beef</div>
-          <ul class="ing-list">
-            <li><span class="ing-name">Heme iron · best absorbed form</span><span class="ing-qty">recovery</span></li>
-            <li><span class="ing-name">Natural creatine + B12</span><span class="ing-qty">energy + strength</span></li>
-            <li><span class="ing-name">Zinc · testosterone support</span><span class="ing-qty">recovery</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="meal-card" onclick="toggleMeal(this)">
-      <div class="meal-head">
-        <div class="meal-emoji">🫘</div>
-        <div class="meal-mid">
-          <div class="meal-time">Veg Day · Dinner</div>
-          <div class="meal-name">Chola Bowl + Eggs</div>
-          <div class="meal-stats"><span><b>510</b> cal</span><span><b>30g</b> protein</span></div>
-        </div>
-        <div class="meal-chev">▼</div>
-      </div>
-      <div class="meal-body">
-        <div class="body-section">
-          <div class="body-label">Ingredients</div>
-          <ul class="ing-list">
-            <li><span class="ing-name">Boiled kabuli chola</span><span class="ing-qty">200g</span></li>
-            <li><span class="ing-name">Whole eggs</span><span class="ing-qty">3</span></li>
-            <li><span class="ing-name">Onion · tomato · cucumber</span><span class="ing-qty">handful</span></li>
-            <li><span class="ing-name">Olive oil · lemon · chaat masala</span><span class="ing-qty">to taste</span></li>
-          </ul>
-        </div>
-        <div class="body-section">
-          <div class="body-label">Method · ~10 min</div>
-          <ol class="cook-steps">
-            <li>Boil-fry eggs (air fryer or pan)</li>
-            <li>Toss chola with chopped veg, lemon, oil, salt, chaat masala</li>
-            <li>Top with sliced eggs</li>
           </ol>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ROUTINE -->
+  <!-- ═══════ WORKOUT ═══════ -->
+  <section id="sec-workout" class="section">
+    <div class="day-banner">
+      <div class="db-label">5-Day Split · 60 min sessions</div>
+      <div class="db-title">Stamina + Lean Strength</div>
+      <div class="db-sub">No-injury-first programming. Compound lifts, controlled volume, progressive overload. Built around stamina + lean muscle, not maximum hypertrophy.</div>
+    </div>
+
+    <div class="seg-ctrl">
+      <button class="seg-btn active" onclick="switchView('weekly', this, 'workout')">Weekly</button>
+      <button class="seg-btn" onclick="switchView('today', this, 'workout')">Today</button>
+      <button class="seg-btn" onclick="switchView('guide', this, 'workout')">Guide</button>
+    </div>
+
+    <!-- WEEKLY VIEW -->
+    <div id="workout-weekly" class="wview">
+      <div class="workout-day" onclick="this.classList.toggle('open')">
+        <div class="wd-head">
+          <div class="wd-day-label">Monday</div>
+          <div class="wd-tag push">Push</div>
+        </div>
+        <div class="wd-name">Chest · Shoulders · Triceps</div>
+        <div class="wd-meta">5 exercises · ~55 min</div>
+        <ul class="ex-list">
+          <li class="ex-row"><div class="ex-num">1</div><div class="ex-name">Barbell Bench Press</div><div class="ex-sets">3×8-10</div></li>
+          <li class="ex-row"><div class="ex-num">2</div><div class="ex-name">Incline Dumbbell Press</div><div class="ex-sets">3×10-12</div></li>
+          <li class="ex-row"><div class="ex-num">3</div><div class="ex-name">Seated Shoulder Press</div><div class="ex-sets">3×10-12</div></li>
+          <li class="ex-row"><div class="ex-num">4</div><div class="ex-name">Lateral Raises</div><div class="ex-sets">3×12-15</div></li>
+          <li class="ex-row"><div class="ex-num">5</div><div class="ex-name">Tricep Pushdowns / Dips</div><div class="ex-sets">3×12</div></li>
+        </ul>
+      </div>
+
+      <div class="workout-day" onclick="this.classList.toggle('open')">
+        <div class="wd-head">
+          <div class="wd-day-label">Tuesday</div>
+          <div class="wd-tag pull">Pull</div>
+        </div>
+        <div class="wd-name">Back · Biceps</div>
+        <div class="wd-meta">5 exercises · ~55 min</div>
+        <ul class="ex-list">
+          <li class="ex-row"><div class="ex-num">1</div><div class="ex-name">Lat Pulldown</div><div class="ex-sets">3×10-12</div></li>
+          <li class="ex-row"><div class="ex-num">2</div><div class="ex-name">Seated Cable Row</div><div class="ex-sets">3×10-12</div></li>
+          <li class="ex-row"><div class="ex-num">3</div><div class="ex-name">Dumbbell Row (single arm)</div><div class="ex-sets">3×10/side</div></li>
+          <li class="ex-row"><div class="ex-num">4</div><div class="ex-name">Face Pulls</div><div class="ex-sets">3×15</div></li>
+          <li class="ex-row"><div class="ex-num">5</div><div class="ex-name">Dumbbell Curls</div><div class="ex-sets">3×12</div></li>
+        </ul>
+      </div>
+
+      <div class="workout-day" onclick="this.classList.toggle('open')">
+        <div class="wd-head">
+          <div class="wd-day-label">Wednesday</div>
+          <div class="wd-tag legs">Legs</div>
+        </div>
+        <div class="wd-name">Quads · Glutes · Hamstrings</div>
+        <div class="wd-meta">5 exercises · ~60 min</div>
+        <ul class="ex-list">
+          <li class="ex-row"><div class="ex-num">1</div><div class="ex-name">Goblet Squat (or Back Squat)</div><div class="ex-sets">3×10-12</div></li>
+          <li class="ex-row"><div class="ex-num">2</div><div class="ex-name">Romanian Deadlift</div><div class="ex-sets">3×10</div></li>
+          <li class="ex-row"><div class="ex-num">3</div><div class="ex-name">Leg Press</div><div class="ex-sets">3×12-15</div></li>
+          <li class="ex-row"><div class="ex-num">4</div><div class="ex-name">Walking Lunges (light dumbbells)</div><div class="ex-sets">3×12/side</div></li>
+          <li class="ex-row"><div class="ex-num">5</div><div class="ex-name">Standing Calf Raises</div><div class="ex-sets">3×15-20</div></li>
+        </ul>
+      </div>
+
+      <div class="workout-day" onclick="this.classList.toggle('open')">
+        <div class="wd-head">
+          <div class="wd-day-label">Thursday</div>
+          <div class="wd-tag full">Full Body</div>
+        </div>
+        <div class="wd-name">Stamina + Conditioning</div>
+        <div class="wd-meta">6 exercises (circuit) · ~50 min</div>
+        <ul class="ex-list">
+          <li class="ex-row"><div class="ex-num">1</div><div class="ex-name">Kettlebell or Dumbbell Swings</div><div class="ex-sets">3×15</div></li>
+          <li class="ex-row"><div class="ex-num">2</div><div class="ex-name">Push-Ups</div><div class="ex-sets">3×12-15</div></li>
+          <li class="ex-row"><div class="ex-num">3</div><div class="ex-name">Goblet Squats (light)</div><div class="ex-sets">3×12</div></li>
+          <li class="ex-row"><div class="ex-num">4</div><div class="ex-name">Inverted Rows / TRX Rows</div><div class="ex-sets">3×10</div></li>
+          <li class="ex-row"><div class="ex-num">5</div><div class="ex-name">Plank Hold</div><div class="ex-sets">3×45 sec</div></li>
+          <li class="ex-row"><div class="ex-num">6</div><div class="ex-name">Light Cardio (treadmill / bike)</div><div class="ex-sets">15 min</div></li>
+        </ul>
+      </div>
+
+      <div class="workout-day" onclick="this.classList.toggle('open')">
+        <div class="wd-head">
+          <div class="wd-day-label">Friday</div>
+          <div class="wd-tag cardio">Upper + Cardio</div>
+        </div>
+        <div class="wd-name">Posterior Chain + Endurance</div>
+        <div class="wd-meta">5 + cardio · ~55 min</div>
+        <ul class="ex-list">
+          <li class="ex-row"><div class="ex-num">1</div><div class="ex-name">Pull-Ups (assisted if needed)</div><div class="ex-sets">3×6-10</div></li>
+          <li class="ex-row"><div class="ex-num">2</div><div class="ex-name">Dumbbell Shoulder Press</div><div class="ex-sets">3×10</div></li>
+          <li class="ex-row"><div class="ex-num">3</div><div class="ex-name">Cable Chest Fly</div><div class="ex-sets">3×12</div></li>
+          <li class="ex-row"><div class="ex-num">4</div><div class="ex-name">Rear Delt Fly</div><div class="ex-sets">3×15</div></li>
+          <li class="ex-row"><div class="ex-num">5</div><div class="ex-name">Hammer Curls</div><div class="ex-sets">3×12</div></li>
+          <li class="ex-row"><div class="ex-num">6</div><div class="ex-name">Steady-state cardio</div><div class="ex-sets">20 min</div></li>
+        </ul>
+      </div>
+
+      <div class="workout-day" style="opacity:0.6">
+        <div class="wd-head">
+          <div class="wd-day-label">Saturday + Sunday</div>
+          <div class="wd-tag full">Recovery</div>
+        </div>
+        <div class="wd-name">Sauna · Steam · Light Walk</div>
+        <div class="wd-meta">Active rest · no lifting · 30-min walk</div>
+      </div>
+    </div>
+
+    <!-- TODAY VIEW -->
+    <div id="workout-today" class="wview" style="display:none">
+      <div class="workout-day open">
+        <div class="wd-head">
+          <div class="wd-day-label" id="today-wd-label">Today</div>
+          <div class="wd-tag push" id="today-wd-tag">Push</div>
+        </div>
+        <div class="wd-name" id="today-wd-name">Chest · Shoulders · Triceps</div>
+        <div class="wd-meta">5 exercises · ~55 min</div>
+        <ul class="ex-list" id="today-wd-list">
+          <li class="ex-row"><div class="ex-num">1</div><div class="ex-name">Loading workout...</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- GUIDE VIEW -->
+    <div id="workout-guide" class="wview" style="display:none">
+      <div class="sec-head"><div class="sec-title">Form Cues</div></div>
+
+      <div class="rule-card"><div class="rule-num">1</div><div>
+        <div class="rule-title">Warm up · 5 min</div>
+        <div class="rule-desc">Treadmill walk + arm circles + bodyweight squats. Cold muscles = injury risk.</div>
+      </div></div>
+      <div class="rule-card"><div class="rule-num">2</div><div>
+        <div class="rule-title">Start light · 50% of working weight</div>
+        <div class="rule-desc">First set of every exercise is a warmup. Don't ego-lift the first set.</div>
+      </div></div>
+      <div class="rule-card"><div class="rule-num">3</div><div>
+        <div class="rule-title">Form > weight always</div>
+        <div class="rule-desc">If form breaks, lower the weight. Bad reps build bad habits and injuries.</div>
+      </div></div>
+      <div class="rule-card"><div class="rule-num">4</div><div>
+        <div class="rule-title">Rest 60-90 sec between sets</div>
+        <div class="rule-desc">Longer for compounds (squats, deadlifts), shorter for isolation work.</div>
+      </div></div>
+      <div class="rule-card"><div class="rule-num">5</div><div>
+        <div class="rule-title">Track your weights</div>
+        <div class="rule-desc">Note weight × reps each session. Aim to add 2.5kg or 1 rep weekly.</div>
+      </div></div>
+      <div class="rule-card"><div class="rule-num">6</div><div>
+        <div class="rule-title">Stop 1-2 reps before failure</div>
+        <div class="rule-desc">Going to failure every set burns out the nervous system. Recoverable volume wins.</div>
+      </div></div>
+      <div class="rule-card"><div class="rule-num">7</div><div>
+        <div class="rule-title">Missing equipment? Swap smart</div>
+        <div class="rule-desc">No squat rack → goblet squats. No cable → resistance bands. No lat pulldown → assisted pull-ups.</div>
+      </div></div>
+
+      <div class="sec-head"><div class="sec-title">Equipment Swap Guide</div></div>
+
+      <div class="action-card" onclick="toggleCard(this)">
+        <div class="ac-head">
+          <div class="ac-emoji">🏋️</div>
+          <div class="ac-mid">
+            <div class="ac-name">If your gym lacks...</div>
+            <div class="ac-stats"><span>Common substitutions</span></div>
+          </div>
+          <div class="ac-chev">▼</div>
+        </div>
+        <div class="ac-body">
+          <ul class="item-list">
+            <li><span class="item-name">Squat rack</span><span class="item-qty">→ Goblet squat (DB)</span></li>
+            <li><span class="item-name">Cable machine</span><span class="item-qty">→ Resistance bands</span></li>
+            <li><span class="item-name">Lat pulldown</span><span class="item-qty">→ Pull-ups (assisted)</span></li>
+            <li><span class="item-name">Leg press</span><span class="item-qty">→ Bulgarian split squat</span></li>
+            <li><span class="item-name">Bench press</span><span class="item-qty">→ Floor press · push-ups</span></li>
+            <li><span class="item-name">Romanian deadlift bar</span><span class="item-qty">→ Single-leg DB RDL</span></li>
+            <li><span class="item-name">Face pull cable</span><span class="item-qty">→ Band pull-apart</span></li>
+            <li><span class="item-name">Treadmill</span><span class="item-qty">→ Skipping rope / stairs</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ HABITS ═══════ -->
+  <section id="sec-habits" class="section">
+    <div class="day-banner">
+      <div class="db-label">Habit Tracker · Rotate 2-3 at a time</div>
+      <div class="db-title">Swap Bad for Good</div>
+      <div class="db-sub">Track 2-3 habits at once. Once a habit sticks for 30 days, swap it out for the next. Small wins compound.</div>
+    </div>
+
+    <div class="sec-head">
+      <div class="sec-title">Quitting</div>
+      <div class="sec-count" id="bad-count">0 active</div>
+    </div>
+    <div id="bad-habits"></div>
+    <button class="add-habit-btn" onclick="openAddModal('bad')">+ Add Bad Habit to Quit</button>
+
+    <div class="sec-head">
+      <div class="sec-title">Building</div>
+      <div class="sec-count" id="good-count">0 active</div>
+    </div>
+    <div id="good-habits"></div>
+    <button class="add-habit-btn" onclick="openAddModal('good')">+ Add Good Habit to Build</button>
+
+    <div class="sec-head"><div class="sec-title">Rules</div></div>
+    <div class="rule-card"><div class="rule-num">1</div><div>
+      <div class="rule-title">Max 3 habits at once</div>
+      <div class="rule-desc">Tracking too many = tracking none. Less is more.</div>
+    </div></div>
+    <div class="rule-card"><div class="rule-num">2</div><div>
+      <div class="rule-title">30 days minimum before swap</div>
+      <div class="rule-desc">A habit isn't built until 30 days. Don't rush the swap.</div>
+    </div></div>
+    <div class="rule-card"><div class="rule-num">3</div><div>
+      <div class="rule-title">Tap a day to mark · long-press to clear</div>
+      <div class="rule-desc">Today is highlighted. Tap circles to record daily.</div>
+    </div></div>
+  </section>
+
+  <!-- ═══════ ROUTINE ═══════ -->
   <section id="sec-routine" class="section">
     <div class="day-banner">
-      <div class="day-banner-label">Your Daily Blueprint</div>
-      <div class="day-banner-title">7:30 AM → 10:30 PM</div>
-      <div class="day-banner-sub">Built around realistic wake time, deep work, gym, and protected sleep. Total cooking: 1-2 hours max.</div>
+      <div class="db-label">Daily Blueprint</div>
+      <div class="db-title">7:30 AM → 10:30 PM</div>
+      <div class="db-sub">Built around realistic wake time, deep work, gym, and protected sleep. Total cooking: 1-2 hours max.</div>
     </div>
 
     <div class="sec-head"><div class="sec-title">Daily Schedule</div></div>
@@ -469,77 +1016,63 @@
     <div class="timeline">
       <div class="tl-item active"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">7:30 AM</div><div class="tl-title">☀️ Wake + Sunlight</div>
-        <div class="tl-desc">Phone stays off. 10 min direct sunlight outside. Sets your circadian rhythm. Drink 500ml water.</div>
+        <div class="tl-desc">Phone stays off. 10 min sunlight outside. 500ml water.</div>
       </div></div>
-
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">8:00 AM</div><div class="tl-title">📝 Quick Plan</div>
-        <div class="tl-desc">15 min to set top 3 priorities for the day. Pen and paper; no phone yet.</div>
+        <div class="tl-desc">15 min to set top 3 priorities. Pen and paper; no phone yet.</div>
       </div></div>
-
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">9:00 AM</div><div class="tl-title">🥣 Breakfast</div>
-        <div class="tl-desc">Oats + 3 eggs + banana. Eat at the table, not at your desk.</div>
+        <div class="tl-desc">Oats + 3 eggs + banana. Eat at the table.</div>
       </div></div>
-
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">9:30 AM – 1:00 PM</div><div class="tl-title">🧠 Deep Work Block 1</div>
-        <div class="tl-desc">Most important client work. No Slack, no email. Phone face-down or in another room.</div>
+        <div class="tl-desc">Most important client work. Phone in another room.</div>
       </div></div>
-
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">1:00 PM</div><div class="tl-title">🍗 Lunch</div>
-        <div class="tl-desc">Air-fried chicken + sweet potato. Eat away from screens. 20 min minimum.</div>
+        <div class="tl-desc">Protein + sweet potato. 20 min away from screens.</div>
       </div></div>
-
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">2:00 – 5:00 PM</div><div class="tl-title">⚙️ Deep Work Block 2</div>
-        <div class="tl-desc">Admin, calls, lighter creative. Reply to messages. Run the agency.</div>
+        <div class="tl-desc">Admin, calls, creative. Run the agency.</div>
       </div></div>
-
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">5:30 PM</div><div class="tl-title">🥜 Snack</div>
-        <div class="tl-desc">Fruit + nuts. Keeps blood sugar stable; prevents overeating at dinner.</div>
+        <div class="tl-desc">Fruit + nuts. Stable blood sugar before workout.</div>
       </div></div>
-
       <div class="tl-item gym"><div class="tl-dot"></div><div class="tl-card">
-        <div class="tl-time">6:00 – 7:00 PM</div><div class="tl-title">🏋️ Gym Session</div>
-        <div class="tl-desc">Weight training; 45-60 min. Compound lifts; squats, bench, rows, deadlifts, overhead press.</div>
-        <span class="tl-pill">Daily</span>
+        <div class="tl-time">6:00 – 7:00 PM</div><div class="tl-title">🏋️ Gym</div>
+        <div class="tl-desc">5-day split. Mon push, Tue pull, Wed legs, Thu full body, Fri upper+cardio.</div>
+        <span class="tl-pill">Weekdays</span>
       </div></div>
-
       <div class="tl-item active"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">7:00 PM</div><div class="tl-title">💪 Whey Shake</div>
-        <div class="tl-desc">1 scoop VPA WPC in 250ml water. Within 30 mins of last set.</div>
+        <div class="tl-desc">1 scoop VPA WPC + 250ml water. Within 30 min of last set.</div>
         <span class="tl-pill green">23g Protein</span>
       </div></div>
-
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">7:15 – 8:30 PM</div><div class="tl-title">🚶 Walk + Wind Down</div>
-        <div class="tl-desc">Light walk, sauna (when accessible), or read. Screens off as much as possible.</div>
+        <div class="tl-desc">Light walk, read, or sauna on weekends.</div>
       </div></div>
-
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">8:30 PM</div><div class="tl-title">🐟 Dinner</div>
-        <div class="tl-desc">Air-fried fish + kabuli chola. Finish eating by 9:00 to give 90 min digest window.</div>
+        <div class="tl-desc">Fish + kabuli chola. Finish by 9:00.</div>
       </div></div>
-
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">9:30 PM</div><div class="tl-title">📵 Digital Sunset</div>
-        <div class="tl-desc">Phone out of bedroom. No gaming, no YouTube. Read, journal, or just sit.</div>
+        <div class="tl-desc">Phone out of bedroom. Read or journal.</div>
       </div></div>
-
       <div class="tl-item active"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">10:30 PM</div><div class="tl-title">😴 Sleep</div>
-        <div class="tl-desc">9 hours protected. Sleep is when muscle is built and the brain consolidates.</div>
+        <div class="tl-desc">9 hours protected. Sleep is when muscle builds.</div>
         <span class="tl-pill green">Non-Negotiable</span>
       </div></div>
     </div>
 
-    <div class="sec-head"><div class="sec-title">Weekly Protein Rotation</div></div>
-
-    <div style="background: var(--surface); border-radius: 14px; padding: 16px; margin-bottom: 8px;">
-      <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px;">Lunch protein varies by day</div>
+    <div class="sec-head"><div class="sec-title">Protein Rotation</div></div>
+    <div style="background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 16px;">
       <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-mid)">Monday</span><span style="font-weight: 700;">🍗 Chicken</span></div>
       <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-mid)">Tuesday</span><span style="font-weight: 700;">🥩 Beef</span></div>
       <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-mid)">Wednesday</span><span style="font-weight: 700;">🍗 Chicken</span></div>
@@ -549,24 +1082,20 @@
       <div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px;"><span style="color: var(--text-mid)">Sunday</span><span style="font-weight: 700;">🐟 Fish</span></div>
     </div>
 
-    <div style="background: var(--surface-2); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; font-size: 12px; color: var(--text-mid); line-height: 1.6;">
-      Dinner stays fish + kabuli chola most days. Variety prevents boredom and gives complete micronutrient profile across the week.
-    </div>
-
     <div class="sec-head"><div class="sec-title">The 7 Rules</div></div>
 
-    <div class="rule-card"><div class="rule-num">1</div><div class="rule-info"><div class="rule-title">Phone out of the bedroom</div><div class="rule-desc">Biggest single ROI habit. Use a separate alarm clock or smart watch.</div></div></div>
-    <div class="rule-card"><div class="rule-num">2</div><div class="rule-info"><div class="rule-title">Sunlight before screens</div><div class="rule-desc">10 mins outside, no sunglasses. Anchors your circadian rhythm hard.</div></div></div>
-    <div class="rule-card"><div class="rule-num">3</div><div class="rule-info"><div class="rule-title">Workout every day</div><div class="rule-desc">Daily ≠ heavy daily. 4 heavy days, 2 light days, 1 active rest.</div></div></div>
-    <div class="rule-card"><div class="rule-num">4</div><div class="rule-info"><div class="rule-title">Protein every meal</div><div class="rule-desc">Minimum 25g per meal. Hits 126g target without thinking about it.</div></div></div>
-    <div class="rule-card"><div class="rule-num">5</div><div class="rule-info"><div class="rule-title">2.5L water daily</div><div class="rule-desc">500ml on wake, 500ml pre-gym, 250ml each meal, 250ml mid-afternoon.</div></div></div>
-    <div class="rule-card"><div class="rule-num">6</div><div class="rule-info"><div class="rule-title">No screens after 9:30 PM</div><div class="rule-desc">Cuts gaming/scrolling and gives your brain a real wind-down.</div></div></div>
-    <div class="rule-card"><div class="rule-num">7</div><div class="rule-info"><div class="rule-title">Cooking under 2 hrs/day total</div><div class="rule-desc">Air fryer + batch prep. If it takes longer, simplify the meal.</div></div></div>
+    <div class="rule-card"><div class="rule-num">1</div><div><div class="rule-title">Phone out of the bedroom</div><div class="rule-desc">Biggest single ROI habit. Separate alarm clock.</div></div></div>
+    <div class="rule-card"><div class="rule-num">2</div><div><div class="rule-title">Sunlight before screens</div><div class="rule-desc">10 mins outside, no sunglasses. Circadian anchor.</div></div></div>
+    <div class="rule-card"><div class="rule-num">3</div><div><div class="rule-title">5-day gym, 2-day recovery</div><div class="rule-desc">Recovery days are growth days. Don't skip them.</div></div></div>
+    <div class="rule-card"><div class="rule-num">4</div><div><div class="rule-title">Protein every meal</div><div class="rule-desc">25g minimum. Hits 126g target without thinking.</div></div></div>
+    <div class="rule-card"><div class="rule-num">5</div><div><div class="rule-title">2.5L water daily</div><div class="rule-desc">500ml on wake, 500ml pre-gym, 250ml each meal.</div></div></div>
+    <div class="rule-card"><div class="rule-num">6</div><div><div class="rule-title">No screens after 9:30 PM</div><div class="rule-desc">Cuts scrolling. Real wind-down.</div></div></div>
+    <div class="rule-card"><div class="rule-num">7</div><div><div class="rule-title">Form > weight, always</div><div class="rule-desc">No injuries. No ego lifts. Track your numbers.</div></div></div>
   </section>
 
-  <!-- GROCERY -->
+  <!-- ═══════ GROCERY ═══════ -->
   <section id="sec-grocery" class="section">
-    <div class="toggle-seg">
+    <div class="seg-ctrl">
       <button class="seg-btn active" onclick="switchGrocery('day', this)">Daily</button>
       <button class="seg-btn" onclick="switchGrocery('week', this)">Weekly</button>
       <button class="seg-btn" onclick="switchGrocery('month', this)">Monthly</button>
@@ -574,370 +1103,160 @@
 
     <div class="live-banner">
       <div class="live-dot"></div>
-      <div class="live-text"><b>Live Chaldal prices</b> · tap any item to buy directly</div>
+      <div class="live-text"><b>Live Chaldal prices</b> · tap any item to buy</div>
     </div>
 
-    <!-- DAILY -->
     <div id="gview-day" class="gview">
       <div class="budget-box">
         <div class="bb-row"><div class="bb-label">Daily Budget</div><div class="bb-val ok">~535 / 500 ৳</div></div>
         <div class="bb-track"><div class="bb-fill ok" style="width: 100%"></div></div>
-        <div class="bb-foot">Slight over; balances out monthly (within 15,000 ৳ cap)</div>
+        <div class="bb-foot">Slight over · balances monthly</div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~280 ৳</div></div>
-
-        <div class="gi" id="gi-chicken-d">
-          <div class="gi-check" onclick="toggleDone('gi-chicken-d', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">180g · lunch</div></div>
-          <div class="gi-right">
-            <div class="gi-price">99 ৳</div>
-            <a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a>
-          </div>
-        </div>
-
-        <div class="gi" id="gi-fish-d">
-          <div class="gi-check" onclick="toggleDone('gi-fish-d', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">180g · dinner</div></div>
-          <div class="gi-right">
-            <div class="gi-price">90 ৳</div>
-            <a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a>
-          </div>
-        </div>
-
-        <div class="gi" id="gi-egg-d">
-          <div class="gi-check" onclick="toggleDone('gi-egg-d', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Eggs (layer)</div><div class="gi-meta">3 pcs · breakfast</div></div>
-          <div class="gi-right">
-            <div class="gi-price">38 ৳</div>
-            <a class="gi-buy" href="https://chaldal.com/tatka-egg-pack-12-pcs" target="_blank">Chaldal →</a>
-          </div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Today's protein (rotation)</div><div class="gi-meta">180g · lunch</div></div><div class="gi-right"><div class="gi-price">~152 ৳</div><a class="gi-buy" href="https://chaldal.com/chicken-poultry" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">180g · dinner</div></div><div class="gi-right"><div class="gi-price">90 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Eggs</div><div class="gi-meta">3 pcs · breakfast</div></div><div class="gi-right"><div class="gi-price">38 ৳</div><a class="gi-buy" href="https://chaldal.com/tatka-egg-pack-12-pcs" target="_blank">Chaldal →</a></div></div>
       </div>
 
       <div class="grocery-cat">
-        <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~52 ৳</div></div>
-
-        <div class="gi" id="gi-sp-d">
-          <div class="gi-check" onclick="toggleDone('gi-sp-d', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Sweet potato (Misti Alu)</div><div class="gi-meta">250g · lunch</div></div>
-          <div class="gi-right">
-            <div class="gi-price">18 ৳</div>
-            <a class="gi-buy" href="https://chaldal.com/sweet-potato-500-gm" target="_blank">Chaldal →</a>
-          </div>
-        </div>
-
-        <div class="gi" id="gi-oats-d">
-          <div class="gi-check" onclick="toggleDone('gi-oats-d', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rolled oats</div><div class="gi-meta">60g · breakfast</div></div>
-          <div class="gi-right">
-            <div class="gi-price">21 ৳</div>
-            <a class="gi-buy" href="https://chaldal.com/premium-grade-rolled-oats-1-kg" target="_blank">Chaldal →</a>
-          </div>
-        </div>
-
-        <div class="gi" id="gi-chola-d">
-          <div class="gi-check" onclick="toggleDone('gi-chola-d', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Kabuli chola (dry)</div><div class="gi-meta">50g · dinner</div></div>
-          <div class="gi-right">
-            <div class="gi-price">14 ৳</div>
-            <a class="gi-buy" href="https://chaldal.com/bpm-kabuli-chola-500-gm" target="_blank">Chaldal →</a>
-          </div>
-        </div>
+        <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~53 ৳</div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Sweet potato</div><div class="gi-meta">250g · lunch</div></div><div class="gi-right"><div class="gi-price">18 ৳</div><a class="gi-buy" href="https://chaldal.com/sweet-potato-500-gm" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Rolled oats</div><div class="gi-meta">60g · breakfast</div></div><div class="gi-right"><div class="gi-price">21 ৳</div><a class="gi-buy" href="https://chaldal.com/premium-grade-rolled-oats-1-kg" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Kabuli chola (dry)</div><div class="gi-meta">50g · dinner</div></div><div class="gi-right"><div class="gi-price">14 ৳</div><a class="gi-buy" href="https://chaldal.com/bpm-kabuli-chola-500-gm" target="_blank">Chaldal →</a></div></div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Snack + Veg</div><div class="gc-total">~92 ৳</div></div>
-
-        <div class="gi" id="gi-fruit-d">
-          <div class="gi-check" onclick="toggleDone('gi-fruit-d', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Fruit (banana / apple)</div><div class="gi-meta">2 pieces</div></div>
-          <div class="gi-right">
-            <div class="gi-price">35 ৳</div>
-            <a class="gi-buy" href="https://chaldal.com/fruits" target="_blank">Chaldal →</a>
-          </div>
-        </div>
-
-        <div class="gi" id="gi-nuts-d">
-          <div class="gi-check" onclick="toggleDone('gi-nuts-d', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Mixed nuts</div><div class="gi-meta">25g · snack</div></div>
-          <div class="gi-right">
-            <div class="gi-price">35 ৳</div>
-            <a class="gi-buy" href="https://chaldal.com/nuts" target="_blank">Chaldal →</a>
-          </div>
-        </div>
-
-        <div class="gi" id="gi-veg-d">
-          <div class="gi-check" onclick="toggleDone('gi-veg-d', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Salad veg</div><div class="gi-meta">cucumber, tomato, onion</div></div>
-          <div class="gi-right">
-            <div class="gi-price">22 ৳</div>
-            <a class="gi-buy" href="https://chaldal.com/vegetables" target="_blank">Chaldal →</a>
-          </div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Fruit</div><div class="gi-meta">2 pieces</div></div><div class="gi-right"><div class="gi-price">35 ৳</div><a class="gi-buy" href="https://chaldal.com/fruits" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Mixed nuts</div><div class="gi-meta">25g</div></div><div class="gi-right"><div class="gi-price">35 ৳</div><a class="gi-buy" href="https://chaldal.com/nuts" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Salad veg</div><div class="gi-meta">handful</div></div><div class="gi-right"><div class="gi-price">22 ৳</div><a class="gi-buy" href="https://chaldal.com/vegetables" target="_blank">Chaldal →</a></div></div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Supplement</div><div class="gc-total">~182 ৳</div></div>
-        <div class="gi" id="gi-whey-d">
-          <div class="gi-check" onclick="toggleDone('gi-whey-d', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">VPA Whey (1 scoop)</div><div class="gi-meta">30g · post-workout</div></div>
-          <div class="gi-right">
-            <div class="gi-price">182 ৳</div>
-            <a class="gi-buy local" href="https://theironvalley.com/shop/vpa-premium-whey-wpc/" target="_blank">Iron Valley</a>
-          </div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">VPA Whey (1 scoop)</div><div class="gi-meta">30g · post-workout</div></div><div class="gi-right"><div class="gi-price">182 ৳</div><a class="gi-buy local" href="https://theironvalley.com/shop/vpa-premium-whey-wpc/" target="_blank">Iron Valley</a></div></div>
       </div>
 
       <div class="grand-total"><div class="gt-l">Daily Total</div><div class="gt-v">~535 ৳</div></div>
-
-      <a href="https://chaldal.com" target="_blank" class="chaldal-cta">
-        <div class="cta-left">
-          <div class="cta-label">Order all on Chaldal</div>
-          <div class="cta-title">Open Chaldal →</div>
-        </div>
-        <div class="cta-arrow">↗</div>
-      </a>
+      <a href="https://chaldal.com" target="_blank" class="chaldal-cta"><div><div class="cta-label">Order all on Chaldal</div><div class="cta-title">Open Chaldal</div></div><div class="cta-arrow">↗</div></a>
     </div>
 
-    <!-- WEEKLY -->
     <div id="gview-week" class="gview" style="display:none">
       <div class="budget-box">
         <div class="bb-row"><div class="bb-label">Weekly Budget</div><div class="bb-val warn">~4,250 / 3,750 ৳</div></div>
         <div class="bb-track"><div class="bb-fill warn" style="width: 100%"></div></div>
-        <div class="bb-foot">Slight over weekly · monthly stays within 15,000 ৳</div>
+        <div class="bb-foot">Beef adds quality · monthly balances</div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~2,490 ৳</div></div>
-        <div class="gi" id="gi-chicken-w">
-          <div class="gi-check" onclick="toggleDone('gi-chicken-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">540g · 3 days/week</div></div>
-          <div class="gi-right"><div class="gi-price">297 ৳</div><a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-beef-w">
-          <div class="gi-check" onclick="toggleDone('gi-beef-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Lean beef boneless</div><div class="gi-meta">360g · 2 days/week</div></div>
-          <div class="gi-right"><div class="gi-price">288 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-beef-boneless-50-gm-500-gm" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-fish-w">
-          <div class="gi-check" onclick="toggleDone('gi-fish-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">1.65 kg · all dinners + 2 lunches</div></div>
-          <div class="gi-right"><div class="gi-price">825 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-egg-w">
-          <div class="gi-check" onclick="toggleDone('gi-egg-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Eggs (2 dozen)</div><div class="gi-meta">21 pcs needed</div></div>
-          <div class="gi-right"><div class="gi-price">300 ৳</div><a class="gi-buy" href="https://chaldal.com/tatka-egg-pack-12-pcs" target="_blank">Chaldal →</a></div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">540g · 3 days/week</div></div><div class="gi-right"><div class="gi-price">297 ৳</div><a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Lean beef boneless</div><div class="gi-meta">360g · 2 days/week</div></div><div class="gi-right"><div class="gi-price">288 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-beef-boneless-50-gm-500-gm" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">1.65 kg</div></div><div class="gi-right"><div class="gi-price">825 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Eggs (2 dozen)</div><div class="gi-meta">21 pcs</div></div><div class="gi-right"><div class="gi-price">300 ৳</div><a class="gi-buy" href="https://chaldal.com/tatka-egg-pack-12-pcs" target="_blank">Chaldal →</a></div></div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~355 ৳</div></div>
-        <div class="gi" id="gi-sp-w">
-          <div class="gi-check" onclick="toggleDone('gi-sp-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Sweet potato</div><div class="gi-meta">1.75 kg</div></div>
-          <div class="gi-right"><div class="gi-price">125 ৳</div><a class="gi-buy" href="https://chaldal.com/sweet-potato-500-gm" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-oats-w">
-          <div class="gi-check" onclick="toggleDone('gi-oats-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rolled oats (500g)</div><div class="gi-meta">~10 days supply</div></div>
-          <div class="gi-right"><div class="gi-price">175 ৳</div><a class="gi-buy" href="https://chaldal.com/premium-grade-rolled-oats-1-kg" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-chola-w">
-          <div class="gi-check" onclick="toggleDone('gi-chola-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Kabuli chola (500g)</div><div class="gi-meta">~10 days supply</div></div>
-          <div class="gi-right"><div class="gi-price">55 ৳</div><a class="gi-buy" href="https://chaldal.com/bpm-kabuli-chola-500-gm" target="_blank">Chaldal →</a></div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Sweet potato</div><div class="gi-meta">1.75 kg</div></div><div class="gi-right"><div class="gi-price">125 ৳</div><a class="gi-buy" href="https://chaldal.com/sweet-potato-500-gm" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Rolled oats (500g)</div><div class="gi-meta">~10 days</div></div><div class="gi-right"><div class="gi-price">175 ৳</div><a class="gi-buy" href="https://chaldal.com/premium-grade-rolled-oats-1-kg" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Kabuli chola (500g)</div><div class="gi-meta">~10 days</div></div><div class="gi-right"><div class="gi-price">55 ৳</div><a class="gi-buy" href="https://chaldal.com/bpm-kabuli-chola-500-gm" target="_blank">Chaldal →</a></div></div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Snack + Veg</div><div class="gc-total">~640 ৳</div></div>
-        <div class="gi" id="gi-fruit-w">
-          <div class="gi-check" onclick="toggleDone('gi-fruit-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Fruit (mixed)</div><div class="gi-meta">14 pcs</div></div>
-          <div class="gi-right"><div class="gi-price">245 ৳</div><a class="gi-buy" href="https://chaldal.com/fruits" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-nuts-w">
-          <div class="gi-check" onclick="toggleDone('gi-nuts-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Mixed nuts</div><div class="gi-meta">200g</div></div>
-          <div class="gi-right"><div class="gi-price">240 ৳</div><a class="gi-buy" href="https://chaldal.com/nuts" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-veg-w">
-          <div class="gi-check" onclick="toggleDone('gi-veg-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Veggies + aromatics</div><div class="gi-meta">weekly</div></div>
-          <div class="gi-right"><div class="gi-price">155 ৳</div><a class="gi-buy" href="https://chaldal.com/vegetables" target="_blank">Chaldal →</a></div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Fruit (mixed)</div><div class="gi-meta">14 pcs</div></div><div class="gi-right"><div class="gi-price">245 ৳</div><a class="gi-buy" href="https://chaldal.com/fruits" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Mixed nuts</div><div class="gi-meta">200g</div></div><div class="gi-right"><div class="gi-price">240 ৳</div><a class="gi-buy" href="https://chaldal.com/nuts" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Veggies + aromatics</div><div class="gi-meta">weekly</div></div><div class="gi-right"><div class="gi-price">155 ৳</div><a class="gi-buy" href="https://chaldal.com/vegetables" target="_blank">Chaldal →</a></div></div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Cooking</div><div class="gc-total">~85 ৳</div></div>
-        <div class="gi" id="gi-oil-w">
-          <div class="gi-check" onclick="toggleDone('gi-oil-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Olive oil (100ml usage)</div><div class="gi-meta">from 500ml bottle</div></div>
-          <div class="gi-right"><div class="gi-price">85 ৳</div><a class="gi-buy" href="https://chaldal.com/olivital-extra-virgin-olive-oil-1-ltr" target="_blank">Chaldal →</a></div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Olive oil (100ml use)</div><div class="gi-meta">from bottle</div></div><div class="gi-right"><div class="gi-price">85 ৳</div><a class="gi-buy" href="https://chaldal.com/olivital-extra-virgin-olive-oil-1-ltr" target="_blank">Chaldal →</a></div></div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Supplement</div><div class="gc-total">~1,275 ৳</div></div>
-        <div class="gi" id="gi-whey-w">
-          <div class="gi-check" onclick="toggleDone('gi-whey-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">VPA Whey (7 scoops)</div><div class="gi-meta">week portion of 1kg tub</div></div>
-          <div class="gi-right"><div class="gi-price">1,275 ৳</div><a class="gi-buy local" href="https://theironvalley.com/shop/vpa-premium-whey-wpc/" target="_blank">Iron Valley</a></div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">VPA Whey (7 scoops)</div><div class="gi-meta">portion of 1kg tub</div></div><div class="gi-right"><div class="gi-price">1,275 ৳</div><a class="gi-buy local" href="https://theironvalley.com/shop/vpa-premium-whey-wpc/" target="_blank">Iron Valley</a></div></div>
       </div>
 
       <div class="grand-total"><div class="gt-l">Weekly Total</div><div class="gt-v">~4,250 ৳</div></div>
-
-      <a href="https://chaldal.com" target="_blank" class="chaldal-cta">
-        <div class="cta-left"><div class="cta-label">One big weekly order</div><div class="cta-title">Open Chaldal →</div></div>
-        <div class="cta-arrow">↗</div>
-      </a>
+      <a href="https://chaldal.com" target="_blank" class="chaldal-cta"><div><div class="cta-label">One big weekly order</div><div class="cta-title">Open Chaldal</div></div><div class="cta-arrow">↗</div></a>
     </div>
 
-    <!-- MONTHLY -->
     <div id="gview-month" class="gview" style="display:none">
       <div class="budget-box">
         <div class="bb-row"><div class="bb-label">Monthly Budget</div><div class="bb-val warn">~17,125 / 15,000 ৳</div></div>
         <div class="bb-track"><div class="bb-fill warn" style="width: 100%"></div></div>
-        <div class="bb-foot">~2,125 ৳ over · beef adds quality but costs more</div>
+        <div class="bb-foot">2,125 ৳ over · beef + variety priced in</div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~7,090 ৳</div></div>
-        <div class="gi" id="gi-chicken-m">
-          <div class="gi-check" onclick="toggleDone('gi-chicken-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">2.3 kg · 12 lunches</div></div>
-          <div class="gi-right"><div class="gi-price">1,265 ৳</div><a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-beef-m">
-          <div class="gi-check" onclick="toggleDone('gi-beef-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Lean beef boneless</div><div class="gi-meta">1.5 kg · 8 lunches</div></div>
-          <div class="gi-right"><div class="gi-price">1,200 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-beef-boneless-50-gm-500-gm" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-fish-m">
-          <div class="gi-check" onclick="toggleDone('gi-fish-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">4.5 kg · ~18 meals (mostly dinner)</div></div>
-          <div class="gi-right"><div class="gi-price">2,250 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-egg-m">
-          <div class="gi-check" onclick="toggleDone('gi-egg-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Eggs (10 dozen)</div><div class="gi-meta">~110 pcs · breakfast + dinner alts</div></div>
-          <div class="gi-right"><div class="gi-price">1,375 ৳</div><a class="gi-buy" href="https://chaldal.com/tatka-egg-pack-12-pcs" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-chola-extra-m">
-          <div class="gi-check" onclick="toggleDone('gi-chola-extra-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Extra chola for veg dinners</div><div class="gi-meta">already counted in carbs</div></div>
-          <div class="gi-right"><div class="gi-price">— ৳</div><a class="gi-buy" href="https://chaldal.com/bpm-kabuli-chola-500-gm" target="_blank">Chaldal →</a></div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">2.3 kg · 12 lunches</div></div><div class="gi-right"><div class="gi-price">1,265 ৳</div><a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Lean beef boneless</div><div class="gi-meta">1.5 kg · 8 lunches</div></div><div class="gi-right"><div class="gi-price">1,200 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-beef-boneless-50-gm-500-gm" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Rui fish</div><div class="gi-meta">4.5 kg · ~18 meals</div></div><div class="gi-right"><div class="gi-price">2,250 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Eggs (10 dozen)</div><div class="gi-meta">~110 pcs</div></div><div class="gi-right"><div class="gi-price">1,375 ৳</div><a class="gi-buy" href="https://chaldal.com/tatka-egg-pack-12-pcs" target="_blank">Chaldal →</a></div></div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~1,225 ৳</div></div>
-        <div class="gi" id="gi-sp-m">
-          <div class="gi-check" onclick="toggleDone('gi-sp-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Sweet potato</div><div class="gi-meta">7.5 kg</div></div>
-          <div class="gi-right"><div class="gi-price">525 ৳</div><a class="gi-buy" href="https://chaldal.com/sweet-potato-500-gm" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-oats-m">
-          <div class="gi-check" onclick="toggleDone('gi-oats-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rolled oats (2 kg)</div><div class="gi-meta">monthly supply</div></div>
-          <div class="gi-right"><div class="gi-price">490 ৳</div><a class="gi-buy" href="https://chaldal.com/premium-grade-rolled-oats-1-kg" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-chola-m">
-          <div class="gi-check" onclick="toggleDone('gi-chola-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Kabuli chola (1.5 kg)</div><div class="gi-meta">monthly supply</div></div>
-          <div class="gi-right"><div class="gi-price">210 ৳</div><a class="gi-buy" href="https://chaldal.com/bpm-kabuli-chola-500-gm" target="_blank">Chaldal →</a></div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Sweet potato</div><div class="gi-meta">7.5 kg</div></div><div class="gi-right"><div class="gi-price">525 ৳</div><a class="gi-buy" href="https://chaldal.com/sweet-potato-500-gm" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Rolled oats (2 kg)</div><div class="gi-meta">monthly</div></div><div class="gi-right"><div class="gi-price">490 ৳</div><a class="gi-buy" href="https://chaldal.com/premium-grade-rolled-oats-1-kg" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Kabuli chola (1.5 kg)</div><div class="gi-meta">monthly</div></div><div class="gi-right"><div class="gi-price">210 ৳</div><a class="gi-buy" href="https://chaldal.com/bpm-kabuli-chola-500-gm" target="_blank">Chaldal →</a></div></div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Snack + Veg</div><div class="gc-total">~2,520 ৳</div></div>
-        <div class="gi" id="gi-fruit-m">
-          <div class="gi-check" onclick="toggleDone('gi-fruit-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Fruit (mixed)</div><div class="gi-meta">60 pcs</div></div>
-          <div class="gi-right"><div class="gi-price">1,050 ৳</div><a class="gi-buy" href="https://chaldal.com/fruits" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-nuts-m">
-          <div class="gi-check" onclick="toggleDone('gi-nuts-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Mixed nuts (800g)</div><div class="gi-meta">monthly</div></div>
-          <div class="gi-right"><div class="gi-price">850 ৳</div><a class="gi-buy" href="https://chaldal.com/nuts" target="_blank">Chaldal →</a></div>
-        </div>
-        <div class="gi" id="gi-veg-m">
-          <div class="gi-check" onclick="toggleDone('gi-veg-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Veggies + aromatics</div><div class="gi-meta">monthly stock</div></div>
-          <div class="gi-right"><div class="gi-price">620 ৳</div><a class="gi-buy" href="https://chaldal.com/vegetables" target="_blank">Chaldal →</a></div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Fruit</div><div class="gi-meta">60 pcs</div></div><div class="gi-right"><div class="gi-price">1,050 ৳</div><a class="gi-buy" href="https://chaldal.com/fruits" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Mixed nuts</div><div class="gi-meta">800g</div></div><div class="gi-right"><div class="gi-price">850 ৳</div><a class="gi-buy" href="https://chaldal.com/nuts" target="_blank">Chaldal →</a></div></div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Veggies + aromatics</div><div class="gi-meta">monthly</div></div><div class="gi-right"><div class="gi-price">620 ৳</div><a class="gi-buy" href="https://chaldal.com/vegetables" target="_blank">Chaldal →</a></div></div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Cooking</div><div class="gc-total">~290 ৳</div></div>
-        <div class="gi" id="gi-oil-m">
-          <div class="gi-check" onclick="toggleDone('gi-oil-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Olive oil (500ml)</div><div class="gi-meta">monthly bottle</div></div>
-          <div class="gi-right"><div class="gi-price">280 ৳</div><a class="gi-buy" href="https://chaldal.com/olivital-extra-virgin-olive-oil-1-ltr" target="_blank">Chaldal →</a></div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">Olive oil (500ml)</div><div class="gi-meta">monthly bottle</div></div><div class="gi-right"><div class="gi-price">280 ৳</div><a class="gi-buy" href="https://chaldal.com/olivital-extra-virgin-olive-oil-1-ltr" target="_blank">Chaldal →</a></div></div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Supplement</div><div class="gc-total">6,000 ৳</div></div>
-        <div class="gi" id="gi-whey-m">
-          <div class="gi-check" onclick="toggleDone('gi-whey-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">VPA Premium Whey 1kg</div><div class="gi-meta">33 servings · ~1 month</div></div>
-          <div class="gi-right"><div class="gi-price">6,000 ৳</div><a class="gi-buy local" href="https://theironvalley.com/shop/vpa-premium-whey-wpc/" target="_blank">Iron Valley</a></div>
-        </div>
+        <div class="gi"><div class="gi-check" onclick="this.parentElement.classList.toggle('done')"><span class="gi-checkmark">✓</span></div><div class="gi-info"><div class="gi-name">VPA Premium Whey 1kg</div><div class="gi-meta">33 servings · ~1 month</div></div><div class="gi-right"><div class="gi-price">6,000 ৳</div><a class="gi-buy local" href="https://theironvalley.com/shop/vpa-premium-whey-wpc/" target="_blank">Iron Valley</a></div></div>
       </div>
 
       <div class="grand-total"><div class="gt-l">Monthly Total</div><div class="gt-v">~17,125 ৳</div></div>
-
-      <a href="https://chaldal.com" target="_blank" class="chaldal-cta">
-        <div class="cta-left"><div class="cta-label">Smartest option · single bulk order</div><div class="cta-title">Open Chaldal →</div></div>
-        <div class="cta-arrow">↗</div>
-      </a>
-    </div>
-  </section>
-
-  <!-- PORTIONS -->
-  <section id="sec-portions" class="section">
-    <div class="day-banner">
-      <div class="day-banner-label">Protein Target · 63 kg × 2g</div>
-      <div class="day-banner-title">126g / day</div>
-      <div class="day-banner-sub">4 meals + 1 shake hits the number without thinking. Each meal carries its own load.</div>
-    </div>
-
-    <div class="sec-head"><div class="sec-title">Protein Per Meal</div></div>
-
-    <div class="portion-card"><div class="pc-top"><div class="pc-name">🥣 Breakfast</div><div class="pc-amt">32g</div></div><div class="pc-bar"><div class="pc-fill" style="width: 25%"></div></div><div class="pc-tip">3 eggs (19g) + 60g oats (8g) + 200ml milk (5g). Sustained energy + protein in one shot.</div></div>
-    <div class="portion-card"><div class="pc-top"><div class="pc-name">🍗 Lunch</div><div class="pc-amt">48g</div></div><div class="pc-bar"><div class="pc-fill" style="width: 38%"></div></div><div class="pc-tip">180g raw chicken breast. Palm-sized + a bit. Weigh once, eyeball forever after.</div></div>
-    <div class="portion-card"><div class="pc-top"><div class="pc-name">💪 Whey Shake</div><div class="pc-amt">23g</div></div><div class="pc-bar"><div class="pc-fill" style="width: 18%"></div></div><div class="pc-tip">1 scoop VPA WPC. Within 30 min of last gym set.</div></div>
-    <div class="portion-card"><div class="pc-top"><div class="pc-name">🥜 Snack</div><div class="pc-amt">9g</div></div><div class="pc-bar"><div class="pc-fill" style="width: 7%"></div></div><div class="pc-tip">25g mixed nuts (6g) + fruit (1-3g). Bridge calories; protein bonus.</div></div>
-    <div class="portion-card"><div class="pc-top"><div class="pc-name">🐟 Dinner</div><div class="pc-amt">35g</div></div><div class="pc-bar"><div class="pc-fill" style="width: 28%"></div></div><div class="pc-tip">180g raw fish (28g) + 120g kabuli chola (7g). Lighter on gut before sleep.</div></div>
-
-    <div class="sec-head"><div class="sec-title">Carb Portions</div></div>
-
-    <div class="portion-card"><div class="pc-top"><div class="pc-name">🍠 Sweet Potato</div><div class="pc-amt">250g</div></div><div class="pc-bar"><div class="pc-fill carb" style="width: 60%"></div></div><div class="pc-tip">~1 medium-large sweet potato. ~50g carbs; way better blood sugar than rice.</div></div>
-    <div class="portion-card"><div class="pc-top"><div class="pc-name">🌾 Oats</div><div class="pc-amt">60g dry</div></div><div class="pc-bar"><div class="pc-fill carb" style="width: 30%"></div></div><div class="pc-tip">~½ cup dry; doubles when cooked. ~36g slow-burning carbs.</div></div>
-    <div class="portion-card"><div class="pc-top"><div class="pc-name">🫘 Kabuli Chola</div><div class="pc-amt">120g cooked</div></div><div class="pc-bar"><div class="pc-fill carb" style="width: 30%"></div></div><div class="pc-tip">~½ cup cooked from 50g dry. Soak overnight, boil 30 min Sunday, store week's batch in fridge.</div></div>
-
-    <div style="background: var(--surface); border-radius: 16px; padding: 16px; margin-top: 16px;">
-      <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px;">Daily Total</div>
-      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;"><span style="color: var(--text-mid)">Breakfast</span><span style="font-weight: 700;">32g</span></div>
-      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;"><span style="color: var(--text-mid)">Lunch</span><span style="font-weight: 700;">48g</span></div>
-      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;"><span style="color: var(--text-mid)">Shake</span><span style="font-weight: 700; color: var(--green)">23g</span></div>
-      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;"><span style="color: var(--text-mid)">Snack</span><span style="font-weight: 700;">9g</span></div>
-      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;"><span style="color: var(--text-mid)">Dinner</span><span style="font-weight: 700;">35g</span></div>
-      <div style="display: flex; justify-content: space-between; padding: 12px 0 0; font-size: 18px;"><span style="font-weight: 800;">Total</span><span style="font-weight: 800; color: var(--green)">147g ✓</span></div>
+      <a href="https://chaldal.com" target="_blank" class="chaldal-cta"><div><div class="cta-label">Bulk monthly order</div><div class="cta-title">Open Chaldal</div></div><div class="cta-arrow">↗</div></a>
     </div>
   </section>
 
 </div>
 
+<!-- ═══ ADD HABIT MODAL ═══ -->
+<div class="modal-overlay" id="habit-modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Add a Habit</div>
+    <div class="modal-sub" id="modal-sub">Pick one to start tracking. Max 3 active at a time.</div>
+    <div id="habit-options"></div>
+    <div class="modal-actions">
+      <button class="modal-btn" onclick="closeAddModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BOTTOM NAV ═══ -->
 <nav class="bot-nav">
-  <button class="nav-btn active" onclick="switchTab('today', this)">
+  <button class="nav-btn active" onclick="switchTab('home', this)">
     <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9v9a2 2 0 01-2 2h-4v-7H9v7H5a2 2 0 01-2-2v-9z"/></svg></div>
-    <div class="nav-lbl">Today</div>
+    <div class="nav-lbl">Home</div>
+  </button>
+  <button class="nav-btn" onclick="switchTab('workout', this)">
+    <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M21 21l-1-1M3 3l1 1M18 22l4-4M2 6l4-4M7 17l-2.5 2.5M17 7l2.5-2.5"/><path d="M14 14l-4-4"/></svg></div>
+    <div class="nav-lbl">Workout</div>
+  </button>
+  <button class="nav-btn" onclick="switchTab('habits', this)">
+    <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+    <div class="nav-lbl">Habits</div>
   </button>
   <button class="nav-btn" onclick="switchTab('routine', this)">
     <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
@@ -947,18 +1266,89 @@
     <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 7h13l-1.5 9a2 2 0 01-2 1.7H9.5a2 2 0 01-2-1.7L6 7zM6 7L5 3H2"/><circle cx="9" cy="21" r="1"/><circle cx="17" cy="21" r="1"/></svg></div>
     <div class="nav-lbl">Grocery</div>
   </button>
-  <button class="nav-btn" onclick="switchTab('portions', this)">
-    <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><rect x="7" y="13" width="3" height="6"/><rect x="12" y="9" width="3" height="10"/><rect x="17" y="5" width="3" height="14"/></svg></div>
-    <div class="nav-lbl">Portions</div>
-  </button>
 </nav>
 
 <script>
+  // ──────── INIT ────────
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const dayShort = ['S','M','T','W','T','F','S'];
   const d = new Date();
-  document.getElementById('hdr-day').textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
+  const dayIdx = d.getDay();
+  document.getElementById('hdr-day').textContent = `${days[dayIdx]}, ${d.getDate()} ${months[d.getMonth()]}`;
 
+  // ──────── WORKOUT DATA ────────
+  const workouts = {
+    1: { name: 'Push', tag: 'push', title: 'Chest · Shoulders · Triceps', exercises: [
+      ['Barbell Bench Press', '3×8-10'],
+      ['Incline Dumbbell Press', '3×10-12'],
+      ['Seated Shoulder Press', '3×10-12'],
+      ['Lateral Raises', '3×12-15'],
+      ['Tricep Pushdowns / Dips', '3×12']
+    ]},
+    2: { name: 'Pull', tag: 'pull', title: 'Back · Biceps', exercises: [
+      ['Lat Pulldown', '3×10-12'],
+      ['Seated Cable Row', '3×10-12'],
+      ['Dumbbell Row (single arm)', '3×10/side'],
+      ['Face Pulls', '3×15'],
+      ['Dumbbell Curls', '3×12']
+    ]},
+    3: { name: 'Legs', tag: 'legs', title: 'Quads · Glutes · Hamstrings', exercises: [
+      ['Goblet or Back Squat', '3×10-12'],
+      ['Romanian Deadlift', '3×10'],
+      ['Leg Press', '3×12-15'],
+      ['Walking Lunges', '3×12/side'],
+      ['Standing Calf Raises', '3×15-20']
+    ]},
+    4: { name: 'Full Body', tag: 'full', title: 'Stamina + Conditioning', exercises: [
+      ['Kettlebell Swings', '3×15'],
+      ['Push-Ups', '3×12-15'],
+      ['Goblet Squats', '3×12'],
+      ['Inverted / TRX Rows', '3×10'],
+      ['Plank Hold', '3×45 sec'],
+      ['Light Cardio', '15 min']
+    ]},
+    5: { name: 'Upper + Cardio', tag: 'cardio', title: 'Posterior Chain + Endurance', exercises: [
+      ['Pull-Ups (assisted)', '3×6-10'],
+      ['Dumbbell Shoulder Press', '3×10'],
+      ['Cable Chest Fly', '3×12'],
+      ['Rear Delt Fly', '3×15'],
+      ['Hammer Curls', '3×12'],
+      ['Steady cardio', '20 min']
+    ]}
+  };
+
+  // Set today's workout on home + today view
+  function renderTodayWorkout() {
+    const w = workouts[dayIdx];
+    if (!w) {
+      document.getElementById('today-workout').textContent = 'Rest';
+      document.getElementById('today-workout-sub').textContent = 'Recovery day';
+      document.getElementById('today-wd-label').textContent = days[dayIdx];
+      document.getElementById('today-wd-tag').textContent = 'Recovery';
+      document.getElementById('today-wd-tag').className = 'wd-tag full';
+      document.getElementById('today-wd-name').textContent = 'Active rest · sauna · walk';
+      document.getElementById('today-wd-list').innerHTML = '<li class="ex-row"><div class="ex-name">Light walk 30 min · sauna or steam if available</div></li>';
+      return;
+    }
+    document.getElementById('today-workout').textContent = w.name;
+    document.getElementById('today-workout-sub').textContent = w.title;
+    document.getElementById('today-wd-label').textContent = days[dayIdx];
+    document.getElementById('today-wd-tag').textContent = w.name;
+    document.getElementById('today-wd-tag').className = 'wd-tag ' + w.tag;
+    document.getElementById('today-wd-name').textContent = w.title;
+    document.getElementById('today-wd-list').innerHTML = w.exercises.map((ex, i) =>
+      `<li class="ex-row"><div class="ex-num">${i+1}</div><div class="ex-name">${ex[0]}</div><div class="ex-sets">${ex[1]}</div></li>`
+    ).join('');
+  }
+  renderTodayWorkout();
+
+  // Set today's lunch
+  const proteinRotation = ['🐟 Fish','🍗 Chicken','🥩 Beef','🍗 Chicken','🐟 Fish','🍗 Chicken','🥩 Beef'];
+  const lunchEl = document.getElementById('lunch-name');
+  if (lunchEl) lunchEl.textContent = 'Air-Fried ' + proteinRotation[dayIdx].split(' ')[1] + ' + Sweet Potato';
+
+  // ──────── NAV / TABS ────────
   function switchTab(name, btn) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -967,20 +1357,244 @@
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
-  function toggleMeal(card) { card.classList.toggle('open'); }
-
-  function toggleDone(id, ev) {
-    ev.stopPropagation();
-    document.getElementById(id).classList.toggle('done');
-  }
+  function toggleCard(card) { card.classList.toggle('open'); }
 
   function switchGrocery(view, btn) {
     document.querySelectorAll('.gview').forEach(v => v.style.display = 'none');
-    document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#sec-grocery .seg-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('gview-' + view).style.display = 'block';
     btn.classList.add('active');
   }
 
+  function switchView(view, btn, section) {
+    document.querySelectorAll('#sec-' + section + ' .wview').forEach(v => v.style.display = 'none');
+    document.querySelectorAll('#sec-' + section + ' .seg-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(section + '-' + view).style.display = 'block';
+    btn.classList.add('active');
+  }
+
+  // ──────── HABIT TRACKER ────────
+  const habitCatalog = {
+    bad: [
+      { id: 'masturbation', emoji: '🚫', name: 'No masturbation', desc: 'Reset dopamine baseline; redirect energy.' },
+      { id: 'scrolling', emoji: '📱', name: 'No doomscrolling', desc: 'No reels/shorts beyond 10 min/day.' },
+      { id: 'gaming', emoji: '🎮', name: 'No late-night gaming', desc: 'Game cutoff at 9 PM max.' },
+      { id: 'notbrush', emoji: '🦷', name: 'Brush before bed', desc: 'Two minutes; non-negotiable hygiene.' },
+      { id: 'baddress', emoji: '👔', name: 'Dress with intention', desc: 'No same-old shirt all day every day.' },
+      { id: 'nolang', emoji: '🗣️', name: 'Practice a language', desc: '15 min/day Duolingo or similar.' },
+      { id: 'phonebed', emoji: '📵', name: 'Phone out of bedroom', desc: 'Charge it in another room.' },
+      { id: 'skipgym', emoji: '🏋️', name: 'No skipping gym', desc: 'Show up even on lazy days.' }
+    ],
+    good: [
+      { id: 'sunlight', emoji: '☀️', name: 'Morning sunlight', desc: '10 min outside, no sunglasses.' },
+      { id: 'water', emoji: '💧', name: '2.5L water daily', desc: 'Track every glass.' },
+      { id: 'sleep', emoji: '😴', name: 'Sleep by 10:30 PM', desc: 'Phone out, lights off.' },
+      { id: 'protein', emoji: '🍗', name: 'Hit protein target', desc: '126g+ every day.' },
+      { id: 'read', emoji: '📖', name: 'Read 20 min', desc: 'Paper book, no screens.' },
+      { id: 'journal', emoji: '📓', name: 'Daily journal', desc: '3 lines minimum at night.' },
+      { id: 'walk', emoji: '🚶', name: '8k steps', desc: 'Walk after dinner if needed.' },
+      { id: 'plan', emoji: '📝', name: 'Plan tomorrow', desc: 'Top 3 priorities before bed.' }
+    ]
+  };
+
+  function loadHabits() {
+    try {
+      return JSON.parse(localStorage.getItem('saber_habits') || '{"bad":[],"good":[]}');
+    } catch { return { bad: [], good: [] }; }
+  }
+  function saveHabits(h) {
+    localStorage.setItem('saber_habits', JSON.stringify(h));
+  }
+
+  function todayKey() {
+    const d = new Date();
+    return d.toISOString().slice(0,10);
+  }
+
+  function calcStreak(log) {
+    let streak = 0;
+    const now = new Date();
+    for (let i = 0; i < 365; i++) {
+      const checkDate = new Date(now);
+      checkDate.setDate(now.getDate() - i);
+      const key = checkDate.toISOString().slice(0,10);
+      if (log[key] === true) streak++;
+      else if (i > 0) break;
+    }
+    return streak;
+  }
+
+  function calcWeekPct(log) {
+    const now = new Date();
+    let done = 0, total = 7;
+    for (let i = 0; i < 7; i++) {
+      const checkDate = new Date(now);
+      checkDate.setDate(now.getDate() - i);
+      const key = checkDate.toISOString().slice(0,10);
+      if (log[key] === true) done++;
+    }
+    return Math.round(done/total * 100);
+  }
+
+  function renderHabits() {
+    const state = loadHabits();
+    const now = new Date();
+    const todayK = todayKey();
+
+    // BAD HABITS (things to quit; "done" = stayed clean today)
+    const badEl = document.getElementById('bad-habits');
+    badEl.innerHTML = '';
+    state.bad.forEach((h, idx) => {
+      const log = h.log || {};
+      const streak = calcStreak(log);
+      const pct = calcWeekPct(log);
+      const pctClass = pct >= 80 ? 'g' : pct >= 50 ? 'y' : 'r';
+
+      let weekHtml = '';
+      for (let i = 6; i >= 0; i--) {
+        const checkDate = new Date(now);
+        checkDate.setDate(now.getDate() - i);
+        const key = checkDate.toISOString().slice(0,10);
+        const isToday = key === todayK;
+        const status = log[key];
+        const cls = status === true ? 'done bad' : status === false ? 'missed bad' : '';
+        const label = dayShort[checkDate.getDay()];
+        weekHtml += `<div class="hc-day ${cls} ${isToday ? 'today' : ''}" onclick="cycleDay('bad', ${idx}, '${key}')">${label}</div>`;
+      }
+
+      badEl.innerHTML += `
+        <div class="habit-card">
+          <div class="hc-head">
+            <div class="hc-emoji">${h.emoji}</div>
+            <div class="hc-info">
+              <div class="hc-type bad">Quitting</div>
+              <div class="hc-name">${h.name}</div>
+            </div>
+            <div class="hc-streak">
+              Streak
+              <div class="hc-streak-num">${streak}d</div>
+            </div>
+          </div>
+          <div class="hc-week">${weekHtml}</div>
+          <div class="hc-pct-row">
+            <div class="hc-pct-label">7-day success</div>
+            <div class="hc-pct-val ${pctClass}">${pct}%</div>
+          </div>
+          <div style="margin-top:10px"><button class="modal-btn" style="background:var(--surface-3); font-size:12px; padding:8px;" onclick="removeHabit('bad', ${idx})">Remove</button></div>
+        </div>
+      `;
+    });
+    document.getElementById('bad-count').textContent = `${state.bad.length} active`;
+
+    // GOOD HABITS
+    const goodEl = document.getElementById('good-habits');
+    goodEl.innerHTML = '';
+    state.good.forEach((h, idx) => {
+      const log = h.log || {};
+      const streak = calcStreak(log);
+      const pct = calcWeekPct(log);
+      const pctClass = pct >= 80 ? 'g' : pct >= 50 ? 'y' : 'r';
+
+      let weekHtml = '';
+      for (let i = 6; i >= 0; i--) {
+        const checkDate = new Date(now);
+        checkDate.setDate(now.getDate() - i);
+        const key = checkDate.toISOString().slice(0,10);
+        const isToday = key === todayK;
+        const status = log[key];
+        const cls = status === true ? 'done good' : status === false ? 'missed good' : '';
+        const label = dayShort[checkDate.getDay()];
+        weekHtml += `<div class="hc-day ${cls} ${isToday ? 'today' : ''}" onclick="cycleDay('good', ${idx}, '${key}')">${label}</div>`;
+      }
+
+      goodEl.innerHTML += `
+        <div class="habit-card">
+          <div class="hc-head">
+            <div class="hc-emoji">${h.emoji}</div>
+            <div class="hc-info">
+              <div class="hc-type good">Building</div>
+              <div class="hc-name">${h.name}</div>
+            </div>
+            <div class="hc-streak">
+              Streak
+              <div class="hc-streak-num">${streak}d</div>
+            </div>
+          </div>
+          <div class="hc-week">${weekHtml}</div>
+          <div class="hc-pct-row">
+            <div class="hc-pct-label">7-day success</div>
+            <div class="hc-pct-val ${pctClass}">${pct}%</div>
+          </div>
+          <div style="margin-top:10px"><button class="modal-btn" style="background:var(--surface-3); font-size:12px; padding:8px;" onclick="removeHabit('good', ${idx})">Remove</button></div>
+        </div>
+      `;
+    });
+    document.getElementById('good-count').textContent = `${state.good.length} active`;
+  }
+
+  function cycleDay(type, idx, key) {
+    const state = loadHabits();
+    const h = state[type][idx];
+    if (!h.log) h.log = {};
+    const current = h.log[key];
+    // cycle: undefined → true → false → undefined
+    if (current === undefined) h.log[key] = true;
+    else if (current === true) h.log[key] = false;
+    else delete h.log[key];
+    saveHabits(state);
+    renderHabits();
+  }
+
+  function removeHabit(type, idx) {
+    if (!confirm('Remove this habit?')) return;
+    const state = loadHabits();
+    state[type].splice(idx, 1);
+    saveHabits(state);
+    renderHabits();
+  }
+
+  let modalType = 'bad';
+  function openAddModal(type) {
+    modalType = type;
+    const state = loadHabits();
+    if (state[type].length >= 3) {
+      alert('Max 3 active habits. Remove one first.');
+      return;
+    }
+    document.getElementById('modal-title').textContent = type === 'bad' ? 'Quit a Bad Habit' : 'Build a Good Habit';
+    document.getElementById('modal-sub').textContent = `Pick one to track. ${3 - state[type].length} slot${3 - state[type].length === 1 ? '' : 's'} left.`;
+    const activeIds = state[type].map(h => h.id);
+    const opts = habitCatalog[type].filter(o => !activeIds.includes(o.id));
+    document.getElementById('habit-options').innerHTML = opts.map(o => `
+      <div class="habit-option" onclick="addHabit('${o.id}')">
+        <div class="habit-option-emoji">${o.emoji}</div>
+        <div class="habit-option-info">
+          <div class="habit-option-name">${o.name}</div>
+          <div class="habit-option-desc">${o.desc}</div>
+        </div>
+      </div>
+    `).join('');
+    document.getElementById('habit-modal').classList.add('open');
+  }
+
+  function closeAddModal() {
+    document.getElementById('habit-modal').classList.remove('open');
+  }
+
+  function addHabit(id) {
+    const state = loadHabits();
+    const item = habitCatalog[modalType].find(o => o.id === id);
+    if (!item) return;
+    state[modalType].push({ ...item, log: {} });
+    saveHabits(state);
+    closeAddModal();
+    renderHabits();
+  }
+
+  // Initial render
+  renderHabits();
+
+  // PWA
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   }
