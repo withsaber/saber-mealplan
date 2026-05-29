@@ -22,37 +22,19 @@
     --text: #FFFFFF;
     --text-mid: #BFBFBF;
     --text-muted: #6B6B6B;
-    --accent: #FFFFFF;
     --green: #06C167;
     --yellow: #FFC043;
     --red: #E11900;
+    --chaldal: #7533CB;
     --safe-top: env(safe-area-inset-top);
     --safe-bottom: env(safe-area-inset-bottom);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html { -webkit-text-size-adjust: 100%; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; min-height: 100vh; overflow-x: hidden; padding-bottom: calc(80px + var(--safe-bottom)); }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-    overflow-x: hidden;
-    padding-bottom: calc(80px + var(--safe-bottom));
-  }
-
-  .header {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    padding: calc(var(--safe-top) + 14px) 20px 14px;
-    border-bottom: 1px solid var(--border);
-  }
+  .header { position: sticky; top: 0; z-index: 50; background: rgba(0,0,0,0.85); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); padding: calc(var(--safe-top) + 14px) 20px 14px; border-bottom: 1px solid var(--border); }
   .header-row { display: flex; align-items: center; justify-content: space-between; }
-  .greeting-block { display: flex; flex-direction: column; gap: 2px; }
   .greeting-day { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
   .greeting-name { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
   .protein-ring { width: 44px; height: 44px; position: relative; }
@@ -67,7 +49,7 @@
   @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
   .hero-stack { display: grid; grid-template-columns: 1.6fr 1fr; gap: 10px; margin-bottom: 12px; }
-  .hero-tile { background: var(--surface); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; }
+  .hero-tile { background: var(--surface); border-radius: 16px; padding: 16px; }
   .hero-tile.big { background: var(--text); color: #000; }
   .tile-label { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.7; margin-bottom: 12px; }
   .tile-big-num { font-size: 44px; font-weight: 800; line-height: 0.95; letter-spacing: -0.04em; }
@@ -79,7 +61,7 @@
   .mb-title { font-size: 13px; font-weight: 700; }
   .mb-val { font-size: 13px; font-weight: 700; color: var(--green); }
   .mb-track { height: 8px; background: var(--surface-3); border-radius: 99px; overflow: hidden; }
-  .mb-fill { height: 100%; background: linear-gradient(90deg, var(--green), #00E676); border-radius: 99px; transition: width 0.6s ease; }
+  .mb-fill { height: 100%; background: linear-gradient(90deg, var(--green), #00E676); border-radius: 99px; }
   .mb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
   .mb-cell { text-align: center; padding: 8px 0; background: var(--surface-2); border-radius: 10px; }
   .mb-cell-val { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
@@ -138,39 +120,57 @@
   .tl-pill { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: var(--surface-2); color: var(--text); padding: 3px 8px; border-radius: 4px; margin-top: 8px; }
   .tl-pill.green { background: var(--green); color: #fff; }
 
-  .toggle-seg { display: flex; background: var(--surface); border-radius: 12px; padding: 4px; margin-bottom: 20px; gap: 2px; }
+  .toggle-seg { display: flex; background: var(--surface); border-radius: 12px; padding: 4px; margin-bottom: 16px; gap: 2px; }
   .seg-btn { flex: 1; background: none; border: none; border-radius: 9px; color: var(--text-muted); font-family: inherit; font-size: 13px; font-weight: 700; padding: 10px 0; cursor: pointer; transition: all 0.2s; }
   .seg-btn.active { background: var(--text); color: #000; }
+
+  .live-banner { background: linear-gradient(135deg, rgba(117,51,203,0.1), rgba(117,51,203,0.03)); border: 1px solid rgba(117,51,203,0.3); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .live-dot { width: 8px; height: 8px; background: var(--chaldal); border-radius: 50%; flex-shrink: 0; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .live-text { font-size: 11px; color: var(--text-mid); flex: 1; }
+  .live-text b { color: var(--text); }
 
   .budget-box { background: var(--surface); border-radius: 14px; padding: 14px 16px; margin-bottom: 18px; }
   .bb-row { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
   .bb-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
   .bb-val { font-size: 15px; font-weight: 800; }
   .bb-val.ok { color: var(--green); }
+  .bb-val.warn { color: var(--yellow); }
   .bb-track { height: 6px; background: var(--surface-3); border-radius: 99px; overflow: hidden; }
   .bb-fill { height: 100%; border-radius: 99px; }
   .bb-fill.ok { background: var(--green); }
+  .bb-fill.warn { background: var(--yellow); }
   .bb-foot { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
 
   .grocery-cat { margin-bottom: 20px; }
   .gc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
   .gc-name { font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-mid); }
   .gc-total { font-size: 12px; font-weight: 700; color: var(--text-muted); }
-  .gi { display: flex; align-items: center; gap: 12px; background: var(--surface); padding: 12px 14px; border-radius: 12px; margin-bottom: 6px; cursor: pointer; transition: opacity 0.2s; }
+  .gi { display: flex; align-items: center; gap: 12px; background: var(--surface); padding: 12px 14px; border-radius: 12px; margin-bottom: 6px; transition: opacity 0.2s; }
   .gi.done { opacity: 0.35; }
-  .gi-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+  .gi-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; cursor: pointer; }
   .gi.done .gi-check { background: var(--green); border-color: var(--green); }
   .gi-checkmark { display: none; color: #fff; font-size: 12px; font-weight: 800; }
   .gi.done .gi-checkmark { display: block; }
   .gi-info { flex: 1; min-width: 0; }
   .gi-name { font-size: 14px; font-weight: 600; }
   .gi-meta { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-  .gi-price { font-size: 13px; font-weight: 800; text-align: right; white-space: nowrap; }
-  .gi-where { font-size: 10px; color: var(--text-muted); text-align: right; margin-top: 1px; }
+  .gi-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .gi-price { font-size: 13px; font-weight: 800; white-space: nowrap; }
+  .gi-buy { display: inline-flex; align-items: center; gap: 4px; background: var(--chaldal); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; transition: opacity 0.2s; white-space: nowrap; }
+  .gi-buy:active { opacity: 0.7; }
+  .gi-buy.local { background: var(--surface-3); color: var(--text-mid); }
 
   .grand-total { background: var(--text); color: #000; border-radius: 16px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
   .gt-l { font-size: 14px; font-weight: 700; opacity: 0.7; }
   .gt-v { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; }
+
+  .chaldal-cta { background: var(--chaldal); color: #fff; border-radius: 14px; padding: 14px 16px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; transition: opacity 0.2s; }
+  .chaldal-cta:active { opacity: 0.85; }
+  .cta-left { display: flex; flex-direction: column; gap: 2px; }
+  .cta-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; }
+  .cta-title { font-size: 15px; font-weight: 700; }
+  .cta-arrow { font-size: 18px; font-weight: 600; }
 
   .portion-card { background: var(--surface); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; }
   .pc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -200,16 +200,16 @@
 
 <div class="header">
   <div class="header-row">
-    <div class="greeting-block">
+    <div>
       <div class="greeting-day" id="hdr-day">Loading</div>
       <div class="greeting-name">Hey, Saber</div>
     </div>
     <div class="protein-ring">
       <svg width="44" height="44" viewBox="0 0 44 44">
         <circle cx="22" cy="22" r="18" stroke-width="4" fill="none" class="protein-ring-track"/>
-        <circle cx="22" cy="22" r="18" stroke-width="4" fill="none" class="protein-ring-fill" stroke-dasharray="113" stroke-dashoffset="2" stroke-linecap="round"/>
+        <circle cx="22" cy="22" r="18" stroke-width="4" fill="none" class="protein-ring-fill" stroke-dasharray="113" stroke-dashoffset="0" stroke-linecap="round"/>
       </svg>
-      <div class="protein-ring-text">98%</div>
+      <div class="protein-ring-text">100%</div>
     </div>
   </div>
 </div>
@@ -232,10 +232,7 @@
     </div>
 
     <div class="macro-bar">
-      <div class="mb-row">
-        <div class="mb-title">Protein Target</div>
-        <div class="mb-val">147g / 126g</div>
-      </div>
+      <div class="mb-row"><div class="mb-title">Protein Target</div><div class="mb-val">147g / 126g</div></div>
       <div class="mb-track"><div class="mb-fill" style="width: 100%"></div></div>
       <div class="mb-grid">
         <div class="mb-cell"><div class="mb-cell-val">147g</div><div class="mb-cell-lbl">Protein</div></div>
@@ -244,16 +241,13 @@
       </div>
     </div>
 
-    <div class="sec-head">
-      <div class="sec-title">Your Meals</div>
-      <div class="sec-count">4 meals · 1 shake</div>
-    </div>
+    <div class="sec-head"><div class="sec-title">Your Meals</div><div class="sec-count">4 meals · 1 shake</div></div>
 
     <div class="meal-card" onclick="toggleMeal(this)">
       <div class="meal-head">
         <div class="meal-emoji">🥣</div>
         <div class="meal-mid">
-          <div class="meal-time">8:00 AM · Breakfast</div>
+          <div class="meal-time">9:00 AM · Breakfast</div>
           <div class="meal-name">Oats + Eggs + Banana</div>
           <div class="meal-stats"><span><b>520</b> cal</span><span><b>32g</b> protein</span></div>
         </div>
@@ -267,14 +261,14 @@
             <li><span class="ing-name">Whole eggs</span><span class="ing-qty">3 eggs</span></li>
             <li><span class="ing-name">Banana</span><span class="ing-qty">1 medium</span></li>
             <li><span class="ing-name">Milk or water</span><span class="ing-qty">200ml</span></li>
-            <li><span class="ing-name">Cinnamon · honey (optional)</span><span class="ing-qty">to taste</span></li>
+            <li><span class="ing-name">Cinnamon · honey</span><span class="ing-qty">to taste</span></li>
           </ul>
         </div>
         <div class="body-section">
           <div class="body-label">Method · ~10 min</div>
           <ol class="cook-steps">
-            <li>Cook oats with milk in a pot or microwave for 3-4 minutes</li>
-            <li>Scramble 3 eggs in a non-stick pan with a tiny drop of oil</li>
+            <li>Cook oats with milk in pot or microwave for 3-4 minutes</li>
+            <li>Scramble 3 eggs in non-stick pan with tiny drop of oil</li>
             <li>Slice banana on top of oats; sprinkle cinnamon</li>
             <li>Eat eggs on the side; drink water</li>
           </ol>
@@ -297,17 +291,17 @@
           <div class="body-label">Ingredients</div>
           <ul class="ing-list">
             <li><span class="ing-name">Chicken breast</span><span class="ing-qty">180g (raw)</span></li>
-            <li><span class="ing-name">Sweet potato</span><span class="ing-qty">250g</span></li>
+            <li><span class="ing-name">Sweet potato (Misti Alu)</span><span class="ing-qty">250g</span></li>
             <li><span class="ing-name">Olive oil</span><span class="ing-qty">1 tsp</span></li>
-            <li><span class="ing-name">Salt · pepper · paprika · garlic powder</span><span class="ing-qty">to taste</span></li>
-            <li><span class="ing-name">Lemon</span><span class="ing-qty">half, juiced</span></li>
+            <li><span class="ing-name">Salt · pepper · paprika · garlic</span><span class="ing-qty">to taste</span></li>
+            <li><span class="ing-name">Lemon</span><span class="ing-qty">half</span></li>
           </ul>
         </div>
         <div class="body-section">
           <div class="body-label">Method · ~25 min (15 active)</div>
           <ol class="cook-steps">
-            <li>Cut sweet potato into cubes; toss with ½ tsp oil and salt</li>
-            <li>Cut chicken into strips; rub with remaining oil + spices + lemon</li>
+            <li>Cut sweet potato into cubes; toss with ½ tsp oil + salt</li>
+            <li>Cut chicken into strips; rub with oil + spices + lemon</li>
             <li>Air fry sweet potato at 200°C for 15 mins</li>
             <li>Add chicken in last 10 mins (or fry separately at 180°C for 12 mins)</li>
             <li>Flip once halfway through</li>
@@ -319,7 +313,7 @@
     <div class="whey-card">
       <div class="whey-emoji">💪</div>
       <div class="whey-info">
-        <div class="whey-tag">Post-Workout</div>
+        <div class="whey-tag">Post-Workout · 7:00 PM</div>
         <div class="whey-name">VPA Whey Shake</div>
         <div class="whey-sub">1 scoop (30g) + 250ml water · 23g protein · 124 cal</div>
       </div>
@@ -347,9 +341,7 @@
         </div>
         <div class="body-section">
           <div class="body-label">Method · 1 min</div>
-          <ol class="cook-steps">
-            <li>Grab fruit, grab nuts, eat them. That's it.</li>
-          </ol>
+          <ol class="cook-steps"><li>Grab fruit, grab nuts, eat. That's it.</li></ol>
         </div>
       </div>
     </div>
@@ -358,8 +350,8 @@
       <div class="meal-head">
         <div class="meal-emoji">🐟</div>
         <div class="meal-mid">
-          <div class="meal-time">8:00 PM · Dinner</div>
-          <div class="meal-name">Air-Fried Fish + Chickpeas</div>
+          <div class="meal-time">8:30 PM · Dinner</div>
+          <div class="meal-name">Air-Fried Fish + Kabuli Chola</div>
           <div class="meal-stats"><span><b>530</b> cal</span><span><b>35g</b> protein</span></div>
         </div>
         <div class="meal-chev">▼</div>
@@ -369,10 +361,10 @@
           <div class="body-label">Ingredients</div>
           <ul class="ing-list">
             <li><span class="ing-name">Rui or Catla fillet</span><span class="ing-qty">180g (raw)</span></li>
-            <li><span class="ing-name">Boiled chickpeas</span><span class="ing-qty">120g (cooked)</span></li>
+            <li><span class="ing-name">Boiled kabuli chola</span><span class="ing-qty">120g (cooked)</span></li>
             <li><span class="ing-name">Olive oil</span><span class="ing-qty">1 tsp</span></li>
             <li><span class="ing-name">Cucumber · tomato · onion</span><span class="ing-qty">handful</span></li>
-            <li><span class="ing-name">Turmeric · chili · salt · lemon</span><span class="ing-qty">to taste</span></li>
+            <li><span class="ing-name">Turmeric · chili · lemon · salt</span><span class="ing-qty">to taste</span></li>
           </ul>
         </div>
         <div class="body-section">
@@ -380,24 +372,21 @@
           <ol class="cook-steps">
             <li>Rub fish with oil, turmeric, chili, salt, lemon juice</li>
             <li>Air fry at 180°C for 12-15 mins until edges crisp</li>
-            <li>Toss boiled chickpeas with chopped veggies + lemon as salad</li>
+            <li>Toss boiled chola with chopped veggies + lemon as salad</li>
             <li>Plate together; serve fresh</li>
           </ol>
         </div>
       </div>
     </div>
 
-    <div class="sec-head">
-      <div class="sec-title">Alt Options</div>
-      <div class="sec-count">swap anytime</div>
-    </div>
+    <div class="sec-head"><div class="sec-title">Alt Options</div><div class="sec-count">swap anytime</div></div>
 
     <div class="meal-card" onclick="toggleMeal(this)">
       <div class="meal-head">
         <div class="meal-emoji">🫘</div>
         <div class="meal-mid">
           <div class="meal-time">Veg Day · Dinner</div>
-          <div class="meal-name">Chickpea Bowl + Eggs</div>
+          <div class="meal-name">Chola Bowl + Eggs</div>
           <div class="meal-stats"><span><b>510</b> cal</span><span><b>30g</b> protein</span></div>
         </div>
         <div class="meal-chev">▼</div>
@@ -406,7 +395,7 @@
         <div class="body-section">
           <div class="body-label">Ingredients</div>
           <ul class="ing-list">
-            <li><span class="ing-name">Boiled chickpeas</span><span class="ing-qty">200g</span></li>
+            <li><span class="ing-name">Boiled kabuli chola</span><span class="ing-qty">200g</span></li>
             <li><span class="ing-name">Whole eggs</span><span class="ing-qty">3</span></li>
             <li><span class="ing-name">Onion · tomato · cucumber</span><span class="ing-qty">handful</span></li>
             <li><span class="ing-name">Olive oil · lemon · chaat masala</span><span class="ing-qty">to taste</span></li>
@@ -416,7 +405,7 @@
           <div class="body-label">Method · ~10 min</div>
           <ol class="cook-steps">
             <li>Boil-fry eggs (air fryer or pan)</li>
-            <li>Toss chickpeas with chopped veg, lemon, oil, salt, chaat masala</li>
+            <li>Toss chola with chopped veg, lemon, oil, salt, chaat masala</li>
             <li>Top with sliced eggs</li>
           </ol>
         </div>
@@ -428,96 +417,91 @@
   <section id="sec-routine" class="section">
     <div class="day-banner">
       <div class="day-banner-label">Your Daily Blueprint</div>
-      <div class="day-banner-title">6 AM → 10:30 PM</div>
-      <div class="day-banner-sub">Built around sunlight, deep work, gym, and protected sleep. Total cooking time: 1-2 hours max.</div>
+      <div class="day-banner-title">7:30 AM → 10:30 PM</div>
+      <div class="day-banner-sub">Built around realistic wake time, deep work, gym, and protected sleep. Total cooking: 1-2 hours max.</div>
     </div>
 
     <div class="sec-head"><div class="sec-title">Daily Schedule</div></div>
 
     <div class="timeline">
       <div class="tl-item active"><div class="tl-dot"></div><div class="tl-card">
-        <div class="tl-time">6:00 AM</div><div class="tl-title">☀️ Wake + Sunlight</div>
+        <div class="tl-time">7:30 AM</div><div class="tl-title">☀️ Wake + Sunlight</div>
         <div class="tl-desc">Phone stays off. 10 min direct sunlight outside. Sets your circadian rhythm. Drink 500ml water.</div>
       </div></div>
-      <div class="tl-item gym"><div class="tl-dot"></div><div class="tl-card">
-        <div class="tl-time">6:30 – 7:30 AM</div><div class="tl-title">🏋️ Gym Session</div>
-        <div class="tl-desc">Weight training; 45-60 min. Compound lifts; squats, bench, rows, deadlifts, overhead press.</div>
-        <span class="tl-pill">Daily</span>
-      </div></div>
-      <div class="tl-item active"><div class="tl-dot"></div><div class="tl-card">
-        <div class="tl-time">7:35 AM</div><div class="tl-title">💪 Whey Shake</div>
-        <div class="tl-desc">1 scoop VPA WPC in 250ml water. Within 30 mins of last set.</div>
-        <span class="tl-pill green">23g Protein</span>
-      </div></div>
+
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
-        <div class="tl-time">8:00 AM</div><div class="tl-title">🥣 Breakfast</div>
+        <div class="tl-time">8:00 AM</div><div class="tl-title">📝 Quick Plan</div>
+        <div class="tl-desc">15 min to set top 3 priorities for the day. Pen and paper; no phone yet.</div>
+      </div></div>
+
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">9:00 AM</div><div class="tl-title">🥣 Breakfast</div>
         <div class="tl-desc">Oats + 3 eggs + banana. Eat at the table, not at your desk.</div>
       </div></div>
+
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
-        <div class="tl-time">9:00 AM – 1:00 PM</div><div class="tl-title">🧠 Deep Work Block 1</div>
+        <div class="tl-time">9:30 AM – 1:00 PM</div><div class="tl-title">🧠 Deep Work Block 1</div>
         <div class="tl-desc">Most important client work. No Slack, no email. Phone face-down or in another room.</div>
       </div></div>
+
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">1:00 PM</div><div class="tl-title">🍗 Lunch</div>
         <div class="tl-desc">Air-fried chicken + sweet potato. Eat away from screens. 20 min minimum.</div>
       </div></div>
+
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">2:00 – 5:00 PM</div><div class="tl-title">⚙️ Deep Work Block 2</div>
         <div class="tl-desc">Admin, calls, lighter creative. Reply to messages. Run the agency.</div>
       </div></div>
+
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">5:30 PM</div><div class="tl-title">🥜 Snack</div>
         <div class="tl-desc">Fruit + nuts. Keeps blood sugar stable; prevents overeating at dinner.</div>
       </div></div>
+
+      <div class="tl-item gym"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">6:00 – 7:00 PM</div><div class="tl-title">🏋️ Gym Session</div>
+        <div class="tl-desc">Weight training; 45-60 min. Compound lifts; squats, bench, rows, deadlifts, overhead press.</div>
+        <span class="tl-pill">Daily</span>
+      </div></div>
+
+      <div class="tl-item active"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">7:00 PM</div><div class="tl-title">💪 Whey Shake</div>
+        <div class="tl-desc">1 scoop VPA WPC in 250ml water. Within 30 mins of last set.</div>
+        <span class="tl-pill green">23g Protein</span>
+      </div></div>
+
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
-        <div class="tl-time">6:00 – 7:30 PM</div><div class="tl-title">🚶 Walk + Wind Down</div>
+        <div class="tl-time">7:15 – 8:30 PM</div><div class="tl-title">🚶 Walk + Wind Down</div>
         <div class="tl-desc">Light walk, sauna (when accessible), or read. Screens off as much as possible.</div>
       </div></div>
+
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
-        <div class="tl-time">8:00 PM</div><div class="tl-title">🐟 Dinner</div>
-        <div class="tl-desc">Air-fried fish + chickpeas. Finish eating by 8:30 to give 2hr digest window.</div>
+        <div class="tl-time">8:30 PM</div><div class="tl-title">🐟 Dinner</div>
+        <div class="tl-desc">Air-fried fish + kabuli chola. Finish eating by 9:00 to give 90 min digest window.</div>
       </div></div>
+
       <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
-        <div class="tl-time">9:00 PM</div><div class="tl-title">📵 Digital Sunset</div>
+        <div class="tl-time">9:30 PM</div><div class="tl-title">📵 Digital Sunset</div>
         <div class="tl-desc">Phone out of bedroom. No gaming, no YouTube. Read, journal, or just sit.</div>
       </div></div>
+
       <div class="tl-item active"><div class="tl-dot"></div><div class="tl-card">
         <div class="tl-time">10:30 PM</div><div class="tl-title">😴 Sleep</div>
-        <div class="tl-desc">8 hours protected. Sleep is when muscle is built and the brain consolidates.</div>
+        <div class="tl-desc">9 hours protected. Sleep is when muscle is built and the brain consolidates.</div>
         <span class="tl-pill green">Non-Negotiable</span>
       </div></div>
     </div>
 
     <div class="sec-head"><div class="sec-title">The 7 Rules</div></div>
 
-    <div class="rule-card"><div class="rule-num">1</div><div class="rule-info">
-      <div class="rule-title">Phone out of the bedroom</div>
-      <div class="rule-desc">Biggest single ROI habit. Use a separate alarm clock or smart watch.</div>
-    </div></div>
-    <div class="rule-card"><div class="rule-num">2</div><div class="rule-info">
-      <div class="rule-title">Sunlight before screens</div>
-      <div class="rule-desc">10 mins outside, no sunglasses. Anchors your circadian rhythm hard.</div>
-    </div></div>
-    <div class="rule-card"><div class="rule-num">3</div><div class="rule-info">
-      <div class="rule-title">Workout every day</div>
-      <div class="rule-desc">Daily ≠ heavy daily. 4 heavy days, 2 light days, 1 active rest.</div>
-    </div></div>
-    <div class="rule-card"><div class="rule-num">4</div><div class="rule-info">
-      <div class="rule-title">Protein every meal</div>
-      <div class="rule-desc">Minimum 25g per meal. Hits 126g target without thinking about it.</div>
-    </div></div>
-    <div class="rule-card"><div class="rule-num">5</div><div class="rule-info">
-      <div class="rule-title">2.5L water daily</div>
-      <div class="rule-desc">500ml on wake, 500ml pre-gym, 250ml each meal, 250ml mid-afternoon.</div>
-    </div></div>
-    <div class="rule-card"><div class="rule-num">6</div><div class="rule-info">
-      <div class="rule-title">No screens after 9 PM</div>
-      <div class="rule-desc">Cuts gaming/scrolling and gives your brain a real wind-down.</div>
-    </div></div>
-    <div class="rule-card"><div class="rule-num">7</div><div class="rule-info">
-      <div class="rule-title">Cooking under 2 hrs/day total</div>
-      <div class="rule-desc">Air fryer + batch prep. If it takes longer, simplify the meal.</div>
-    </div></div>
+    <div class="rule-card"><div class="rule-num">1</div><div class="rule-info"><div class="rule-title">Phone out of the bedroom</div><div class="rule-desc">Biggest single ROI habit. Use a separate alarm clock or smart watch.</div></div></div>
+    <div class="rule-card"><div class="rule-num">2</div><div class="rule-info"><div class="rule-title">Sunlight before screens</div><div class="rule-desc">10 mins outside, no sunglasses. Anchors your circadian rhythm hard.</div></div></div>
+    <div class="rule-card"><div class="rule-num">3</div><div class="rule-info"><div class="rule-title">Workout every day</div><div class="rule-desc">Daily ≠ heavy daily. 4 heavy days, 2 light days, 1 active rest.</div></div></div>
+    <div class="rule-card"><div class="rule-num">4</div><div class="rule-info"><div class="rule-title">Protein every meal</div><div class="rule-desc">Minimum 25g per meal. Hits 126g target without thinking about it.</div></div></div>
+    <div class="rule-card"><div class="rule-num">5</div><div class="rule-info"><div class="rule-title">2.5L water daily</div><div class="rule-desc">500ml on wake, 500ml pre-gym, 250ml each meal, 250ml mid-afternoon.</div></div></div>
+    <div class="rule-card"><div class="rule-num">6</div><div class="rule-info"><div class="rule-title">No screens after 9:30 PM</div><div class="rule-desc">Cuts gaming/scrolling and gives your brain a real wind-down.</div></div></div>
+    <div class="rule-card"><div class="rule-num">7</div><div class="rule-info"><div class="rule-title">Cooking under 2 hrs/day total</div><div class="rule-desc">Air fryer + batch prep. If it takes longer, simplify the meal.</div></div></div>
   </section>
 
   <!-- GROCERY -->
@@ -528,189 +512,315 @@
       <button class="seg-btn" onclick="switchGrocery('month', this)">Monthly</button>
     </div>
 
+    <div class="live-banner">
+      <div class="live-dot"></div>
+      <div class="live-text"><b>Live Chaldal prices</b> · tap any item to buy directly</div>
+    </div>
+
+    <!-- DAILY -->
     <div id="gview-day" class="gview">
       <div class="budget-box">
-        <div class="bb-row"><div class="bb-label">Daily Budget</div><div class="bb-val ok">~530 / 500 ৳</div></div>
+        <div class="bb-row"><div class="bb-label">Daily Budget</div><div class="bb-val ok">~535 / 500 ৳</div></div>
         <div class="bb-track"><div class="bb-fill ok" style="width: 100%"></div></div>
-        <div class="bb-foot">Slight over; balances out across the month (~14,420 ৳ monthly total)</div>
+        <div class="bb-foot">Slight over; balances out monthly (within 15,000 ৳ cap)</div>
       </div>
 
       <div class="grocery-cat">
-        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~218 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Chicken breast</div><div class="gi-meta">180g · lunch</div></div>
-          <div><div class="gi-price">90 ৳</div><div class="gi-where">Bazar</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rui / Catla fillet</div><div class="gi-meta">180g · dinner</div></div>
-          <div><div class="gi-price">90 ৳</div><div class="gi-where">Bazar</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Eggs</div><div class="gi-meta">3 · breakfast</div></div>
-          <div><div class="gi-price">38 ৳</div><div class="gi-where">Local</div></div></div>
+        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~280 ৳</div></div>
+
+        <div class="gi" id="gi-chicken-d">
+          <div class="gi-check" onclick="toggleDone('gi-chicken-d', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">180g · lunch</div></div>
+          <div class="gi-right">
+            <div class="gi-price">99 ৳</div>
+            <a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a>
+          </div>
+        </div>
+
+        <div class="gi" id="gi-fish-d">
+          <div class="gi-check" onclick="toggleDone('gi-fish-d', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">180g · dinner</div></div>
+          <div class="gi-right">
+            <div class="gi-price">90 ৳</div>
+            <a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a>
+          </div>
+        </div>
+
+        <div class="gi" id="gi-egg-d">
+          <div class="gi-check" onclick="toggleDone('gi-egg-d', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Eggs (layer)</div><div class="gi-meta">3 pcs · breakfast</div></div>
+          <div class="gi-right">
+            <div class="gi-price">38 ৳</div>
+            <a class="gi-buy" href="https://chaldal.com/tatka-egg-pack-12-pcs" target="_blank">Chaldal →</a>
+          </div>
+        </div>
       </div>
 
       <div class="grocery-cat">
-        <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~38 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Sweet potato</div><div class="gi-meta">250g · lunch</div></div>
-          <div><div class="gi-price">15 ৳</div><div class="gi-where">Bazar</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+        <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~52 ৳</div></div>
+
+        <div class="gi" id="gi-sp-d">
+          <div class="gi-check" onclick="toggleDone('gi-sp-d', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Sweet potato (Misti Alu)</div><div class="gi-meta">250g · lunch</div></div>
+          <div class="gi-right">
+            <div class="gi-price">18 ৳</div>
+            <a class="gi-buy" href="https://chaldal.com/sweet-potato-500-gm" target="_blank">Chaldal →</a>
+          </div>
+        </div>
+
+        <div class="gi" id="gi-oats-d">
+          <div class="gi-check" onclick="toggleDone('gi-oats-d', event)"><span class="gi-checkmark">✓</span></div>
           <div class="gi-info"><div class="gi-name">Rolled oats</div><div class="gi-meta">60g · breakfast</div></div>
-          <div><div class="gi-price">12 ৳</div><div class="gi-where">Shop</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Chickpeas (boiled)</div><div class="gi-meta">120g · dinner</div></div>
-          <div><div class="gi-price">11 ৳</div><div class="gi-where">Bazar</div></div></div>
+          <div class="gi-right">
+            <div class="gi-price">21 ৳</div>
+            <a class="gi-buy" href="https://chaldal.com/premium-grade-rolled-oats-1-kg" target="_blank">Chaldal →</a>
+          </div>
+        </div>
+
+        <div class="gi" id="gi-chola-d">
+          <div class="gi-check" onclick="toggleDone('gi-chola-d', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Kabuli chola (dry)</div><div class="gi-meta">50g · dinner</div></div>
+          <div class="gi-right">
+            <div class="gi-price">14 ৳</div>
+            <a class="gi-buy" href="https://chaldal.com/bpm-kabuli-chola-500-gm" target="_blank">Chaldal →</a>
+          </div>
+        </div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Snack + Veg</div><div class="gc-total">~92 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+
+        <div class="gi" id="gi-fruit-d">
+          <div class="gi-check" onclick="toggleDone('gi-fruit-d', event)"><span class="gi-checkmark">✓</span></div>
           <div class="gi-info"><div class="gi-name">Fruit (banana / apple)</div><div class="gi-meta">2 pieces</div></div>
-          <div><div class="gi-price">35 ৳</div><div class="gi-where">Local</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-right">
+            <div class="gi-price">35 ৳</div>
+            <a class="gi-buy" href="https://chaldal.com/fruits" target="_blank">Chaldal →</a>
+          </div>
+        </div>
+
+        <div class="gi" id="gi-nuts-d">
+          <div class="gi-check" onclick="toggleDone('gi-nuts-d', event)"><span class="gi-checkmark">✓</span></div>
           <div class="gi-info"><div class="gi-name">Mixed nuts</div><div class="gi-meta">25g · snack</div></div>
-          <div><div class="gi-price">35 ৳</div><div class="gi-where">Shop</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Salad veg</div><div class="gi-meta">handful</div></div>
-          <div><div class="gi-price">22 ৳</div><div class="gi-where">Bazar</div></div></div>
+          <div class="gi-right">
+            <div class="gi-price">35 ৳</div>
+            <a class="gi-buy" href="https://chaldal.com/nuts" target="_blank">Chaldal →</a>
+          </div>
+        </div>
+
+        <div class="gi" id="gi-veg-d">
+          <div class="gi-check" onclick="toggleDone('gi-veg-d', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Salad veg</div><div class="gi-meta">cucumber, tomato, onion</div></div>
+          <div class="gi-right">
+            <div class="gi-price">22 ৳</div>
+            <a class="gi-buy" href="https://chaldal.com/vegetables" target="_blank">Chaldal →</a>
+          </div>
+        </div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Supplement</div><div class="gc-total">~182 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+        <div class="gi" id="gi-whey-d">
+          <div class="gi-check" onclick="toggleDone('gi-whey-d', event)"><span class="gi-checkmark">✓</span></div>
           <div class="gi-info"><div class="gi-name">VPA Whey (1 scoop)</div><div class="gi-meta">30g · post-workout</div></div>
-          <div><div class="gi-price">182 ৳</div><div class="gi-where">Iron Valley</div></div></div>
+          <div class="gi-right">
+            <div class="gi-price">182 ৳</div>
+            <a class="gi-buy local" href="https://theironvalley.com/shop/vpa-premium-whey-wpc/" target="_blank">Iron Valley</a>
+          </div>
+        </div>
       </div>
 
-      <div class="grand-total"><div class="gt-l">Daily Total</div><div class="gt-v">~530 ৳</div></div>
+      <div class="grand-total"><div class="gt-l">Daily Total</div><div class="gt-v">~535 ৳</div></div>
+
+      <a href="https://chaldal.com" target="_blank" class="chaldal-cta">
+        <div class="cta-left">
+          <div class="cta-label">Order all on Chaldal</div>
+          <div class="cta-title">Open Chaldal →</div>
+        </div>
+        <div class="cta-arrow">↗</div>
+      </a>
     </div>
 
+    <!-- WEEKLY -->
     <div id="gview-week" class="gview" style="display:none">
       <div class="budget-box">
-        <div class="bb-row"><div class="bb-label">Weekly Budget</div><div class="bb-val ok">~3,605 / 3,750 ৳</div></div>
-        <div class="bb-track"><div class="bb-fill ok" style="width: 96%"></div></div>
+        <div class="bb-row"><div class="bb-label">Weekly Budget</div><div class="bb-val ok">~3,720 / 3,750 ৳</div></div>
+        <div class="bb-track"><div class="bb-fill ok" style="width: 99%"></div></div>
         <div class="bb-foot">15,000 ৳ ÷ 4 weeks</div>
       </div>
 
       <div class="grocery-cat">
-        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~1,330 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Chicken breast</div><div class="gi-meta">1.3 kg</div></div>
-          <div><div class="gi-price">630 ৳</div><div class="gi-where">Bazar</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rui / Catla</div><div class="gi-meta">1.3 kg</div></div>
-          <div><div class="gi-price">450 ৳</div><div class="gi-where">Bazar</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Eggs</div><div class="gi-meta">21 pcs</div></div>
-          <div><div class="gi-price">250 ৳</div><div class="gi-where">Local</div></div></div>
+        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~1,960 ৳</div></div>
+        <div class="gi" id="gi-chicken-w">
+          <div class="gi-check" onclick="toggleDone('gi-chicken-w', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">1.3 kg</div></div>
+          <div class="gi-right"><div class="gi-price">715 ৳</div><a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-fish-w">
+          <div class="gi-check" onclick="toggleDone('gi-fish-w', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">1.3 kg</div></div>
+          <div class="gi-right"><div class="gi-price">650 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-egg-w">
+          <div class="gi-check" onclick="toggleDone('gi-egg-w', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Eggs (2 dozen)</div><div class="gi-meta">21 pcs needed</div></div>
+          <div class="gi-right"><div class="gi-price">300 ৳</div><a class="gi-buy" href="https://chaldal.com/tatka-egg-pack-12-pcs" target="_blank">Chaldal →</a></div>
+        </div>
       </div>
 
       <div class="grocery-cat">
-        <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~280 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+        <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~355 ৳</div></div>
+        <div class="gi" id="gi-sp-w">
+          <div class="gi-check" onclick="toggleDone('gi-sp-w', event)"><span class="gi-checkmark">✓</span></div>
           <div class="gi-info"><div class="gi-name">Sweet potato</div><div class="gi-meta">1.75 kg</div></div>
-          <div><div class="gi-price">105 ৳</div><div class="gi-where">Bazar</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rolled oats</div><div class="gi-meta">500g pack</div></div>
-          <div><div class="gi-price">90 ৳</div><div class="gi-where">Shop</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Dried chickpeas</div><div class="gi-meta">500g</div></div>
-          <div><div class="gi-price">85 ৳</div><div class="gi-where">Bazar</div></div></div>
+          <div class="gi-right"><div class="gi-price">125 ৳</div><a class="gi-buy" href="https://chaldal.com/sweet-potato-500-gm" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-oats-w">
+          <div class="gi-check" onclick="toggleDone('gi-oats-w', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Rolled oats (500g)</div><div class="gi-meta">~10 days supply</div></div>
+          <div class="gi-right"><div class="gi-price">175 ৳</div><a class="gi-buy" href="https://chaldal.com/premium-grade-rolled-oats-1-kg" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-chola-w">
+          <div class="gi-check" onclick="toggleDone('gi-chola-w', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Kabuli chola (500g)</div><div class="gi-meta">~10 days supply</div></div>
+          <div class="gi-right"><div class="gi-price">55 ৳</div><a class="gi-buy" href="https://chaldal.com/bpm-kabuli-chola-500-gm" target="_blank">Chaldal →</a></div>
+        </div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Snack + Veg</div><div class="gc-total">~640 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+        <div class="gi" id="gi-fruit-w">
+          <div class="gi-check" onclick="toggleDone('gi-fruit-w', event)"><span class="gi-checkmark">✓</span></div>
           <div class="gi-info"><div class="gi-name">Fruit (mixed)</div><div class="gi-meta">14 pcs</div></div>
-          <div><div class="gi-price">245 ৳</div><div class="gi-where">Local</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-right"><div class="gi-price">245 ৳</div><a class="gi-buy" href="https://chaldal.com/fruits" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-nuts-w">
+          <div class="gi-check" onclick="toggleDone('gi-nuts-w', event)"><span class="gi-checkmark">✓</span></div>
           <div class="gi-info"><div class="gi-name">Mixed nuts</div><div class="gi-meta">200g</div></div>
-          <div><div class="gi-price">240 ৳</div><div class="gi-where">Shop</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Veggies + onion + garlic</div><div class="gi-meta">weekly</div></div>
-          <div><div class="gi-price">155 ৳</div><div class="gi-where">Bazar</div></div></div>
+          <div class="gi-right"><div class="gi-price">240 ৳</div><a class="gi-buy" href="https://chaldal.com/nuts" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-veg-w">
+          <div class="gi-check" onclick="toggleDone('gi-veg-w', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Veggies + aromatics</div><div class="gi-meta">weekly</div></div>
+          <div class="gi-right"><div class="gi-price">155 ৳</div><a class="gi-buy" href="https://chaldal.com/vegetables" target="_blank">Chaldal →</a></div>
+        </div>
       </div>
 
       <div class="grocery-cat">
-        <div class="gc-head"><div class="gc-name">Cooking</div><div class="gc-total">~80 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Olive oil</div><div class="gi-meta">100ml</div></div>
-          <div><div class="gi-price">80 ৳</div><div class="gi-where">Shop</div></div></div>
+        <div class="gc-head"><div class="gc-name">Cooking</div><div class="gc-total">~85 ৳</div></div>
+        <div class="gi" id="gi-oil-w">
+          <div class="gi-check" onclick="toggleDone('gi-oil-w', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Olive oil (100ml usage)</div><div class="gi-meta">from 500ml bottle</div></div>
+          <div class="gi-right"><div class="gi-price">85 ৳</div><a class="gi-buy" href="https://chaldal.com/olivital-extra-virgin-olive-oil-1-ltr" target="_blank">Chaldal →</a></div>
+        </div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Supplement</div><div class="gc-total">~1,275 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">VPA Whey (7 scoops)</div><div class="gi-meta">week portion</div></div>
-          <div><div class="gi-price">1,275 ৳</div><div class="gi-where">Iron Valley</div></div></div>
+        <div class="gi" id="gi-whey-w">
+          <div class="gi-check" onclick="toggleDone('gi-whey-w', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">VPA Whey (7 scoops)</div><div class="gi-meta">week portion of 1kg tub</div></div>
+          <div class="gi-right"><div class="gi-price">1,275 ৳</div><a class="gi-buy local" href="https://theironvalley.com/shop/vpa-premium-whey-wpc/" target="_blank">Iron Valley</a></div>
+        </div>
       </div>
 
-      <div class="grand-total"><div class="gt-l">Weekly Total</div><div class="gt-v">~3,605 ৳</div></div>
+      <div class="grand-total"><div class="gt-l">Weekly Total</div><div class="gt-v">~3,720 ৳</div></div>
+
+      <a href="https://chaldal.com" target="_blank" class="chaldal-cta">
+        <div class="cta-left"><div class="cta-label">One big weekly order</div><div class="cta-title">Open Chaldal →</div></div>
+        <div class="cta-arrow">↗</div>
+      </a>
     </div>
 
+    <!-- MONTHLY -->
     <div id="gview-month" class="gview" style="display:none">
       <div class="budget-box">
-        <div class="bb-row"><div class="bb-label">Monthly Budget</div><div class="bb-val ok">~14,420 / 15,000 ৳</div></div>
-        <div class="bb-track"><div class="bb-fill ok" style="width: 96%"></div></div>
-        <div class="bb-foot">580 ৳ buffer remaining</div>
+        <div class="bb-row"><div class="bb-label">Monthly Budget</div><div class="bb-val ok">~14,880 / 15,000 ৳</div></div>
+        <div class="bb-track"><div class="bb-fill ok" style="width: 99%"></div></div>
+        <div class="bb-foot">120 ৳ buffer · order everything once a month</div>
       </div>
 
       <div class="grocery-cat">
-        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~5,630 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Chicken breast</div><div class="gi-meta">5.5 kg</div></div>
-          <div><div class="gi-price">2,750 ৳</div><div class="gi-where">Bazar</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rui / Catla</div><div class="gi-meta">5.5 kg</div></div>
-          <div><div class="gi-price">1,800 ৳</div><div class="gi-where">Bazar</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Eggs</div><div class="gi-meta">90 pcs</div></div>
-          <div><div class="gi-price">1,080 ৳</div><div class="gi-where">Local</div></div></div>
+        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~7,930 ৳</div></div>
+        <div class="gi" id="gi-chicken-m">
+          <div class="gi-check" onclick="toggleDone('gi-chicken-m', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">5.5 kg</div></div>
+          <div class="gi-right"><div class="gi-price">3,020 ৳</div><a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-fish-m">
+          <div class="gi-check" onclick="toggleDone('gi-fish-m', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">5.5 kg</div></div>
+          <div class="gi-right"><div class="gi-price">2,750 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-egg-m">
+          <div class="gi-check" onclick="toggleDone('gi-egg-m', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Eggs (8 dozen)</div><div class="gi-meta">90 pcs needed</div></div>
+          <div class="gi-right"><div class="gi-price">1,200 ৳</div><a class="gi-buy" href="https://chaldal.com/tatka-egg-pack-12-pcs" target="_blank">Chaldal →</a></div>
+        </div>
       </div>
 
       <div class="grocery-cat">
-        <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~1,180 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+        <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~1,225 ৳</div></div>
+        <div class="gi" id="gi-sp-m">
+          <div class="gi-check" onclick="toggleDone('gi-sp-m', event)"><span class="gi-checkmark">✓</span></div>
           <div class="gi-info"><div class="gi-name">Sweet potato</div><div class="gi-meta">7.5 kg</div></div>
-          <div><div class="gi-price">450 ৳</div><div class="gi-where">Bazar</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rolled oats</div><div class="gi-meta">2 kg</div></div>
-          <div><div class="gi-price">360 ৳</div><div class="gi-where">Shop</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Dried chickpeas</div><div class="gi-meta">2 kg</div></div>
-          <div><div class="gi-price">370 ৳</div><div class="gi-where">Bazar</div></div></div>
+          <div class="gi-right"><div class="gi-price">525 ৳</div><a class="gi-buy" href="https://chaldal.com/sweet-potato-500-gm" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-oats-m">
+          <div class="gi-check" onclick="toggleDone('gi-oats-m', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Rolled oats (2 kg)</div><div class="gi-meta">monthly supply</div></div>
+          <div class="gi-right"><div class="gi-price">490 ৳</div><a class="gi-buy" href="https://chaldal.com/premium-grade-rolled-oats-1-kg" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-chola-m">
+          <div class="gi-check" onclick="toggleDone('gi-chola-m', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Kabuli chola (1.5 kg)</div><div class="gi-meta">monthly supply</div></div>
+          <div class="gi-right"><div class="gi-price">210 ৳</div><a class="gi-buy" href="https://chaldal.com/bpm-kabuli-chola-500-gm" target="_blank">Chaldal →</a></div>
+        </div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Snack + Veg</div><div class="gc-total">~2,520 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Fruit</div><div class="gi-meta">60 pcs</div></div>
-          <div><div class="gi-price">1,050 ৳</div><div class="gi-where">Local</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Mixed nuts</div><div class="gi-meta">800g</div></div>
-          <div><div class="gi-price">850 ৳</div><div class="gi-where">Shop</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+        <div class="gi" id="gi-fruit-m">
+          <div class="gi-check" onclick="toggleDone('gi-fruit-m', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Fruit (mixed)</div><div class="gi-meta">60 pcs</div></div>
+          <div class="gi-right"><div class="gi-price">1,050 ৳</div><a class="gi-buy" href="https://chaldal.com/fruits" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-nuts-m">
+          <div class="gi-check" onclick="toggleDone('gi-nuts-m', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Mixed nuts (800g)</div><div class="gi-meta">monthly</div></div>
+          <div class="gi-right"><div class="gi-price">850 ৳</div><a class="gi-buy" href="https://chaldal.com/nuts" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-veg-m">
+          <div class="gi-check" onclick="toggleDone('gi-veg-m', event)"><span class="gi-checkmark">✓</span></div>
           <div class="gi-info"><div class="gi-name">Veggies + aromatics</div><div class="gi-meta">monthly stock</div></div>
-          <div><div class="gi-price">620 ৳</div><div class="gi-where">Bazar</div></div></div>
+          <div class="gi-right"><div class="gi-price">620 ৳</div><a class="gi-buy" href="https://chaldal.com/vegetables" target="_blank">Chaldal →</a></div>
+        </div>
       </div>
 
       <div class="grocery-cat">
-        <div class="gc-head"><div class="gc-name">Cooking</div><div class="gc-total">~420 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Olive oil</div><div class="gi-meta">500ml</div></div>
-          <div><div class="gi-price">300 ৳</div><div class="gi-where">Shop</div></div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Spices · salt · lemon</div><div class="gi-meta">refill</div></div>
-          <div><div class="gi-price">120 ৳</div><div class="gi-where">Local</div></div></div>
+        <div class="gc-head"><div class="gc-name">Cooking</div><div class="gc-total">~290 ৳</div></div>
+        <div class="gi" id="gi-oil-m">
+          <div class="gi-check" onclick="toggleDone('gi-oil-m', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Olive oil (500ml)</div><div class="gi-meta">monthly bottle</div></div>
+          <div class="gi-right"><div class="gi-price">280 ৳</div><a class="gi-buy" href="https://chaldal.com/olivital-extra-virgin-olive-oil-1-ltr" target="_blank">Chaldal →</a></div>
+        </div>
       </div>
 
       <div class="grocery-cat">
         <div class="gc-head"><div class="gc-name">Supplement</div><div class="gc-total">6,000 ৳</div></div>
-        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">VPA Premium Whey 1kg</div><div class="gi-meta">33 servings</div></div>
-          <div><div class="gi-price">6,000 ৳</div><div class="gi-where">Iron Valley</div></div></div>
+        <div class="gi" id="gi-whey-m">
+          <div class="gi-check" onclick="toggleDone('gi-whey-m', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">VPA Premium Whey 1kg</div><div class="gi-meta">33 servings · ~1 month</div></div>
+          <div class="gi-right"><div class="gi-price">6,000 ৳</div><a class="gi-buy local" href="https://theironvalley.com/shop/vpa-premium-whey-wpc/" target="_blank">Iron Valley</a></div>
+        </div>
       </div>
 
-      <div class="grand-total"><div class="gt-l">Monthly Total</div><div class="gt-v">~14,420 ৳</div></div>
+      <div class="grand-total"><div class="gt-l">Monthly Total</div><div class="gt-v">~14,880 ৳</div></div>
+
+      <a href="https://chaldal.com" target="_blank" class="chaldal-cta">
+        <div class="cta-left"><div class="cta-label">Smartest option · single bulk order</div><div class="cta-title">Open Chaldal →</div></div>
+        <div class="cta-arrow">↗</div>
+      </a>
     </div>
   </section>
 
@@ -724,49 +834,17 @@
 
     <div class="sec-head"><div class="sec-title">Protein Per Meal</div></div>
 
-    <div class="portion-card">
-      <div class="pc-top"><div class="pc-name">🥣 Breakfast</div><div class="pc-amt">32g</div></div>
-      <div class="pc-bar"><div class="pc-fill" style="width: 25%"></div></div>
-      <div class="pc-tip">3 eggs (19g) + 60g oats (8g) + 200ml milk (5g). Sustained energy + protein in one shot.</div>
-    </div>
-    <div class="portion-card">
-      <div class="pc-top"><div class="pc-name">🍗 Lunch</div><div class="pc-amt">48g</div></div>
-      <div class="pc-bar"><div class="pc-fill" style="width: 38%"></div></div>
-      <div class="pc-tip">180g raw chicken breast. Palm-sized + a bit. Weigh once, eyeball forever after.</div>
-    </div>
-    <div class="portion-card">
-      <div class="pc-top"><div class="pc-name">💪 Whey Shake</div><div class="pc-amt">23g</div></div>
-      <div class="pc-bar"><div class="pc-fill" style="width: 18%"></div></div>
-      <div class="pc-tip">1 scoop VPA WPC. Window: within 30 min of last gym set.</div>
-    </div>
-    <div class="portion-card">
-      <div class="pc-top"><div class="pc-name">🥜 Snack</div><div class="pc-amt">9g</div></div>
-      <div class="pc-bar"><div class="pc-fill" style="width: 7%"></div></div>
-      <div class="pc-tip">25g mixed nuts (6g) + fruit (1-3g). Bridge calories; protein bonus.</div>
-    </div>
-    <div class="portion-card">
-      <div class="pc-top"><div class="pc-name">🐟 Dinner</div><div class="pc-amt">35g</div></div>
-      <div class="pc-bar"><div class="pc-fill" style="width: 28%"></div></div>
-      <div class="pc-tip">180g raw fish (28g) + 120g chickpeas (7g). Lighter on gut before sleep.</div>
-    </div>
+    <div class="portion-card"><div class="pc-top"><div class="pc-name">🥣 Breakfast</div><div class="pc-amt">32g</div></div><div class="pc-bar"><div class="pc-fill" style="width: 25%"></div></div><div class="pc-tip">3 eggs (19g) + 60g oats (8g) + 200ml milk (5g). Sustained energy + protein in one shot.</div></div>
+    <div class="portion-card"><div class="pc-top"><div class="pc-name">🍗 Lunch</div><div class="pc-amt">48g</div></div><div class="pc-bar"><div class="pc-fill" style="width: 38%"></div></div><div class="pc-tip">180g raw chicken breast. Palm-sized + a bit. Weigh once, eyeball forever after.</div></div>
+    <div class="portion-card"><div class="pc-top"><div class="pc-name">💪 Whey Shake</div><div class="pc-amt">23g</div></div><div class="pc-bar"><div class="pc-fill" style="width: 18%"></div></div><div class="pc-tip">1 scoop VPA WPC. Within 30 min of last gym set.</div></div>
+    <div class="portion-card"><div class="pc-top"><div class="pc-name">🥜 Snack</div><div class="pc-amt">9g</div></div><div class="pc-bar"><div class="pc-fill" style="width: 7%"></div></div><div class="pc-tip">25g mixed nuts (6g) + fruit (1-3g). Bridge calories; protein bonus.</div></div>
+    <div class="portion-card"><div class="pc-top"><div class="pc-name">🐟 Dinner</div><div class="pc-amt">35g</div></div><div class="pc-bar"><div class="pc-fill" style="width: 28%"></div></div><div class="pc-tip">180g raw fish (28g) + 120g kabuli chola (7g). Lighter on gut before sleep.</div></div>
 
     <div class="sec-head"><div class="sec-title">Carb Portions</div></div>
 
-    <div class="portion-card">
-      <div class="pc-top"><div class="pc-name">🍠 Sweet Potato</div><div class="pc-amt">250g</div></div>
-      <div class="pc-bar"><div class="pc-fill carb" style="width: 60%"></div></div>
-      <div class="pc-tip">~1 medium-large sweet potato. ~50g carbs, way better blood sugar profile than rice.</div>
-    </div>
-    <div class="portion-card">
-      <div class="pc-top"><div class="pc-name">🌾 Oats</div><div class="pc-amt">60g dry</div></div>
-      <div class="pc-bar"><div class="pc-fill carb" style="width: 30%"></div></div>
-      <div class="pc-tip">~½ cup dry; doubles when cooked. ~36g slow-burning carbs.</div>
-    </div>
-    <div class="portion-card">
-      <div class="pc-top"><div class="pc-name">🫘 Chickpeas</div><div class="pc-amt">120g cooked</div></div>
-      <div class="pc-bar"><div class="pc-fill carb" style="width: 30%"></div></div>
-      <div class="pc-tip">~½ cup cooked. Pre-boil a week's worth Sunday night; store in fridge.</div>
-    </div>
+    <div class="portion-card"><div class="pc-top"><div class="pc-name">🍠 Sweet Potato</div><div class="pc-amt">250g</div></div><div class="pc-bar"><div class="pc-fill carb" style="width: 60%"></div></div><div class="pc-tip">~1 medium-large sweet potato. ~50g carbs; way better blood sugar than rice.</div></div>
+    <div class="portion-card"><div class="pc-top"><div class="pc-name">🌾 Oats</div><div class="pc-amt">60g dry</div></div><div class="pc-bar"><div class="pc-fill carb" style="width: 30%"></div></div><div class="pc-tip">~½ cup dry; doubles when cooked. ~36g slow-burning carbs.</div></div>
+    <div class="portion-card"><div class="pc-top"><div class="pc-name">🫘 Kabuli Chola</div><div class="pc-amt">120g cooked</div></div><div class="pc-bar"><div class="pc-fill carb" style="width: 30%"></div></div><div class="pc-tip">~½ cup cooked from 50g dry. Soak overnight, boil 30 min Sunday, store week's batch in fridge.</div></div>
 
     <div style="background: var(--surface); border-radius: 16px; padding: 16px; margin-top: 16px;">
       <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px;">Daily Total</div>
@@ -815,6 +893,11 @@
   }
 
   function toggleMeal(card) { card.classList.toggle('open'); }
+
+  function toggleDone(id, ev) {
+    ev.stopPropagation();
+    document.getElementById(id).classList.toggle('done');
+  }
 
   function switchGrocery(view, btn) {
     document.querySelectorAll('.gview').forEach(v => v.style.display = 'none');
