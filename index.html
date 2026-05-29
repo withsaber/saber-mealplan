@@ -602,6 +602,170 @@
   }
   .modal-btn.primary { background: var(--text); color: #000; }
   .modal-btn:active { opacity: 0.8; }
+
+  /* ─── EXERCISE MODAL ─── */
+  .ex-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 200;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .ex-modal.open { display: flex; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .ex-modal-card {
+    background: var(--surface-2);
+    border-radius: 24px 24px 0 0;
+    width: 100%;
+    max-width: 560px;
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: 24px;
+    padding-bottom: calc(24px + var(--safe-bottom));
+    animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .ex-modal-handle {
+    width: 40px; height: 4px;
+    background: var(--surface-4);
+    border-radius: 99px;
+    margin: 0 auto 18px;
+  }
+  .ex-modal-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+  .ex-modal-tag {
+    display: inline-block;
+    font-size: 9px; font-weight: 800;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--surface-3); color: var(--text-mid);
+    padding: 4px 8px; border-radius: 5px;
+    margin-bottom: 8px;
+  }
+  .ex-modal-name { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 8px; }
+  .ex-modal-close {
+    width: 32px; height: 32px;
+    background: var(--surface-3);
+    border: none; border-radius: 50%;
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ex-modal-meta {
+    display: flex; gap: 14px;
+    font-size: 12px; color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .ex-modal-meta b { color: var(--text); font-weight: 700; }
+
+  .ex-illust-wrap {
+    background: linear-gradient(135deg, #1A1A1A, #0A0A0A);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 18px;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 220px;
+  }
+  .ex-illust { max-width: 280px; width: 100%; height: auto; }
+  .ex-illust path, .ex-illust circle, .ex-illust line, .ex-illust ellipse, .ex-illust polyline {
+    stroke: #FFFFFF;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ex-illust .arrow { stroke: var(--green); stroke-width: 2.5; }
+  .ex-illust .weight { fill: #FFFFFF; stroke: none; }
+  .ex-illust .bench { fill: rgba(255,255,255,0.08); stroke: #FFFFFF; }
+
+  .ex-section { margin-bottom: 20px; }
+  .ex-section-label {
+    font-size: 10px; font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .ex-cue-list { list-style: none; }
+  .ex-cue-list li {
+    padding: 10px 0 10px 28px;
+    font-size: 13px; line-height: 1.6;
+    color: var(--text-mid);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .ex-cue-list li:last-child { border-bottom: none; }
+  .ex-cue-list li::before {
+    content: '✓';
+    position: absolute; left: 0; top: 11px;
+    width: 18px; height: 18px;
+    background: var(--green);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800;
+  }
+
+  .ex-warn-list { list-style: none; }
+  .ex-warn-list li {
+    padding: 10px 0 10px 28px;
+    font-size: 13px; line-height: 1.6;
+    color: var(--text-mid);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .ex-warn-list li:last-child { border-bottom: none; }
+  .ex-warn-list li::before {
+    content: '✗';
+    position: absolute; left: 0; top: 11px;
+    width: 18px; height: 18px;
+    background: var(--red);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800;
+  }
+
+  .ex-video-btn {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: var(--text);
+    font-family: inherit;
+    text-decoration: none;
+    margin-bottom: 6px;
+    transition: background 0.2s;
+  }
+  .ex-video-btn:active { background: var(--surface-3); }
+  .ex-video-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+  .ex-video-icon {
+    width: 36px; height: 36px;
+    background: #FF0000;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 14px;
+    flex-shrink: 0;
+  }
+  .ex-video-info { flex: 1; min-width: 0; }
+  .ex-video-title { font-size: 13px; font-weight: 700; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; }
+  .ex-video-channel { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .ex-video-arrow { font-size: 16px; color: var(--text-muted); }
+
+  /* Make exercise rows tappable */
+  .ex-row { cursor: pointer; transition: background 0.15s; }
+  .ex-row:active { background: var(--surface-3); }
+  .ex-row .ex-info-icon {
+    margin-left: auto;
+    width: 18px; height: 18px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
 </style>
 </head>
 <body>
@@ -799,96 +963,7 @@
 
     <!-- WEEKLY VIEW -->
     <div id="workout-weekly" class="wview">
-      <div class="workout-day" onclick="this.classList.toggle('open')">
-        <div class="wd-head">
-          <div class="wd-day-label">Monday</div>
-          <div class="wd-tag push">Push</div>
-        </div>
-        <div class="wd-name">Chest · Shoulders · Triceps</div>
-        <div class="wd-meta">5 exercises · ~55 min</div>
-        <ul class="ex-list">
-          <li class="ex-row"><div class="ex-num">1</div><div class="ex-name">Barbell Bench Press</div><div class="ex-sets">3×8-10</div></li>
-          <li class="ex-row"><div class="ex-num">2</div><div class="ex-name">Incline Dumbbell Press</div><div class="ex-sets">3×10-12</div></li>
-          <li class="ex-row"><div class="ex-num">3</div><div class="ex-name">Seated Shoulder Press</div><div class="ex-sets">3×10-12</div></li>
-          <li class="ex-row"><div class="ex-num">4</div><div class="ex-name">Lateral Raises</div><div class="ex-sets">3×12-15</div></li>
-          <li class="ex-row"><div class="ex-num">5</div><div class="ex-name">Tricep Pushdowns / Dips</div><div class="ex-sets">3×12</div></li>
-        </ul>
-      </div>
-
-      <div class="workout-day" onclick="this.classList.toggle('open')">
-        <div class="wd-head">
-          <div class="wd-day-label">Tuesday</div>
-          <div class="wd-tag pull">Pull</div>
-        </div>
-        <div class="wd-name">Back · Biceps</div>
-        <div class="wd-meta">5 exercises · ~55 min</div>
-        <ul class="ex-list">
-          <li class="ex-row"><div class="ex-num">1</div><div class="ex-name">Lat Pulldown</div><div class="ex-sets">3×10-12</div></li>
-          <li class="ex-row"><div class="ex-num">2</div><div class="ex-name">Seated Cable Row</div><div class="ex-sets">3×10-12</div></li>
-          <li class="ex-row"><div class="ex-num">3</div><div class="ex-name">Dumbbell Row (single arm)</div><div class="ex-sets">3×10/side</div></li>
-          <li class="ex-row"><div class="ex-num">4</div><div class="ex-name">Face Pulls</div><div class="ex-sets">3×15</div></li>
-          <li class="ex-row"><div class="ex-num">5</div><div class="ex-name">Dumbbell Curls</div><div class="ex-sets">3×12</div></li>
-        </ul>
-      </div>
-
-      <div class="workout-day" onclick="this.classList.toggle('open')">
-        <div class="wd-head">
-          <div class="wd-day-label">Wednesday</div>
-          <div class="wd-tag legs">Legs</div>
-        </div>
-        <div class="wd-name">Quads · Glutes · Hamstrings</div>
-        <div class="wd-meta">5 exercises · ~60 min</div>
-        <ul class="ex-list">
-          <li class="ex-row"><div class="ex-num">1</div><div class="ex-name">Goblet Squat (or Back Squat)</div><div class="ex-sets">3×10-12</div></li>
-          <li class="ex-row"><div class="ex-num">2</div><div class="ex-name">Romanian Deadlift</div><div class="ex-sets">3×10</div></li>
-          <li class="ex-row"><div class="ex-num">3</div><div class="ex-name">Leg Press</div><div class="ex-sets">3×12-15</div></li>
-          <li class="ex-row"><div class="ex-num">4</div><div class="ex-name">Walking Lunges (light dumbbells)</div><div class="ex-sets">3×12/side</div></li>
-          <li class="ex-row"><div class="ex-num">5</div><div class="ex-name">Standing Calf Raises</div><div class="ex-sets">3×15-20</div></li>
-        </ul>
-      </div>
-
-      <div class="workout-day" onclick="this.classList.toggle('open')">
-        <div class="wd-head">
-          <div class="wd-day-label">Thursday</div>
-          <div class="wd-tag full">Full Body</div>
-        </div>
-        <div class="wd-name">Stamina + Conditioning</div>
-        <div class="wd-meta">6 exercises (circuit) · ~50 min</div>
-        <ul class="ex-list">
-          <li class="ex-row"><div class="ex-num">1</div><div class="ex-name">Kettlebell or Dumbbell Swings</div><div class="ex-sets">3×15</div></li>
-          <li class="ex-row"><div class="ex-num">2</div><div class="ex-name">Push-Ups</div><div class="ex-sets">3×12-15</div></li>
-          <li class="ex-row"><div class="ex-num">3</div><div class="ex-name">Goblet Squats (light)</div><div class="ex-sets">3×12</div></li>
-          <li class="ex-row"><div class="ex-num">4</div><div class="ex-name">Inverted Rows / TRX Rows</div><div class="ex-sets">3×10</div></li>
-          <li class="ex-row"><div class="ex-num">5</div><div class="ex-name">Plank Hold</div><div class="ex-sets">3×45 sec</div></li>
-          <li class="ex-row"><div class="ex-num">6</div><div class="ex-name">Light Cardio (treadmill / bike)</div><div class="ex-sets">15 min</div></li>
-        </ul>
-      </div>
-
-      <div class="workout-day" onclick="this.classList.toggle('open')">
-        <div class="wd-head">
-          <div class="wd-day-label">Friday</div>
-          <div class="wd-tag cardio">Upper + Cardio</div>
-        </div>
-        <div class="wd-name">Posterior Chain + Endurance</div>
-        <div class="wd-meta">5 + cardio · ~55 min</div>
-        <ul class="ex-list">
-          <li class="ex-row"><div class="ex-num">1</div><div class="ex-name">Pull-Ups (assisted if needed)</div><div class="ex-sets">3×6-10</div></li>
-          <li class="ex-row"><div class="ex-num">2</div><div class="ex-name">Dumbbell Shoulder Press</div><div class="ex-sets">3×10</div></li>
-          <li class="ex-row"><div class="ex-num">3</div><div class="ex-name">Cable Chest Fly</div><div class="ex-sets">3×12</div></li>
-          <li class="ex-row"><div class="ex-num">4</div><div class="ex-name">Rear Delt Fly</div><div class="ex-sets">3×15</div></li>
-          <li class="ex-row"><div class="ex-num">5</div><div class="ex-name">Hammer Curls</div><div class="ex-sets">3×12</div></li>
-          <li class="ex-row"><div class="ex-num">6</div><div class="ex-name">Steady-state cardio</div><div class="ex-sets">20 min</div></li>
-        </ul>
-      </div>
-
-      <div class="workout-day" style="opacity:0.6">
-        <div class="wd-head">
-          <div class="wd-day-label">Saturday + Sunday</div>
-          <div class="wd-tag full">Recovery</div>
-        </div>
-        <div class="wd-name">Sauna · Steam · Light Walk</div>
-        <div class="wd-meta">Active rest · no lifting · 30-min walk</div>
-      </div>
+      <div id="weekly-workouts-container"></div>
     </div>
 
     <!-- TODAY VIEW -->
@@ -1232,6 +1307,44 @@
 
 </div>
 
+<!-- ═══ EXERCISE MODAL ═══ -->
+<div class="ex-modal" id="ex-modal" onclick="if(event.target===this) closeExModal()">
+  <div class="ex-modal-card" id="ex-modal-card">
+    <div class="ex-modal-handle"></div>
+    <div class="ex-modal-head">
+      <div style="flex:1; min-width:0">
+        <div class="ex-modal-tag" id="ex-modal-tag">Exercise</div>
+        <div class="ex-modal-name" id="ex-modal-name">Loading</div>
+      </div>
+      <button class="ex-modal-close" onclick="closeExModal()">✕</button>
+    </div>
+    <div class="ex-modal-meta">
+      <div><b id="ex-modal-sets">3×10</b> sets · reps</div>
+      <div><b id="ex-modal-rest">90s</b> rest</div>
+      <div id="ex-modal-equip-wrap"><b id="ex-modal-equip">Barbell</b></div>
+    </div>
+
+    <div class="ex-illust-wrap">
+      <div id="ex-modal-illust"></div>
+    </div>
+
+    <div class="ex-section">
+      <div class="ex-section-label">Form Cues · Do This</div>
+      <ul class="ex-cue-list" id="ex-modal-cues"></ul>
+    </div>
+
+    <div class="ex-section">
+      <div class="ex-section-label">Avoid · Common Mistakes</div>
+      <ul class="ex-warn-list" id="ex-modal-warns"></ul>
+    </div>
+
+    <div class="ex-section">
+      <div class="ex-section-label">Watch · Reference Videos</div>
+      <div id="ex-modal-videos"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ ADD HABIT MODAL ═══ -->
 <div class="modal-overlay" id="habit-modal">
   <div class="modal">
@@ -1338,10 +1451,47 @@
     document.getElementById('today-wd-tag').className = 'wd-tag ' + w.tag;
     document.getElementById('today-wd-name').textContent = w.title;
     document.getElementById('today-wd-list').innerHTML = w.exercises.map((ex, i) =>
-      `<li class="ex-row"><div class="ex-num">${i+1}</div><div class="ex-name">${ex[0]}</div><div class="ex-sets">${ex[1]}</div></li>`
+      `<li class="ex-row" onclick="event.stopPropagation(); exRowClick('${ex[0].replace(/'/g, "\\'")}','${ex[1]}')"><div class="ex-num">${i+1}</div><div class="ex-name">${ex[0]}</div><div class="ex-sets">${ex[1]}</div></li>`
     ).join('');
   }
   renderTodayWorkout();
+
+  // Render weekly workouts view
+  function renderWeeklyWorkouts() {
+    const dayNames = ['','Monday','Tuesday','Wednesday','Thursday','Friday'];
+    const container = document.getElementById('weekly-workouts-container');
+    let html = '';
+    for (let i = 1; i <= 5; i++) {
+      const w = workouts[i];
+      html += `
+        <div class="workout-day" onclick="this.classList.toggle('open')">
+          <div class="wd-head">
+            <div class="wd-day-label">${dayNames[i]}</div>
+            <div class="wd-tag ${w.tag}">${w.name}</div>
+          </div>
+          <div class="wd-name">${w.title}</div>
+          <div class="wd-meta">${w.exercises.length} exercises · ~55-60 min</div>
+          <ul class="ex-list">
+            ${w.exercises.map((ex, idx) =>
+              `<li class="ex-row" onclick="event.stopPropagation(); exRowClick('${ex[0].replace(/'/g, "\\'")}','${ex[1]}')"><div class="ex-num">${idx+1}</div><div class="ex-name">${ex[0]}</div><div class="ex-sets">${ex[1]}</div></li>`
+            ).join('')}
+          </ul>
+        </div>
+      `;
+    }
+    html += `
+      <div class="workout-day" style="opacity:0.6">
+        <div class="wd-head">
+          <div class="wd-day-label">Saturday + Sunday</div>
+          <div class="wd-tag full">Recovery</div>
+        </div>
+        <div class="wd-name">Sauna · Steam · Light Walk</div>
+        <div class="wd-meta">Active rest · no lifting · 30-min walk</div>
+      </div>
+    `;
+    container.innerHTML = html;
+  }
+  renderWeeklyWorkouts();
 
   // Set today's lunch
   const proteinRotation = ['🐟 Fish','🍗 Chicken','🥩 Beef','🍗 Chicken','🐟 Fish','🍗 Chicken','🥩 Beef'];
@@ -1591,8 +1741,1042 @@
     renderHabits();
   }
 
-  // Initial render
-  renderHabits();
+  // ──────── EXERCISE DATABASE ────────
+  // Curated YouTube IDs from Jeff Nippard, Athlean-X, Renaissance Periodization
+  const exDB = {
+    'Barbell Bench Press': {
+      tag: 'Push · Chest', equip: 'Barbell + bench', rest: '90-120s',
+      illust: 'bench',
+      cues: [
+        'Lie flat, eyes directly under the bar',
+        'Squeeze shoulder blades back and down (proud chest)',
+        'Grip slightly wider than shoulders, full thumb wrap',
+        'Lower bar to mid-chest with control (2-3 sec)',
+        'Press up explosively; lock out without flaring elbows'
+      ],
+      warns: [
+        'Bouncing the bar off your chest',
+        'Flaring elbows out 90° (shoulder injury risk)',
+        'Lifting hips off the bench',
+        'Not retracting shoulder blades'
+      ],
+      videos: [
+        { t: 'PERFECT Bench Press Technique', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=vcBig73ojpE' },
+        { t: 'How To Bench Press (Avoid These Mistakes)', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=4Y2ZdHCOXok' }
+      ]
+    },
+    'Incline Dumbbell Press': {
+      tag: 'Push · Upper Chest', equip: 'Dumbbells + incline bench', rest: '60-90s',
+      illust: 'incline',
+      cues: [
+        'Set bench to 30-45° (not steeper)',
+        'Start with dumbbells at chest level, palms forward',
+        'Press up and slightly inward (handles meet at top)',
+        'Keep slight bend at elbow at lockout',
+        'Control the descent (2 sec down)'
+      ],
+      warns: [
+        'Setting incline too steep (becomes shoulder press)',
+        'Slamming dumbbells together at top',
+        'Letting elbows drop below shoulder line',
+        'Bouncing reps fast'
+      ],
+      videos: [
+        { t: 'Incline DB Press Form Guide', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=8iPEnn-ltC8' },
+        { t: 'Best Upper Chest Exercise', c: 'Renaissance Periodization', u: 'https://www.youtube.com/watch?v=5CECBjd7HLQ' }
+      ]
+    },
+    'Seated Shoulder Press': {
+      tag: 'Push · Shoulders', equip: 'Dumbbells or barbell', rest: '90s',
+      illust: 'press',
+      cues: [
+        'Sit upright, back flat against pad',
+        'Start with weights at ear level, elbows at ~90°',
+        'Press up in a slight arc (weights meet overhead)',
+        'Squeeze shoulders at top without shrugging',
+        'Lower under control, full range'
+      ],
+      warns: [
+        'Arching lower back excessively',
+        'Pressing weights too far forward',
+        'Shrugging shoulders up to ears',
+        'Half reps (not lowering to ear level)'
+      ],
+      videos: [
+        { t: 'Overhead Press Tutorial', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=2yjwXTZQDDI' },
+        { t: 'How To Build Boulder Shoulders', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=qEwKCR5JCog' }
+      ]
+    },
+    'Lateral Raises': {
+      tag: 'Push · Side Delts', equip: 'Light dumbbells', rest: '45-60s',
+      illust: 'lateral',
+      cues: [
+        'Stand tall, dumbbells at sides, slight elbow bend',
+        'Raise arms out to sides until parallel to floor',
+        'Lead with elbows, not hands',
+        'Pause briefly at top; squeeze side delt',
+        'Lower slowly (3 sec down)'
+      ],
+      warns: [
+        'Using momentum (swinging body)',
+        'Going above shoulder height (trap takes over)',
+        'Too heavy (form breaks down)',
+        'Wrists higher than elbows'
+      ],
+      videos: [
+        { t: 'Lateral Raise Perfect Form', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=PzsLLg9aiIs' }
+      ]
+    },
+    'Tricep Pushdowns / Dips': {
+      tag: 'Push · Triceps', equip: 'Cable or dip bars', rest: '60s',
+      illust: 'pushdown',
+      cues: [
+        'Pushdowns: elbows pinned to ribs, push straight down',
+        'Squeeze triceps hard at bottom',
+        'Dips: lean slightly forward for triceps emphasis',
+        'Lower until upper arms parallel to floor',
+        'Full lockout at top'
+      ],
+      warns: [
+        'Elbows flaring out on pushdowns',
+        'Going too low on dips (shoulder strain)',
+        'Using bodyweight swing for momentum',
+        'Partial range of motion'
+      ],
+      videos: [
+        { t: 'Tricep Pushdown Tutorial', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=2-LAMcpzODU' }
+      ]
+    },
+    'Lat Pulldown': {
+      tag: 'Pull · Lats', equip: 'Cable machine + bar', rest: '75s',
+      illust: 'pulldown',
+      cues: [
+        'Grip slightly wider than shoulders, palms forward',
+        'Lean back ~15°, chest up',
+        'Pull bar to upper chest (collarbone area)',
+        'Lead with elbows; squeeze lats at bottom',
+        'Control the return (3 sec up)'
+      ],
+      warns: [
+        'Pulling bar behind neck (shoulder risk)',
+        'Excessive leaning back (becomes a row)',
+        'Bouncing reps using body weight',
+        'Pulling with biceps only'
+      ],
+      videos: [
+        { t: 'Lat Pulldown Mistakes', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=SALxEARiMkw' },
+        { t: 'How To Lat Pulldown', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=CAwf7n6Luuc' }
+      ]
+    },
+    'Seated Cable Row': {
+      tag: 'Pull · Mid-Back', equip: 'Cable row station', rest: '75s',
+      illust: 'row',
+      cues: [
+        'Sit upright, knees slightly bent',
+        'Grip handle with neutral or pronated grip',
+        'Pull to lower abdomen, elbows close to body',
+        'Squeeze shoulder blades together',
+        'Control the return; feel the stretch'
+      ],
+      warns: [
+        'Rounding lower back',
+        'Using momentum from rocking torso',
+        'Shrugging shoulders up during pull',
+        'Stopping short (incomplete contraction)'
+      ],
+      videos: [
+        { t: 'Seated Cable Row Form', c: 'Renaissance Periodization', u: 'https://www.youtube.com/watch?v=GZbfZ033f74' }
+      ]
+    },
+    'Dumbbell Row (single arm)': {
+      tag: 'Pull · Lats', equip: 'Dumbbell + bench', rest: '60s/side',
+      illust: 'dbrow',
+      cues: [
+        'One knee + one hand on bench for support',
+        'Back flat, parallel to floor',
+        'Pull dumbbell to hip (not chest)',
+        'Drive elbow back and up',
+        'Squeeze lat at top; lower under control'
+      ],
+      warns: [
+        'Rotating torso to lift heavier weight',
+        'Pulling with bicep instead of back',
+        'Letting shoulder roll forward at bottom',
+        'Rushed reps'
+      ],
+      videos: [
+        { t: 'One Arm DB Row Tutorial', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=DMo3HJoawrU' }
+      ]
+    },
+    'Face Pulls': {
+      tag: 'Pull · Rear Delts', equip: 'Cable + rope', rest: '45-60s',
+      illust: 'facepull',
+      cues: [
+        'Rope attachment at upper-chest/face height',
+        'Pull rope to face, elbows high (above shoulders)',
+        'Hands separate to ears at end position',
+        'Squeeze rear delts and upper back',
+        'Light weight; high reps'
+      ],
+      warns: [
+        'Pulling rope to chest (becomes row)',
+        'Elbows dropping below shoulder line',
+        'Too heavy (loses isolation)',
+        'Hunching shoulders'
+      ],
+      videos: [
+        { t: 'Face Pulls Done Right', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=rep-qVOkqgk' }
+      ]
+    },
+    'Dumbbell Curls': {
+      tag: 'Pull · Biceps', equip: 'Dumbbells', rest: '60s',
+      illust: 'curl',
+      cues: [
+        'Stand tall, dumbbells at sides, palms forward',
+        'Curl one or both up, elbows pinned to ribs',
+        'Squeeze bicep at top',
+        'Lower slowly (3 sec down)',
+        'Full extension at bottom'
+      ],
+      warns: [
+        'Swinging body for momentum',
+        'Elbows drifting forward',
+        'Half reps at top or bottom',
+        'Rotating wrist incorrectly'
+      ],
+      videos: [
+        { t: 'Perfect Bicep Curl', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=ykJmrZ5v0Oo' }
+      ]
+    },
+    'Goblet or Back Squat': {
+      tag: 'Legs · Quads', equip: 'Dumbbell or barbell', rest: '120s',
+      illust: 'squat',
+      cues: [
+        'Feet shoulder-width, toes slightly out',
+        'Goblet: dumbbell at chest. Back squat: bar on upper traps',
+        'Sit back and down; knees track over toes',
+        'Go to parallel (thigh parallel to floor)',
+        'Drive through heels to stand'
+      ],
+      warns: [
+        'Knees caving inward',
+        'Heels lifting off the ground',
+        'Excessive forward lean',
+        'Not hitting parallel (partial reps)'
+      ],
+      videos: [
+        { t: 'PERFECT Squat Tutorial', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=ultWZbUMPL8' },
+        { t: 'Squat Mistakes & Fixes', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=Dy_iT8Olbzg' }
+      ]
+    },
+    'Goblet Squat (or Back Squat)': {
+      tag: 'Legs · Quads', equip: 'Dumbbell or barbell', rest: '120s',
+      illust: 'squat',
+      cues: ['Feet shoulder-width, toes slightly out', 'Goblet: hold dumbbell at chest', 'Sit back and down; knees track over toes', 'Go to parallel; drive through heels'],
+      warns: ['Knees caving inward', 'Heels lifting off', 'Excessive forward lean'],
+      videos: [{ t: 'PERFECT Squat Tutorial', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=ultWZbUMPL8' }]
+    },
+    'Romanian Deadlift': {
+      tag: 'Legs · Hamstrings', equip: 'Barbell or dumbbells', rest: '90-120s',
+      illust: 'rdl',
+      cues: [
+        'Stand with bar at hip height, soft knees',
+        'Hinge at hips, push hips back',
+        'Lower bar along thighs and shins',
+        'Feel stretch in hamstrings; stop at mid-shin',
+        'Drive hips forward to stand up'
+      ],
+      warns: [
+        'Rounding lower back',
+        'Squatting instead of hinging',
+        'Bar drifting away from body',
+        'Locking knees fully'
+      ],
+      videos: [
+        { t: 'Romanian Deadlift Form', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=jEy_czb3RKA' }
+      ]
+    },
+    'Leg Press': {
+      tag: 'Legs · Quads/Glutes', equip: 'Leg press machine', rest: '90s',
+      illust: 'legpress',
+      cues: [
+        'Feet shoulder-width on platform',
+        'Lower back stays pressed against pad',
+        'Lower until knees ~90° (or slight stretch)',
+        'Drive through heels to extend',
+        'Don\'t lock knees fully'
+      ],
+      warns: [
+        'Lower back rounding off pad',
+        'Knees caving inward',
+        'Going too deep (back rounds)',
+        'Locking knees at top'
+      ],
+      videos: [
+        { t: 'Leg Press Tutorial', c: 'Renaissance Periodization', u: 'https://www.youtube.com/watch?v=IZxyjW7MPJQ' }
+      ]
+    },
+    'Walking Lunges (light dumbbells)': {
+      tag: 'Legs · Quads/Glutes', equip: 'Light dumbbells', rest: '60s',
+      illust: 'lunge',
+      cues: [
+        'Stand tall, dumbbells at sides',
+        'Step forward into a long stride',
+        'Lower back knee toward floor (don\'t touch)',
+        'Front knee tracks over toes',
+        'Push through front heel to step forward'
+      ],
+      warns: [
+        'Stride too short (knee goes over toes)',
+        'Leaning forward excessively',
+        'Back knee slamming the floor',
+        'Wobbly hips (slow it down)'
+      ],
+      videos: [
+        { t: 'Walking Lunge Form', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=L8fvypPrzzs' }
+      ]
+    },
+    'Walking Lunges': {
+      tag: 'Legs · Quads/Glutes', equip: 'Bodyweight or DB', rest: '60s',
+      illust: 'lunge',
+      cues: ['Step forward into long stride', 'Lower back knee toward floor', 'Front knee tracks over toes', 'Push through front heel'],
+      warns: ['Stride too short', 'Leaning forward', 'Back knee slamming floor'],
+      videos: [{ t: 'Walking Lunge Form', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=L8fvypPrzzs' }]
+    },
+    'Standing Calf Raises': {
+      tag: 'Legs · Calves', equip: 'Bodyweight or machine', rest: '45s',
+      illust: 'calf',
+      cues: [
+        'Stand on edge of step or platform',
+        'Drop heels below toes (full stretch)',
+        'Rise up to full tip-toe (full contraction)',
+        'Pause 1 sec at top',
+        'Lower slowly (2-3 sec)'
+      ],
+      warns: [
+        'Bouncing reps',
+        'Partial range of motion',
+        'Knees bending during rep',
+        'Rushed tempo'
+      ],
+      videos: [
+        { t: 'Calf Raise Tutorial', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=YMmgqO8Jo-k' }
+      ]
+    },
+    'Kettlebell or Dumbbell Swings': {
+      tag: 'Full Body · Posterior', equip: 'Kettlebell or DB', rest: '45s',
+      illust: 'swing',
+      cues: [
+        'Feet wider than shoulders, KB on floor in front',
+        'Hinge at hips; grab KB with both hands',
+        'Hike KB between legs (like football snap)',
+        'Drive hips forward explosively',
+        'KB swings to shoulder height (not lifted by arms)'
+      ],
+      warns: [
+        'Squatting instead of hinging',
+        'Lifting with arms (it\'s hip-driven)',
+        'Hyperextending at top',
+        'KB too heavy for form'
+      ],
+      videos: [
+        { t: 'Perfect Kettlebell Swing', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=mKDIuUbH94Q' }
+      ]
+    },
+    'Kettlebell Swings': {
+      tag: 'Full Body · Posterior', equip: 'Kettlebell or DB', rest: '45s',
+      illust: 'swing',
+      cues: ['Hinge at hips, hike KB between legs', 'Drive hips forward explosively', 'KB swings to shoulder height', 'Hip-driven, not arm-driven'],
+      warns: ['Squatting instead of hinging', 'Lifting with arms', 'Hyperextending at top'],
+      videos: [{ t: 'Perfect Kettlebell Swing', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=mKDIuUbH94Q' }]
+    },
+    'Push-Ups': {
+      tag: 'Full Body · Chest', equip: 'Bodyweight', rest: '45s',
+      illust: 'pushup',
+      cues: [
+        'Hands slightly wider than shoulders',
+        'Body in straight line head to heels',
+        'Lower chest to ~1 inch from floor',
+        'Elbows 45° from body (not flared 90°)',
+        'Press up explosively'
+      ],
+      warns: [
+        'Hips sagging or piking up',
+        'Elbows flaring out 90°',
+        'Half reps (not lowering all the way)',
+        'Head dropping forward'
+      ],
+      videos: [
+        { t: 'PERFECT Push-Up Form', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=IODxDxX7oi4' }
+      ]
+    },
+    'Goblet Squats (light)': {
+      tag: 'Full Body · Legs', equip: 'Dumbbell', rest: '45s',
+      illust: 'squat',
+      cues: ['Hold DB at chest', 'Feet shoulder-width, toes out slightly', 'Sit back and down to parallel', 'Drive through heels'],
+      warns: ['Knees caving in', 'Heels lifting', 'Forward lean'],
+      videos: [{ t: 'Goblet Squat Tutorial', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=MeIiIdhvXT4' }]
+    },
+    'Inverted Rows / TRX Rows': {
+      tag: 'Full Body · Back', equip: 'Bar or TRX', rest: '60s',
+      illust: 'invertedrow',
+      cues: [
+        'Lie under bar, grip slightly wider than shoulders',
+        'Body straight, heels on floor',
+        'Pull chest to bar',
+        'Squeeze shoulder blades together',
+        'Lower under control'
+      ],
+      warns: [
+        'Hips sagging',
+        'Pulling with arms only (no scapular retraction)',
+        'Half reps',
+        'Bouncing'
+      ],
+      videos: [
+        { t: 'Inverted Row Tutorial', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=KOaCM1HMwU8' }
+      ]
+    },
+    'Plank Hold': {
+      tag: 'Full Body · Core', equip: 'Bodyweight', rest: '30s',
+      illust: 'plank',
+      cues: [
+        'Forearms on floor, elbows under shoulders',
+        'Body straight from head to heels',
+        'Squeeze glutes and brace core',
+        'Breathe normally',
+        'Hold for time goal'
+      ],
+      warns: [
+        'Hips piking up (becomes downward dog)',
+        'Hips sagging (back injury risk)',
+        'Holding breath',
+        'Head dropping'
+      ],
+      videos: [
+        { t: 'Perfect Plank Form', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=pSHjTRCQxIw' }
+      ]
+    },
+    'Light Cardio (treadmill / bike)': {
+      tag: 'Cardio · Endurance', equip: 'Treadmill or bike', rest: 'N/A',
+      illust: 'cardio',
+      cues: [
+        'Aim for Zone 2 (can hold conversation)',
+        'Heart rate ~60-70% of max',
+        'Stay consistent pace for 15 min',
+        'Focus on breathing rhythm',
+        'Cool down last 2 min'
+      ],
+      warns: [
+        'Going too hard (Zone 4-5)',
+        'Sprinting then walking (defeats purpose)',
+        'Holding breath',
+        'Bad posture on bike'
+      ],
+      videos: [
+        { t: 'Zone 2 Cardio Explained', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=NBzuFkD1J7Y' }
+      ]
+    },
+    'Light Cardio': {
+      tag: 'Cardio · Endurance', equip: 'Treadmill or bike', rest: 'N/A',
+      illust: 'cardio',
+      cues: ['Zone 2 pace (can talk)', 'Steady 15 min', 'Focus on breathing'],
+      warns: ['Going too hard', 'Stop-start sprinting'],
+      videos: [{ t: 'Zone 2 Cardio Explained', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=NBzuFkD1J7Y' }]
+    },
+    'Pull-Ups (assisted if needed)': {
+      tag: 'Pull · Lats', equip: 'Pull-up bar', rest: '90s',
+      illust: 'pullup',
+      cues: [
+        'Grip slightly wider than shoulders, palms forward',
+        'Start from dead hang, shoulders engaged',
+        'Pull chest to bar (or chin over bar)',
+        'Lead with chest, drive elbows down',
+        'Lower under control (3 sec)'
+      ],
+      warns: [
+        'Kipping (using momentum)',
+        'Half reps (chin not over bar)',
+        'Shoulders shrugging up at bottom',
+        'Going to failure every set'
+      ],
+      videos: [
+        { t: 'Perfect Pull-Up Tutorial', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=eGo4IYlbE5g' }
+      ]
+    },
+    'Pull-Ups': {
+      tag: 'Pull · Lats', equip: 'Pull-up bar', rest: '90s',
+      illust: 'pullup',
+      cues: ['Grip wider than shoulders', 'Pull chest to bar', 'Lower under control'],
+      warns: ['Kipping', 'Half reps'],
+      videos: [{ t: 'Perfect Pull-Up', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=eGo4IYlbE5g' }]
+    },
+    'Dumbbell Shoulder Press': {
+      tag: 'Push · Shoulders', equip: 'Dumbbells', rest: '90s',
+      illust: 'press',
+      cues: [
+        'Sit upright with back support',
+        'Dumbbells at ear level, palms forward',
+        'Press up; DBs meet slightly overhead',
+        'Squeeze shoulders at top',
+        'Lower under control to ear level'
+      ],
+      warns: [
+        'Arching lower back',
+        'Pressing weights forward',
+        'Half reps',
+        'Going too heavy'
+      ],
+      videos: [
+        { t: 'DB Shoulder Press Tutorial', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=qEwKCR5JCog' }
+      ]
+    },
+    'Cable Chest Fly': {
+      tag: 'Push · Chest', equip: 'Cable machine', rest: '60s',
+      illust: 'fly',
+      cues: [
+        'Cables at chest height (or high for low fly)',
+        'Slight forward lean, one foot back',
+        'Arms slightly bent (locked in that bend)',
+        'Bring hands together in front of chest',
+        'Squeeze pecs hard at end position'
+      ],
+      warns: [
+        'Straightening or bending arms during rep',
+        'Going too heavy (loses isolation)',
+        'Half reps',
+        'Shoulders rolling forward'
+      ],
+      videos: [
+        { t: 'Cable Fly Perfect Form', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=Iwe6AmxVf7o' }
+      ]
+    },
+    'Rear Delt Fly': {
+      tag: 'Pull · Rear Delts', equip: 'Dumbbells or cable', rest: '45s',
+      illust: 'reardelt',
+      cues: [
+        'Hinge forward at hips (45° angle)',
+        'Slight bend in elbows (locked)',
+        'Raise dumbbells out to sides',
+        'Lead with elbows; squeeze rear delts',
+        'Light weight, controlled tempo'
+      ],
+      warns: [
+        'Using momentum (jerking up)',
+        'Going too heavy',
+        'Standing too upright (becomes side raise)',
+        'Hunching back'
+      ],
+      videos: [
+        { t: 'Rear Delt Fly Tutorial', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=KLI2pCqVa8c' }
+      ]
+    },
+    'Hammer Curls': {
+      tag: 'Pull · Biceps', equip: 'Dumbbells', rest: '60s',
+      illust: 'curl',
+      cues: [
+        'Stand tall, DBs at sides, neutral grip (palms in)',
+        'Curl up keeping palms facing each other',
+        'Elbows pinned to ribs',
+        'Squeeze brachialis at top',
+        'Lower slowly'
+      ],
+      warns: [
+        'Swinging body',
+        'Elbows drifting forward',
+        'Rotating wrist',
+        'Half reps'
+      ],
+      videos: [
+        { t: 'Hammer Curl Form', c: 'Athlean-X', u: 'https://www.youtube.com/watch?v=zC3nLlEvin4' }
+      ]
+    },
+    'Steady-state cardio': {
+      tag: 'Cardio · Endurance', equip: 'Treadmill or bike', rest: 'N/A',
+      illust: 'cardio',
+      cues: ['Zone 2 steady pace', '20 min continuous', 'Can hold conversation', 'Breathing rhythm steady'],
+      warns: ['Sprinting then walking', 'Going too hard'],
+      videos: [{ t: 'Zone 2 Cardio Guide', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=NBzuFkD1J7Y' }]
+    },
+    'Steady cardio': {
+      tag: 'Cardio · Endurance', equip: 'Treadmill or bike', rest: 'N/A',
+      illust: 'cardio',
+      cues: ['Zone 2 steady', '20 min', 'Conversation pace'],
+      warns: ['Going too hard'],
+      videos: [{ t: 'Zone 2 Cardio Guide', c: 'Jeff Nippard', u: 'https://www.youtube.com/watch?v=NBzuFkD1J7Y' }]
+    }
+  };
+
+  // ──────── SVG ILLUSTRATIONS (black & white line art) ────────
+  const illustrations = {
+    bench: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Bench -->
+      <rect class="bench" x="60" y="125" width="160" height="14" rx="2"/>
+      <line x1="80" y1="139" x2="80" y2="180"/>
+      <line x1="200" y1="139" x2="200" y2="180"/>
+      <!-- Body lying -->
+      <circle cx="80" cy="118" r="11"/>
+      <line x1="91" y1="120" x2="180" y2="120"/>
+      <line x1="180" y1="120" x2="220" y2="125"/>
+      <line x1="220" y1="125" x2="240" y2="160"/>
+      <line x1="240" y1="160" x2="245" y2="180"/>
+      <!-- Arms pushing -->
+      <line x1="120" y1="120" x2="120" y2="80"/>
+      <line x1="160" y1="120" x2="160" y2="80"/>
+      <!-- Barbell -->
+      <line x1="80" y1="80" x2="200" y2="80" stroke-width="3"/>
+      <circle class="weight" cx="80" cy="80" r="14"/>
+      <circle class="weight" cx="200" cy="80" r="14"/>
+      <!-- Arrow up -->
+      <line class="arrow" x1="140" y1="100" x2="140" y2="65"/>
+      <polyline class="arrow" points="132,72 140,65 148,72"/>
+    </svg>`,
+    incline: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Incline bench -->
+      <polygon class="bench" points="60,170 230,90 230,105 75,180"/>
+      <line x1="60" y1="170" x2="60" y2="190"/>
+      <line x1="220" y1="178" x2="220" y2="190"/>
+      <!-- Body -->
+      <circle cx="195" cy="80" r="10"/>
+      <line x1="190" y1="89" x2="100" y2="145"/>
+      <line x1="100" y1="145" x2="80" y2="170"/>
+      <!-- Arms with DBs -->
+      <line x1="175" y1="95" x2="155" y2="55"/>
+      <line x1="160" y1="105" x2="140" y2="65"/>
+      <rect class="weight" x="145" y="48" width="20" height="14" rx="2"/>
+      <rect class="weight" x="130" y="58" width="20" height="14" rx="2"/>
+      <line class="arrow" x1="150" y1="85" x2="150" y2="35"/>
+      <polyline class="arrow" points="142,42 150,35 158,42"/>
+    </svg>`,
+    press: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Bench seated -->
+      <rect class="bench" x="100" y="130" width="80" height="50" rx="2"/>
+      <line x1="100" y1="180" x2="100" y2="195"/>
+      <line x1="180" y1="180" x2="180" y2="195"/>
+      <!-- Head + body seated -->
+      <circle cx="140" cy="85" r="11"/>
+      <line x1="140" y1="96" x2="140" y2="135"/>
+      <!-- Arms overhead -->
+      <line x1="140" y1="100" x2="110" y2="50"/>
+      <line x1="140" y1="100" x2="170" y2="50"/>
+      <!-- Dumbbells -->
+      <rect class="weight" x="95" y="42" width="22" height="14" rx="2"/>
+      <rect class="weight" x="163" y="42" width="22" height="14" rx="2"/>
+      <!-- Arrows up -->
+      <line class="arrow" x1="106" y1="75" x2="106" y2="30"/>
+      <polyline class="arrow" points="98,38 106,30 114,38"/>
+      <line class="arrow" x1="174" y1="75" x2="174" y2="30"/>
+      <polyline class="arrow" points="166,38 174,30 182,38"/>
+    </svg>`,
+    lateral: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Body standing -->
+      <circle cx="140" cy="50" r="11"/>
+      <line x1="140" y1="61" x2="140" y2="140"/>
+      <line x1="140" y1="140" x2="125" y2="190"/>
+      <line x1="140" y1="140" x2="155" y2="190"/>
+      <!-- Arms raised -->
+      <line x1="140" y1="80" x2="80" y2="80"/>
+      <line x1="140" y1="80" x2="200" y2="80"/>
+      <!-- Dumbbells -->
+      <rect class="weight" x="63" y="73" width="22" height="14" rx="2"/>
+      <rect class="weight" x="195" y="73" width="22" height="14" rx="2"/>
+      <!-- Arrows -->
+      <line class="arrow" x1="100" y1="120" x2="65" y2="95"/>
+      <polyline class="arrow" points="68,105 65,95 75,98"/>
+      <line class="arrow" x1="180" y1="120" x2="215" y2="95"/>
+      <polyline class="arrow" points="205,98 215,95 212,105"/>
+    </svg>`,
+    pushdown: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Cable machine top -->
+      <rect class="bench" x="190" y="20" width="50" height="30" rx="2"/>
+      <line x1="215" y1="50" x2="215" y2="80"/>
+      <!-- Cable bar -->
+      <line x1="195" y1="80" x2="235" y2="80" stroke-width="3"/>
+      <!-- Body -->
+      <circle cx="140" cy="60" r="11"/>
+      <line x1="140" y1="71" x2="140" y2="145"/>
+      <line x1="140" y1="145" x2="125" y2="190"/>
+      <line x1="140" y1="145" x2="155" y2="190"/>
+      <!-- Arms holding bar -->
+      <line x1="140" y1="85" x2="200" y2="100"/>
+      <line x1="200" y1="100" x2="215" y2="80"/>
+      <!-- Arrow down -->
+      <line class="arrow" x1="215" y1="90" x2="215" y2="140"/>
+      <polyline class="arrow" points="207,132 215,140 223,132"/>
+    </svg>`,
+    pulldown: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Top frame -->
+      <rect class="bench" x="40" y="20" width="200" height="14"/>
+      <line x1="140" y1="34" x2="140" y2="55"/>
+      <!-- Bar -->
+      <line x1="90" y1="60" x2="190" y2="60" stroke-width="3"/>
+      <line x1="90" y1="60" x2="90" y2="55"/>
+      <line x1="190" y1="60" x2="190" y2="55"/>
+      <!-- Body seated -->
+      <circle cx="140" cy="100" r="11"/>
+      <line x1="140" y1="111" x2="140" y2="160"/>
+      <rect class="bench" x="100" y="160" width="80" height="14" rx="2"/>
+      <!-- Arms pulling -->
+      <line x1="140" y1="115" x2="105" y2="62"/>
+      <line x1="140" y1="115" x2="175" y2="62"/>
+      <!-- Arrow down -->
+      <line class="arrow" x1="220" y1="65" x2="220" y2="110"/>
+      <polyline class="arrow" points="212,102 220,110 228,102"/>
+    </svg>`,
+    row: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Cable low -->
+      <rect class="bench" x="20" y="120" width="40" height="20" rx="2"/>
+      <line x1="60" y1="130" x2="160" y2="130"/>
+      <!-- Body seated -->
+      <circle cx="200" cy="90" r="11"/>
+      <line x1="200" y1="101" x2="200" y2="140"/>
+      <line x1="200" y1="140" x2="245" y2="155"/>
+      <line x1="200" y1="140" x2="245" y2="165"/>
+      <rect class="bench" x="180" y="140" width="50" height="14" rx="2"/>
+      <!-- Arms pulling -->
+      <line x1="200" y1="115" x2="160" y2="130"/>
+      <!-- Arrow back -->
+      <line class="arrow" x1="155" y1="100" x2="200" y2="105"/>
+      <polyline class="arrow" points="192,98 200,105 192,112"/>
+    </svg>`,
+    dbrow: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Bench -->
+      <rect class="bench" x="40" y="120" width="100" height="14" rx="2"/>
+      <line x1="50" y1="134" x2="50" y2="170"/>
+      <line x1="130" y1="134" x2="130" y2="170"/>
+      <!-- Body bent over -->
+      <circle cx="90" cy="100" r="10"/>
+      <line x1="100" y1="105" x2="200" y2="115"/>
+      <!-- Knee on bench -->
+      <line x1="90" y1="110" x2="90" y2="120"/>
+      <!-- Standing leg -->
+      <line x1="200" y1="115" x2="220" y2="190"/>
+      <!-- Pulling arm -->
+      <line x1="170" y1="115" x2="170" y2="150"/>
+      <line x1="170" y1="150" x2="195" y2="160"/>
+      <rect class="weight" x="185" y="155" width="22" height="14" rx="2"/>
+      <!-- Arrow up -->
+      <line class="arrow" x1="170" y1="170" x2="170" y2="125"/>
+      <polyline class="arrow" points="162,133 170,125 178,133"/>
+    </svg>`,
+    facepull: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Cable high -->
+      <rect class="bench" x="220" y="20" width="40" height="20"/>
+      <line x1="240" y1="40" x2="180" y2="80"/>
+      <line x1="180" y1="80" x2="240" y2="40"/>
+      <!-- Rope split -->
+      <line x1="160" y1="70" x2="180" y2="80"/>
+      <line x1="160" y1="90" x2="180" y2="80"/>
+      <!-- Body standing -->
+      <circle cx="100" cy="70" r="11"/>
+      <line x1="100" y1="81" x2="100" y2="145"/>
+      <line x1="100" y1="145" x2="85" y2="195"/>
+      <line x1="100" y1="145" x2="115" y2="195"/>
+      <!-- Arms pulling to ears -->
+      <line x1="100" y1="85" x2="155" y2="70"/>
+      <line x1="100" y1="85" x2="155" y2="90"/>
+      <!-- Arrow back to face -->
+      <line class="arrow" x1="180" y1="80" x2="125" y2="80"/>
+      <polyline class="arrow" points="132,73 125,80 132,87"/>
+    </svg>`,
+    curl: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Body -->
+      <circle cx="140" cy="50" r="11"/>
+      <line x1="140" y1="61" x2="140" y2="145"/>
+      <line x1="140" y1="145" x2="125" y2="195"/>
+      <line x1="140" y1="145" x2="155" y2="195"/>
+      <!-- Right arm curled up -->
+      <line x1="140" y1="85" x2="160" y2="115"/>
+      <line x1="160" y1="115" x2="155" y2="75"/>
+      <rect class="weight" x="143" y="65" width="22" height="14" rx="2"/>
+      <!-- Left arm down -->
+      <line x1="140" y1="85" x2="115" y2="135"/>
+      <rect class="weight" x="100" y="135" width="22" height="14" rx="2"/>
+      <!-- Arrow curl -->
+      <path class="arrow" d="M 175 110 Q 195 90 175 70" fill="none"/>
+      <polyline class="arrow" points="180,75 175,70 170,76"/>
+    </svg>`,
+    squat: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Body squatting -->
+      <circle cx="140" cy="40" r="11"/>
+      <line x1="140" y1="51" x2="140" y2="100"/>
+      <!-- Hips bent -->
+      <line x1="140" y1="100" x2="110" y2="130"/>
+      <line x1="140" y1="100" x2="170" y2="130"/>
+      <!-- Knees bent -->
+      <line x1="110" y1="130" x2="110" y2="180"/>
+      <line x1="170" y1="130" x2="170" y2="180"/>
+      <!-- Feet -->
+      <line x1="95" y1="180" x2="125" y2="180" stroke-width="3"/>
+      <line x1="155" y1="180" x2="185" y2="180" stroke-width="3"/>
+      <!-- Bar on traps -->
+      <line x1="105" y1="55" x2="175" y2="55" stroke-width="3"/>
+      <circle class="weight" cx="105" cy="55" r="10"/>
+      <circle class="weight" cx="175" cy="55" r="10"/>
+      <!-- Arrow down -->
+      <line class="arrow" x1="220" y1="80" x2="220" y2="160"/>
+      <polyline class="arrow" points="212,152 220,160 228,152"/>
+    </svg>`,
+    rdl: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Body hinged -->
+      <circle cx="170" cy="70" r="11"/>
+      <line x1="160" y1="75" x2="100" y2="100"/>
+      <!-- Spine straight, hinged -->
+      <line x1="100" y1="100" x2="100" y2="180"/>
+      <!-- Legs (slight bend) -->
+      <line x1="100" y1="180" x2="95" y2="195"/>
+      <!-- Arms holding bar -->
+      <line x1="105" y1="105" x2="105" y2="150"/>
+      <line x1="105" y1="150" x2="130" y2="150"/>
+      <!-- Bar -->
+      <line x1="80" y1="150" x2="170" y2="150" stroke-width="3"/>
+      <circle class="weight" cx="80" cy="150" r="10"/>
+      <circle class="weight" cx="170" cy="150" r="10"/>
+      <!-- Hinge arrow -->
+      <path class="arrow" d="M 200 100 Q 220 130 220 165"/>
+      <polyline class="arrow" points="212,157 220,165 228,157"/>
+    </svg>`,
+    legpress: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Sled platform -->
+      <rect class="bench" x="60" y="40" width="80" height="14"/>
+      <!-- Sled rails -->
+      <line x1="60" y1="54" x2="140" y2="140"/>
+      <line x1="140" y1="54" x2="220" y2="140"/>
+      <!-- Body seated -->
+      <circle cx="220" cy="135" r="11"/>
+      <line x1="220" y1="146" x2="220" y2="180"/>
+      <rect class="bench" x="200" y="145" width="40" height="35"/>
+      <!-- Legs to platform -->
+      <line x1="210" y1="160" x2="140" y2="90"/>
+      <line x1="225" y1="160" x2="155" y2="90"/>
+      <!-- Weight on sled -->
+      <circle class="weight" cx="90" cy="35" r="12"/>
+      <!-- Arrow push -->
+      <line class="arrow" x1="170" y1="125" x2="130" y2="85"/>
+      <polyline class="arrow" points="140,87 130,85 132,95"/>
+    </svg>`,
+    lunge: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Body lunging -->
+      <circle cx="120" cy="55" r="11"/>
+      <line x1="120" y1="66" x2="120" y2="120"/>
+      <!-- Front leg -->
+      <line x1="120" y1="120" x2="170" y2="160"/>
+      <line x1="170" y1="160" x2="170" y2="190"/>
+      <!-- Back leg -->
+      <line x1="120" y1="120" x2="80" y2="160"/>
+      <line x1="80" y1="160" x2="60" y2="185"/>
+      <!-- Arms with DBs -->
+      <line x1="120" y1="85" x2="100" y2="120"/>
+      <line x1="120" y1="85" x2="140" y2="120"/>
+      <rect class="weight" x="85" y="120" width="20" height="14" rx="2"/>
+      <rect class="weight" x="130" y="120" width="20" height="14" rx="2"/>
+      <!-- Arrow forward -->
+      <line class="arrow" x1="200" y1="170" x2="240" y2="170"/>
+      <polyline class="arrow" points="232,162 240,170 232,178"/>
+    </svg>`,
+    calf: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Body on tip toes -->
+      <circle cx="140" cy="40" r="11"/>
+      <line x1="140" y1="51" x2="140" y2="140"/>
+      <line x1="140" y1="140" x2="125" y2="170"/>
+      <line x1="140" y1="140" x2="155" y2="170"/>
+      <!-- Feet on tiptoes -->
+      <line x1="115" y1="170" x2="135" y2="180" stroke-width="3"/>
+      <line x1="145" y1="180" x2="165" y2="170" stroke-width="3"/>
+      <!-- Platform -->
+      <line x1="100" y1="180" x2="180" y2="180" stroke-width="3"/>
+      <!-- Arrow up -->
+      <line class="arrow" x1="200" y1="140" x2="200" y2="100"/>
+      <polyline class="arrow" points="192,108 200,100 208,108"/>
+    </svg>`,
+    swing: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Body hinged -->
+      <circle cx="120" cy="60" r="11"/>
+      <line x1="120" y1="71" x2="105" y2="115"/>
+      <line x1="105" y1="115" x2="105" y2="180"/>
+      <!-- Legs spread -->
+      <line x1="105" y1="115" x2="80" y2="180" stroke-width="2"/>
+      <line x1="105" y1="115" x2="130" y2="180" stroke-width="2"/>
+      <!-- Arms holding KB at swing peak -->
+      <line x1="120" y1="80" x2="200" y2="100"/>
+      <!-- Kettlebell -->
+      <circle class="weight" cx="210" cy="105" r="12"/>
+      <line x1="200" y1="100" x2="210" y2="93"/>
+      <line x1="218" y1="98" x2="220" y2="93"/>
+      <!-- Arrow swing path -->
+      <path class="arrow" d="M 90 170 Q 150 130 210 105"/>
+      <polyline class="arrow" points="200,110 210,105 213,115"/>
+    </svg>`,
+    pushup: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Body horizontal -->
+      <circle cx="60" cy="120" r="10"/>
+      <line x1="69" y1="123" x2="220" y2="135"/>
+      <!-- Arms down -->
+      <line x1="100" y1="125" x2="100" y2="170"/>
+      <line x1="180" y1="130" x2="180" y2="170"/>
+      <!-- Legs straight -->
+      <line x1="220" y1="135" x2="240" y2="170"/>
+      <!-- Floor -->
+      <line x1="40" y1="170" x2="260" y2="170" stroke-width="1" stroke-dasharray="4 4"/>
+      <!-- Arrow up -->
+      <line class="arrow" x1="140" y1="160" x2="140" y2="100"/>
+      <polyline class="arrow" points="132,108 140,100 148,108"/>
+    </svg>`,
+    invertedrow: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Bar -->
+      <line x1="80" y1="80" x2="220" y2="80" stroke-width="3"/>
+      <line x1="80" y1="80" x2="80" y2="20"/>
+      <line x1="220" y1="80" x2="220" y2="20"/>
+      <!-- Body hanging under -->
+      <circle cx="150" cy="105" r="10"/>
+      <line x1="158" y1="110" x2="240" y2="155"/>
+      <!-- Arms gripping bar -->
+      <line x1="140" y1="105" x2="135" y2="83"/>
+      <line x1="160" y1="105" x2="165" y2="83"/>
+      <!-- Floor feet -->
+      <line x1="230" y1="160" x2="250" y2="160" stroke-width="3"/>
+      <!-- Arrow up -->
+      <line class="arrow" x1="100" y1="130" x2="100" y2="95"/>
+      <polyline class="arrow" points="92,103 100,95 108,103"/>
+    </svg>`,
+    plank: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Body straight -->
+      <circle cx="60" cy="115" r="10"/>
+      <line x1="69" y1="118" x2="230" y2="135"/>
+      <!-- Forearms on ground -->
+      <line x1="80" y1="120" x2="80" y2="170"/>
+      <line x1="80" y1="170" x2="115" y2="170" stroke-width="3"/>
+      <!-- Legs straight -->
+      <line x1="230" y1="135" x2="245" y2="170"/>
+      <!-- Floor -->
+      <line x1="40" y1="170" x2="260" y2="170" stroke-width="1" stroke-dasharray="4 4"/>
+      <!-- Hold indicator -->
+      <text x="140" y="100" fill="#06C167" font-family="Inter" font-size="14" font-weight="800" text-anchor="middle">HOLD</text>
+    </svg>`,
+    cardio: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Treadmill -->
+      <ellipse cx="140" cy="160" rx="100" ry="20"/>
+      <line x1="40" y1="160" x2="40" y2="100"/>
+      <line x1="240" y1="160" x2="240" y2="100"/>
+      <line x1="40" y1="100" x2="240" y2="100"/>
+      <!-- Display -->
+      <rect class="bench" x="100" y="105" width="80" height="20" rx="3"/>
+      <!-- Body running -->
+      <circle cx="140" cy="50" r="11"/>
+      <line x1="140" y1="61" x2="140" y2="120"/>
+      <line x1="140" y1="120" x2="120" y2="150"/>
+      <line x1="140" y1="120" x2="160" y2="150"/>
+      <!-- Arms -->
+      <line x1="140" y1="80" x2="155" y2="110"/>
+      <line x1="140" y1="80" x2="120" y2="100"/>
+      <!-- Motion lines -->
+      <line class="arrow" x1="60" y1="80" x2="85" y2="80"/>
+      <line class="arrow" x1="65" y1="92" x2="90" y2="92"/>
+    </svg>`,
+    pullup: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Bar -->
+      <line x1="70" y1="40" x2="210" y2="40" stroke-width="4"/>
+      <!-- Bar mounts -->
+      <line x1="70" y1="40" x2="70" y2="20"/>
+      <line x1="210" y1="40" x2="210" y2="20"/>
+      <!-- Body hanging -->
+      <circle cx="140" cy="80" r="11"/>
+      <line x1="140" y1="91" x2="140" y2="175"/>
+      <line x1="140" y1="175" x2="125" y2="195"/>
+      <line x1="140" y1="175" x2="155" y2="195"/>
+      <!-- Arms gripping bar -->
+      <line x1="135" y1="85" x2="115" y2="44"/>
+      <line x1="145" y1="85" x2="165" y2="44"/>
+      <!-- Arrow up -->
+      <line class="arrow" x1="220" y1="120" x2="220" y2="60"/>
+      <polyline class="arrow" points="212,68 220,60 228,68"/>
+    </svg>`,
+    fly: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Cables -->
+      <rect class="bench" x="30" y="40" width="20" height="100"/>
+      <rect class="bench" x="230" y="40" width="20" height="100"/>
+      <line x1="40" y1="90" x2="130" y2="120"/>
+      <line x1="240" y1="90" x2="150" y2="120"/>
+      <!-- Body -->
+      <circle cx="140" cy="60" r="11"/>
+      <line x1="140" y1="71" x2="140" y2="160"/>
+      <line x1="140" y1="160" x2="125" y2="195"/>
+      <line x1="140" y1="160" x2="155" y2="195"/>
+      <!-- Arms slightly bent -->
+      <line x1="140" y1="90" x2="130" y2="120"/>
+      <line x1="140" y1="90" x2="150" y2="120"/>
+      <!-- Arrows in -->
+      <line class="arrow" x1="90" y1="120" x2="120" y2="120"/>
+      <polyline class="arrow" points="113,113 120,120 113,127"/>
+      <line class="arrow" x1="190" y1="120" x2="160" y2="120"/>
+      <polyline class="arrow" points="167,113 160,120 167,127"/>
+    </svg>`,
+    reardelt: `<svg class="ex-illust" viewBox="0 0 280 200">
+      <!-- Body hinged -->
+      <circle cx="100" cy="60" r="11"/>
+      <line x1="110" y1="65" x2="200" y2="100"/>
+      <!-- Legs -->
+      <line x1="200" y1="100" x2="200" y2="190"/>
+      <!-- Arms out wide -->
+      <line x1="160" y1="80" x2="80" y2="120"/>
+      <line x1="180" y1="92" x2="240" y2="60"/>
+      <!-- Dumbbells -->
+      <rect class="weight" x="65" y="115" width="22" height="14" rx="2"/>
+      <rect class="weight" x="232" y="55" width="22" height="14" rx="2"/>
+      <!-- Arrows out -->
+      <line class="arrow" x1="120" y1="125" x2="85" y2="135"/>
+      <polyline class="arrow" points="95,128 85,135 93,142"/>
+      <line class="arrow" x1="210" y1="80" x2="240" y2="68"/>
+      <polyline class="arrow" points="232,62 240,68 235,76"/>
+    </svg>`
+  };
+
+  function openExModal(name) {
+    const ex = exDB[name];
+    if (!ex) {
+      alert('Exercise details coming soon.');
+      return;
+    }
+    document.getElementById('ex-modal-name').textContent = name;
+    document.getElementById('ex-modal-tag').textContent = ex.tag;
+    document.getElementById('ex-modal-equip').textContent = ex.equip;
+    document.getElementById('ex-modal-rest').textContent = ex.rest;
+
+    // Get sets info from current workout context
+    const setInfo = currentExSets || '3×10';
+    document.getElementById('ex-modal-sets').textContent = setInfo;
+
+    document.getElementById('ex-modal-illust').innerHTML = illustrations[ex.illust] || '';
+    document.getElementById('ex-modal-cues').innerHTML = ex.cues.map(c => `<li>${c}</li>`).join('');
+    document.getElementById('ex-modal-warns').innerHTML = ex.warns.map(w => `<li>${w}</li>`).join('');
+    document.getElementById('ex-modal-videos').innerHTML = ex.videos.map(v => `
+      <a href="${v.u}" target="_blank" class="ex-video-btn">
+        <div class="ex-video-left">
+          <div class="ex-video-icon">▶</div>
+          <div class="ex-video-info">
+            <div class="ex-video-title">${v.t}</div>
+            <div class="ex-video-channel">${v.c} · YouTube</div>
+          </div>
+        </div>
+        <div class="ex-video-arrow">↗</div>
+      </a>
+    `).join('');
+
+    document.getElementById('ex-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeExModal() {
+    document.getElementById('ex-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  let currentExSets = null;
+  function exRowClick(name, sets) {
+    currentExSets = sets;
+    openExModal(name);
+  }
+
 
   // PWA
   if ('serviceWorker' in navigator) {
