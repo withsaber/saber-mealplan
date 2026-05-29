@@ -379,7 +379,50 @@
       </div>
     </div>
 
-    <div class="sec-head"><div class="sec-title">Alt Options</div><div class="sec-count">swap anytime</div></div>
+    <div class="sec-head"><div class="sec-title">Alt Options</div><div class="sec-count">2x/week rotation</div></div>
+
+    <div class="meal-card" onclick="toggleMeal(this)">
+      <div class="meal-head">
+        <div class="meal-emoji">🥩</div>
+        <div class="meal-mid">
+          <div class="meal-time">Beef Day · Lunch (Tue/Sat)</div>
+          <div class="meal-name">Air-Fried Lean Beef + Sweet Potato</div>
+          <div class="meal-stats"><span><b>640</b> cal</span><span><b>52g</b> protein</span></div>
+        </div>
+        <div class="meal-chev">▼</div>
+      </div>
+      <div class="meal-body">
+        <div class="body-section">
+          <div class="body-label">Ingredients</div>
+          <ul class="ing-list">
+            <li><span class="ing-name">Lean beef boneless</span><span class="ing-qty">180g (raw)</span></li>
+            <li><span class="ing-name">Sweet potato</span><span class="ing-qty">250g</span></li>
+            <li><span class="ing-name">Olive oil</span><span class="ing-qty">1 tsp</span></li>
+            <li><span class="ing-name">Garlic · pepper · paprika · salt</span><span class="ing-qty">to taste</span></li>
+            <li><span class="ing-name">Lemon · soy sauce (optional)</span><span class="ing-qty">marinade</span></li>
+          </ul>
+        </div>
+        <div class="body-section">
+          <div class="body-label">Method · ~25 min (15 active)</div>
+          <ol class="cook-steps">
+            <li>Cut beef into thin strips against the grain (key for tenderness)</li>
+            <li>Marinate 10 min in oil, garlic, pepper, soy sauce, lemon</li>
+            <li>Cut sweet potato into cubes; toss with salt</li>
+            <li>Air fry sweet potato at 200°C for 15 mins</li>
+            <li>Air fry beef at 200°C for 8-10 mins (medium); shake basket halfway</li>
+            <li>Rest beef 2 min before eating; locks in juices</li>
+          </ol>
+        </div>
+        <div class="body-section">
+          <div class="body-label">Why beef</div>
+          <ul class="ing-list">
+            <li><span class="ing-name">Heme iron · best absorbed form</span><span class="ing-qty">recovery</span></li>
+            <li><span class="ing-name">Natural creatine + B12</span><span class="ing-qty">energy + strength</span></li>
+            <li><span class="ing-name">Zinc · testosterone support</span><span class="ing-qty">recovery</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
     <div class="meal-card" onclick="toggleMeal(this)">
       <div class="meal-head">
@@ -491,6 +534,23 @@
         <div class="tl-desc">9 hours protected. Sleep is when muscle is built and the brain consolidates.</div>
         <span class="tl-pill green">Non-Negotiable</span>
       </div></div>
+    </div>
+
+    <div class="sec-head"><div class="sec-title">Weekly Protein Rotation</div></div>
+
+    <div style="background: var(--surface); border-radius: 14px; padding: 16px; margin-bottom: 8px;">
+      <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px;">Lunch protein varies by day</div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-mid)">Monday</span><span style="font-weight: 700;">🍗 Chicken</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-mid)">Tuesday</span><span style="font-weight: 700;">🥩 Beef</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-mid)">Wednesday</span><span style="font-weight: 700;">🍗 Chicken</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-mid)">Thursday</span><span style="font-weight: 700;">🐟 Fish</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-mid)">Friday</span><span style="font-weight: 700;">🍗 Chicken</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;"><span style="color: var(--text-mid)">Saturday</span><span style="font-weight: 700;">🥩 Beef</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px;"><span style="color: var(--text-mid)">Sunday</span><span style="font-weight: 700;">🐟 Fish</span></div>
+    </div>
+
+    <div style="background: var(--surface-2); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; font-size: 12px; color: var(--text-mid); line-height: 1.6;">
+      Dinner stays fish + kabuli chola most days. Variety prevents boredom and gives complete micronutrient profile across the week.
     </div>
 
     <div class="sec-head"><div class="sec-title">The 7 Rules</div></div>
@@ -644,22 +704,27 @@
     <!-- WEEKLY -->
     <div id="gview-week" class="gview" style="display:none">
       <div class="budget-box">
-        <div class="bb-row"><div class="bb-label">Weekly Budget</div><div class="bb-val ok">~3,720 / 3,750 ৳</div></div>
-        <div class="bb-track"><div class="bb-fill ok" style="width: 99%"></div></div>
-        <div class="bb-foot">15,000 ৳ ÷ 4 weeks</div>
+        <div class="bb-row"><div class="bb-label">Weekly Budget</div><div class="bb-val warn">~4,250 / 3,750 ৳</div></div>
+        <div class="bb-track"><div class="bb-fill warn" style="width: 100%"></div></div>
+        <div class="bb-foot">Slight over weekly · monthly stays within 15,000 ৳</div>
       </div>
 
       <div class="grocery-cat">
-        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~1,960 ৳</div></div>
+        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~2,490 ৳</div></div>
         <div class="gi" id="gi-chicken-w">
           <div class="gi-check" onclick="toggleDone('gi-chicken-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">1.3 kg</div></div>
-          <div class="gi-right"><div class="gi-price">715 ৳</div><a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a></div>
+          <div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">540g · 3 days/week</div></div>
+          <div class="gi-right"><div class="gi-price">297 ৳</div><a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-beef-w">
+          <div class="gi-check" onclick="toggleDone('gi-beef-w', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Lean beef boneless</div><div class="gi-meta">360g · 2 days/week</div></div>
+          <div class="gi-right"><div class="gi-price">288 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-beef-boneless-50-gm-500-gm" target="_blank">Chaldal →</a></div>
         </div>
         <div class="gi" id="gi-fish-w">
           <div class="gi-check" onclick="toggleDone('gi-fish-w', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">1.3 kg</div></div>
-          <div class="gi-right"><div class="gi-price">650 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a></div>
+          <div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">1.65 kg · all dinners + 2 lunches</div></div>
+          <div class="gi-right"><div class="gi-price">825 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a></div>
         </div>
         <div class="gi" id="gi-egg-w">
           <div class="gi-check" onclick="toggleDone('gi-egg-w', event)"><span class="gi-checkmark">✓</span></div>
@@ -724,7 +789,7 @@
         </div>
       </div>
 
-      <div class="grand-total"><div class="gt-l">Weekly Total</div><div class="gt-v">~3,720 ৳</div></div>
+      <div class="grand-total"><div class="gt-l">Weekly Total</div><div class="gt-v">~4,250 ৳</div></div>
 
       <a href="https://chaldal.com" target="_blank" class="chaldal-cta">
         <div class="cta-left"><div class="cta-label">One big weekly order</div><div class="cta-title">Open Chaldal →</div></div>
@@ -735,27 +800,37 @@
     <!-- MONTHLY -->
     <div id="gview-month" class="gview" style="display:none">
       <div class="budget-box">
-        <div class="bb-row"><div class="bb-label">Monthly Budget</div><div class="bb-val ok">~14,880 / 15,000 ৳</div></div>
-        <div class="bb-track"><div class="bb-fill ok" style="width: 99%"></div></div>
-        <div class="bb-foot">120 ৳ buffer · order everything once a month</div>
+        <div class="bb-row"><div class="bb-label">Monthly Budget</div><div class="bb-val warn">~17,125 / 15,000 ৳</div></div>
+        <div class="bb-track"><div class="bb-fill warn" style="width: 100%"></div></div>
+        <div class="bb-foot">~2,125 ৳ over · beef adds quality but costs more</div>
       </div>
 
       <div class="grocery-cat">
-        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~7,930 ৳</div></div>
+        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~7,090 ৳</div></div>
         <div class="gi" id="gi-chicken-m">
           <div class="gi-check" onclick="toggleDone('gi-chicken-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">5.5 kg</div></div>
-          <div class="gi-right"><div class="gi-price">3,020 ৳</div><a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a></div>
+          <div class="gi-info"><div class="gi-name">Chicken breast boneless</div><div class="gi-meta">2.3 kg · 12 lunches</div></div>
+          <div class="gi-right"><div class="gi-price">1,265 ৳</div><a class="gi-buy" href="https://chaldal.com/broiler-chicken-breast-boneless-50-gm-1-kg" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-beef-m">
+          <div class="gi-check" onclick="toggleDone('gi-beef-m', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Lean beef boneless</div><div class="gi-meta">1.5 kg · 8 lunches</div></div>
+          <div class="gi-right"><div class="gi-price">1,200 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-beef-boneless-50-gm-500-gm" target="_blank">Chaldal →</a></div>
         </div>
         <div class="gi" id="gi-fish-m">
           <div class="gi-check" onclick="toggleDone('gi-fish-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">5.5 kg</div></div>
-          <div class="gi-right"><div class="gi-price">2,750 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a></div>
+          <div class="gi-info"><div class="gi-name">Rui fish (curry cut)</div><div class="gi-meta">4.5 kg · ~18 meals (mostly dinner)</div></div>
+          <div class="gi-right"><div class="gi-price">2,250 ৳</div><a class="gi-buy" href="https://chaldal.com/chaldal-premium-rui-fish-headless-curry-cut-7-11-pcs-30-gm-500-gm" target="_blank">Chaldal →</a></div>
         </div>
         <div class="gi" id="gi-egg-m">
           <div class="gi-check" onclick="toggleDone('gi-egg-m', event)"><span class="gi-checkmark">✓</span></div>
-          <div class="gi-info"><div class="gi-name">Eggs (8 dozen)</div><div class="gi-meta">90 pcs needed</div></div>
-          <div class="gi-right"><div class="gi-price">1,200 ৳</div><a class="gi-buy" href="https://chaldal.com/tatka-egg-pack-12-pcs" target="_blank">Chaldal →</a></div>
+          <div class="gi-info"><div class="gi-name">Eggs (10 dozen)</div><div class="gi-meta">~110 pcs · breakfast + dinner alts</div></div>
+          <div class="gi-right"><div class="gi-price">1,375 ৳</div><a class="gi-buy" href="https://chaldal.com/tatka-egg-pack-12-pcs" target="_blank">Chaldal →</a></div>
+        </div>
+        <div class="gi" id="gi-chola-extra-m">
+          <div class="gi-check" onclick="toggleDone('gi-chola-extra-m', event)"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Extra chola for veg dinners</div><div class="gi-meta">already counted in carbs</div></div>
+          <div class="gi-right"><div class="gi-price">— ৳</div><a class="gi-buy" href="https://chaldal.com/bpm-kabuli-chola-500-gm" target="_blank">Chaldal →</a></div>
         </div>
       </div>
 
@@ -815,7 +890,7 @@
         </div>
       </div>
 
-      <div class="grand-total"><div class="gt-l">Monthly Total</div><div class="gt-v">~14,880 ৳</div></div>
+      <div class="grand-total"><div class="gt-l">Monthly Total</div><div class="gt-v">~17,125 ৳</div></div>
 
       <a href="https://chaldal.com" target="_blank" class="chaldal-cta">
         <div class="cta-left"><div class="cta-label">Smartest option · single bulk order</div><div class="cta-title">Open Chaldal →</div></div>
