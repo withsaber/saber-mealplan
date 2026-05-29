@@ -2,1424 +2,827 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Saber's Meal Plan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Saber's Daily System</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0A0A0A">
+<meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0A0A0A;
-    --surface: #131313;
-    --surface2: #1A1A1A;
-    --border: #222;
-    --accent: #F5E642;
-    --accent2: #E8F542;
-    --text: #F0EDE4;
-    --muted: #666;
-    --green: #42F589;
-    --red: #F54242;
-    --orange: #F5A242;
+    --bg: #000000;
+    --surface: #0E0E0E;
+    --surface-2: #1A1A1A;
+    --surface-3: #242424;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.14);
+    --text: #FFFFFF;
+    --text-mid: #BFBFBF;
+    --text-muted: #6B6B6B;
+    --accent: #FFFFFF;
+    --green: #06C167;
+    --yellow: #FFC043;
+    --red: #E11900;
+    --safe-top: env(safe-area-inset-top);
+    --safe-bottom: env(safe-area-inset-bottom);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
 
-  html, body {
+  body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Syne', sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
     min-height: 100vh;
     overflow-x: hidden;
+    padding-bottom: calc(80px + var(--safe-bottom));
   }
 
-  /* ── HEADER ── */
   .header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,10,10,0.92);
-    backdrop-filter: blur(16px);
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    padding: calc(var(--safe-top) + 14px) 20px 14px;
     border-bottom: 1px solid var(--border);
-    padding: 16px 20px 0;
   }
+  .header-row { display: flex; align-items: center; justify-content: space-between; }
+  .greeting-block { display: flex; flex-direction: column; gap: 2px; }
+  .greeting-day { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+  .greeting-name { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  .protein-ring { width: 44px; height: 44px; position: relative; }
+  .protein-ring svg { transform: rotate(-90deg); }
+  .protein-ring-track { stroke: var(--surface-3); }
+  .protein-ring-fill { stroke: var(--green); }
+  .protein-ring-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
 
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-
-  .logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    color: var(--accent);
-    letter-spacing: -0.5px;
-  }
-
-  .logo span { color: var(--text); font-style: italic; }
-
-  .stats-pill {
-    display: flex;
-    gap: 6px;
-  }
-
-  .stat-badge {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 4px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-
-  .stat-badge b { color: var(--accent); }
-
-  /* ── NAV TABS ── */
-  .nav-tabs {
-    display: flex;
-    gap: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding-bottom: 1px;
-  }
-
-  .nav-tabs::-webkit-scrollbar { display: none; }
-
-  .tab-btn {
-    flex-shrink: 0;
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    color: var(--muted);
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .tab-btn.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-
-  /* ── MAIN ── */
-  .main { padding: 20px; max-width: 520px; margin: 0 auto; }
-
+  .main { max-width: 560px; margin: 0 auto; padding: 20px; }
   .section { display: none; }
-  .section.active { display: block; }
+  .section.active { display: block; animation: fadeUp 0.3s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ── TODAY HERO ── */
-  .today-hero {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 16px;
-    position: relative;
-    overflow: hidden;
-  }
+  .hero-stack { display: grid; grid-template-columns: 1.6fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .hero-tile { background: var(--surface); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; }
+  .hero-tile.big { background: var(--text); color: #000; }
+  .tile-label { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.7; margin-bottom: 12px; }
+  .tile-big-num { font-size: 44px; font-weight: 800; line-height: 0.95; letter-spacing: -0.04em; }
+  .tile-sub { font-size: 12px; font-weight: 500; opacity: 0.6; margin-top: 6px; }
+  .tile-small-num { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
 
-  .today-hero::before {
-    content: '';
-    position: absolute;
-    top: -40px; right: -40px;
-    width: 120px; height: 120px;
-    background: radial-gradient(circle, rgba(245,230,66,0.12) 0%, transparent 70%);
-    border-radius: 50%;
-  }
+  .macro-bar { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 20px; }
+  .mb-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .mb-title { font-size: 13px; font-weight: 700; }
+  .mb-val { font-size: 13px; font-weight: 700; color: var(--green); }
+  .mb-track { height: 8px; background: var(--surface-3); border-radius: 99px; overflow: hidden; }
+  .mb-fill { height: 100%; background: linear-gradient(90deg, var(--green), #00E676); border-radius: 99px; transition: width 0.6s ease; }
+  .mb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .mb-cell { text-align: center; padding: 8px 0; background: var(--surface-2); border-radius: 10px; }
+  .mb-cell-val { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+  .mb-cell-lbl { font-size: 9px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
 
-  .today-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
+  .sec-head { display: flex; align-items: center; justify-content: space-between; margin: 24px 0 12px; }
+  .sec-title { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+  .sec-count { font-size: 11px; font-weight: 600; color: var(--text-muted); }
 
-  .today-day {
-    font-family: 'DM Serif Display', serif;
-    font-size: 32px;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 16px;
-  }
-
-  .macro-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-  }
-
-  .macro-item { text-align: center; }
-
-  .macro-val {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .macro-val.green { color: var(--green); }
-  .macro-val.orange { color: var(--orange); }
-
-  .macro-label {
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 3px;
-  }
-
-  /* ── PROTEIN BAR ── */
-  .protein-bar-wrap {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 16px;
-  }
-
-  .pb-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .pb-title { font-size: 12px; font-weight: 700; color: var(--text); }
-  .pb-val { font-size: 12px; font-weight: 700; color: var(--accent); }
-
-  .pb-track {
-    height: 6px;
-    background: var(--border);
-    border-radius: 99px;
-    overflow: hidden;
-  }
-
-  .pb-fill {
-    height: 100%;
-    border-radius: 99px;
-    background: linear-gradient(90deg, var(--green), var(--accent));
-    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  /* ── MEAL CARDS ── */
-  .section-title {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 10px;
-    margin-top: 20px;
-  }
-
-  .meal-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    margin-bottom: 10px;
-    overflow: hidden;
-    transition: border-color 0.2s;
-  }
-
-  .meal-card:active { border-color: var(--accent); }
-
-  .meal-header {
-    display: flex;
-    align-items: center;
-    padding: 14px 16px;
-    cursor: pointer;
-    gap: 12px;
-  }
-
-  .meal-icon {
-    width: 38px; height: 38px;
-    background: var(--surface2);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
-  .meal-info { flex: 1; }
-
-  .meal-time {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .meal-name {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text);
-    margin-top: 2px;
-  }
-
-  .meal-macros {
-    display: flex;
-    gap: 10px;
-    margin-top: 4px;
-  }
-
-  .mm { font-size: 10px; color: var(--muted); }
-  .mm b { color: var(--text); }
-
-  .meal-chevron {
-    font-size: 12px;
-    color: var(--muted);
-    transition: transform 0.25s;
-  }
-
-  .meal-card.open .meal-chevron { transform: rotate(180deg); }
-
-  .meal-body {
-    display: none;
-    padding: 0 16px 14px;
-    border-top: 1px solid var(--border);
-  }
-
+  .meal-card { background: var(--surface); border-radius: 16px; margin-bottom: 10px; overflow: hidden; transition: transform 0.15s; }
+  .meal-card:active { transform: scale(0.98); }
+  .meal-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
+  .meal-emoji { width: 44px; height: 44px; background: var(--surface-2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .meal-mid { flex: 1; min-width: 0; }
+  .meal-time { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+  .meal-name { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4px; }
+  .meal-stats { display: flex; gap: 10px; font-size: 11px; color: var(--text-mid); }
+  .meal-stats b { color: var(--text); font-weight: 700; }
+  .meal-chev { color: var(--text-muted); font-size: 11px; transition: transform 0.25s; }
+  .meal-card.open .meal-chev { transform: rotate(180deg); }
+  .meal-body { display: none; padding: 4px 16px 16px; }
   .meal-card.open .meal-body { display: block; }
+  .body-section { margin-top: 12px; }
+  .body-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .ing-list { list-style: none; }
+  .ing-list li { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .ing-list li:last-child { border-bottom: none; }
+  .ing-name { color: var(--text); }
+  .ing-qty { color: var(--text-muted); font-weight: 600; font-size: 12px; }
+  .cook-steps { counter-reset: step; list-style: none; }
+  .cook-steps li { counter-increment: step; padding: 8px 0 8px 28px; font-size: 13px; line-height: 1.5; color: var(--text-mid); position: relative; }
+  .cook-steps li::before { content: counter(step); position: absolute; left: 0; top: 8px; width: 20px; height: 20px; background: var(--text); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; }
 
-  .ingredient-list {
-    list-style: none;
-    margin-top: 10px;
-  }
-
-  .ingredient-list li {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 0;
-    font-size: 13px;
-    color: var(--text);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .ingredient-list li:last-child { border-bottom: none; }
-
-  .ing-dot {
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .ing-amount {
-    margin-left: auto;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-
-  /* ── WHEY SHAKE CARD ── */
-  .whey-card {
-    background: linear-gradient(135deg, #131a00, #1a1a00);
-    border: 1px solid rgba(245,230,66,0.3);
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .whey-icon {
-    width: 38px; height: 38px;
-    background: rgba(245,230,66,0.1);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
+  .whey-card { background: linear-gradient(135deg, #0E0E0E, #1A1A1A); border: 1px solid var(--border-strong); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
+  .whey-emoji { width: 44px; height: 44px; background: var(--text); color: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
   .whey-info { flex: 1; }
-  .whey-label { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
-  .whey-name { font-size: 15px; font-weight: 700; color: var(--text); margin-top: 2px; }
-  .whey-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .whey-tag { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; background: var(--text); color: #000; padding: 2px 7px; border-radius: 4px; margin-bottom: 4px; }
+  .whey-name { font-size: 15px; font-weight: 700; }
+  .whey-sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
 
-  /* ── ROUTINE SECTION ── */
-  .timeline {
-    position: relative;
-    padding-left: 28px;
-  }
+  .day-banner { background: var(--text); color: #000; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+  .day-banner-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.6; margin-bottom: 6px; }
+  .day-banner-title { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 10px; }
+  .day-banner-sub { font-size: 13px; color: rgba(0,0,0,0.7); line-height: 1.5; }
 
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 8px; top: 8px; bottom: 8px;
-    width: 1px;
-    background: var(--border);
-  }
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 12px; bottom: 12px; width: 2px; background: var(--surface-3); }
+  .tl-item { position: relative; margin-bottom: 12px; }
+  .tl-dot { position: absolute; left: -27px; top: 16px; width: 14px; height: 14px; border-radius: 50%; background: var(--surface-3); border: 3px solid var(--bg); }
+  .tl-item.active .tl-dot { background: var(--green); box-shadow: 0 0 0 3px rgba(6,193,103,0.2); }
+  .tl-item.gym .tl-dot { background: var(--text); }
+  .tl-card { background: var(--surface); border-radius: 14px; padding: 14px 16px; }
+  .tl-time { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+  .tl-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .tl-desc { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
+  .tl-pill { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: var(--surface-2); color: var(--text); padding: 3px 8px; border-radius: 4px; margin-top: 8px; }
+  .tl-pill.green { background: var(--green); color: #fff; }
 
-  .tl-item {
-    position: relative;
-    margin-bottom: 16px;
-  }
+  .toggle-seg { display: flex; background: var(--surface); border-radius: 12px; padding: 4px; margin-bottom: 20px; gap: 2px; }
+  .seg-btn { flex: 1; background: none; border: none; border-radius: 9px; color: var(--text-muted); font-family: inherit; font-size: 13px; font-weight: 700; padding: 10px 0; cursor: pointer; transition: all 0.2s; }
+  .seg-btn.active { background: var(--text); color: #000; }
 
-  .tl-dot {
-    position: absolute;
-    left: -24px;
-    top: 4px;
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--surface2);
-    border: 2px solid var(--border);
-  }
-
-  .tl-item.highlight .tl-dot {
-    background: var(--accent);
-    border-color: var(--accent);
-    box-shadow: 0 0 8px rgba(245,230,66,0.5);
-  }
-
-  .tl-time {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 3px;
-  }
-
-  .tl-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 14px;
-  }
-
-  .tl-item.highlight .tl-card {
-    border-color: rgba(245,230,66,0.2);
-  }
-
-  .tl-title { font-size: 14px; font-weight: 700; color: var(--text); }
-  .tl-desc { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
-
-  .tl-tag {
-    display: inline-block;
-    background: rgba(245,230,66,0.1);
-    color: var(--accent);
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-top: 6px;
-  }
-
-  /* ── GROCERY SECTION ── */
-  .grocery-toggle {
-    display: flex;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 4px;
-    margin-bottom: 20px;
-    gap: 4px;
-  }
-
-  .gt-btn {
-    flex: 1;
-    background: none;
-    border: none;
-    border-radius: 8px;
-    color: var(--muted);
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 8px 4px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-  }
-
-  .gt-btn.active {
-    background: var(--accent);
-    color: #000;
-  }
-
-  .budget-bar-wrap {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 20px;
-  }
-
-  .bb-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-
-  .bb-label { font-size: 12px; font-weight: 700; color: var(--text); }
-  .bb-val { font-size: 12px; font-weight: 700; }
+  .budget-box { background: var(--surface); border-radius: 14px; padding: 14px 16px; margin-bottom: 18px; }
+  .bb-row { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
+  .bb-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .bb-val { font-size: 15px; font-weight: 800; }
   .bb-val.ok { color: var(--green); }
-  .bb-val.warn { color: var(--orange); }
-  .bb-val.over { color: var(--red); }
+  .bb-track { height: 6px; background: var(--surface-3); border-radius: 99px; overflow: hidden; }
+  .bb-fill { height: 100%; border-radius: 99px; }
+  .bb-fill.ok { background: var(--green); }
+  .bb-foot { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
 
-  .bb-track {
-    height: 6px;
-    background: var(--border);
-    border-radius: 99px;
-    overflow: hidden;
-  }
+  .grocery-cat { margin-bottom: 20px; }
+  .gc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .gc-name { font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-mid); }
+  .gc-total { font-size: 12px; font-weight: 700; color: var(--text-muted); }
+  .gi { display: flex; align-items: center; gap: 12px; background: var(--surface); padding: 12px 14px; border-radius: 12px; margin-bottom: 6px; cursor: pointer; transition: opacity 0.2s; }
+  .gi.done { opacity: 0.35; }
+  .gi-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+  .gi.done .gi-check { background: var(--green); border-color: var(--green); }
+  .gi-checkmark { display: none; color: #fff; font-size: 12px; font-weight: 800; }
+  .gi.done .gi-checkmark { display: block; }
+  .gi-info { flex: 1; min-width: 0; }
+  .gi-name { font-size: 14px; font-weight: 600; }
+  .gi-meta { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .gi-price { font-size: 13px; font-weight: 800; text-align: right; white-space: nowrap; }
+  .gi-where { font-size: 10px; color: var(--text-muted); text-align: right; margin-top: 1px; }
 
-  .bb-fill {
-    height: 100%;
-    border-radius: 99px;
-    transition: width 0.5s ease;
-  }
+  .grand-total { background: var(--text); color: #000; border-radius: 16px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+  .gt-l { font-size: 14px; font-weight: 700; opacity: 0.7; }
+  .gt-v { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; }
 
-  .bb-fill.ok { background: linear-gradient(90deg, var(--green), #42F5A0); }
-  .bb-fill.warn { background: linear-gradient(90deg, var(--orange), #F5C842); }
-  .bb-fill.over { background: var(--red); }
+  .portion-card { background: var(--surface); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; }
+  .pc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .pc-name { font-size: 14px; font-weight: 700; }
+  .pc-amt { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+  .pc-bar { height: 4px; background: var(--surface-3); border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+  .pc-fill { height: 100%; background: var(--green); border-radius: 99px; }
+  .pc-fill.carb { background: var(--yellow); }
+  .pc-tip { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
 
-  .bb-sub {
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 6px;
-  }
+  .bot-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; z-index: 60; padding-bottom: var(--safe-bottom); }
+  .nav-btn { flex: 1; background: none; border: none; color: var(--text-muted); font-family: inherit; padding: 12px 4px 14px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: color 0.2s; }
+  .nav-btn.active { color: var(--text); }
+  .nav-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+  .nav-icon svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .nav-btn.active .nav-icon svg { fill: currentColor; stroke: none; }
+  .nav-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.02em; }
 
-  .grocery-category {
-    margin-bottom: 20px;
-  }
-
-  .gc-title {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .gc-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .grocery-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 11px 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    margin-bottom: 6px;
-    transition: border-color 0.2s;
-    cursor: pointer;
-  }
-
-  .grocery-item.checked {
-    opacity: 0.4;
-    border-color: transparent;
-  }
-
-  .gi-check {
-    width: 18px; height: 18px;
-    border-radius: 5px;
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.2s;
-  }
-
-  .grocery-item.checked .gi-check {
-    background: var(--green);
-    border-color: var(--green);
-  }
-
-  .gi-check-icon { display: none; font-size: 10px; color: #000; }
-  .grocery-item.checked .gi-check-icon { display: block; }
-
-  .gi-info { flex: 1; }
-  .gi-name { font-size: 13px; font-weight: 600; color: var(--text); }
-  .gi-qty { font-size: 11px; color: var(--muted); margin-top: 1px; }
-
-  .gi-price {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--accent);
-    text-align: right;
-  }
-
-  .gi-where {
-    font-size: 9px;
-    color: var(--muted);
-    margin-top: 1px;
-    text-align: right;
-  }
-
-  .grocery-total {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 12px;
-  }
-
-  .gt-label { font-size: 13px; font-weight: 700; color: var(--muted); }
-  .gt-total { font-size: 20px; font-weight: 800; color: var(--accent); }
-
-  /* ── PORTIONS ── */
-  .portion-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 10px;
-  }
-
-  .pc-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 12px;
-  }
-
-  .pc-name { font-size: 15px; font-weight: 700; }
-  .pc-amount {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .pc-unit { font-size: 11px; color: var(--muted); margin-top: 2px; text-align: right; }
-
-  .pc-bar {
-    height: 4px;
-    background: var(--border);
-    border-radius: 99px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-
-  .pc-fill {
-    height: 100%;
-    border-radius: 99px;
-    background: linear-gradient(90deg, var(--accent), var(--green));
-  }
-
-  .pc-tip { font-size: 11px; color: var(--muted); line-height: 1.5; }
-
-  /* ── BOTTOM SPACE ── */
-  .bottom-space { height: 40px; }
-
-  /* ── FADE IN ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .section.active > * {
-    animation: fadeUp 0.3s ease both;
-  }
-
-  .section.active > *:nth-child(2) { animation-delay: 0.05s; }
-  .section.active > *:nth-child(3) { animation-delay: 0.1s; }
-  .section.active > *:nth-child(4) { animation-delay: 0.15s; }
-  .section.active > *:nth-child(5) { animation-delay: 0.2s; }
-
-  /* ── GROCERY VIEW PANELS ── */
-  .grocery-view { display: none; }
-  .grocery-view.active { display: block; }
+  .rule-card { background: var(--surface); border-radius: 14px; padding: 14px 16px; margin-bottom: 8px; display: flex; gap: 14px; align-items: flex-start; }
+  .rule-num { width: 28px; height: 28px; background: var(--text); color: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; }
+  .rule-info { flex: 1; }
+  .rule-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .rule-desc { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-top">
-    <div class="logo">Saber<span>'s Meals</span></div>
-    <div class="stats-pill">
-      <div class="stat-badge">63 kg</div>
-      <div class="stat-badge"><b>~120g</b> protein/day</div>
+  <div class="header-row">
+    <div class="greeting-block">
+      <div class="greeting-day" id="hdr-day">Loading</div>
+      <div class="greeting-name">Hey, Saber</div>
     </div>
-  </div>
-  <div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('today')">Today</button>
-    <button class="tab-btn" onclick="switchTab('routine')">Routine</button>
-    <button class="tab-btn" onclick="switchTab('grocery')">Grocery</button>
-    <button class="tab-btn" onclick="switchTab('portions')">Portions</button>
+    <div class="protein-ring">
+      <svg width="44" height="44" viewBox="0 0 44 44">
+        <circle cx="22" cy="22" r="18" stroke-width="4" fill="none" class="protein-ring-track"/>
+        <circle cx="22" cy="22" r="18" stroke-width="4" fill="none" class="protein-ring-fill" stroke-dasharray="113" stroke-dashoffset="2" stroke-linecap="round"/>
+      </svg>
+      <div class="protein-ring-text">98%</div>
+    </div>
   </div>
 </div>
 
 <div class="main">
 
-  <!-- ── TODAY TAB ── -->
-  <div id="tab-today" class="section active">
-
-    <div class="today-hero">
-      <div class="today-label">Today's Overview</div>
-      <div class="today-day" id="today-day">Loading...</div>
-      <div class="macro-grid">
-        <div class="macro-item">
-          <div class="macro-val">~1,850</div>
-          <div class="macro-label">Calories</div>
-        </div>
-        <div class="macro-item">
-          <div class="macro-val green">124g</div>
-          <div class="macro-label">Protein</div>
-        </div>
-        <div class="macro-item">
-          <div class="macro-val orange">185g</div>
-          <div class="macro-label">Carbs</div>
-        </div>
-        <div class="macro-item">
-          <div class="macro-val">48g</div>
-          <div class="macro-label">Fat</div>
-        </div>
+  <!-- TODAY -->
+  <section id="sec-today" class="section active">
+    <div class="hero-stack">
+      <div class="hero-tile big">
+        <div class="tile-label">Today's Plan</div>
+        <div class="tile-big-num">1,950</div>
+        <div class="tile-sub">cal · recomp target</div>
+      </div>
+      <div class="hero-tile">
+        <div class="tile-label">Meals</div>
+        <div class="tile-small-num">4 + 1</div>
+        <div class="tile-sub">meals + shake</div>
       </div>
     </div>
 
-    <div class="protein-bar-wrap">
-      <div class="pb-header">
-        <div class="pb-title">Protein Target</div>
-        <div class="pb-val">124g / 126g</div>
+    <div class="macro-bar">
+      <div class="mb-row">
+        <div class="mb-title">Protein Target</div>
+        <div class="mb-val">147g / 126g</div>
       </div>
-      <div class="pb-track">
-        <div class="pb-fill" style="width: 98%"></div>
+      <div class="mb-track"><div class="mb-fill" style="width: 100%"></div></div>
+      <div class="mb-grid">
+        <div class="mb-cell"><div class="mb-cell-val">147g</div><div class="mb-cell-lbl">Protein</div></div>
+        <div class="mb-cell"><div class="mb-cell-val">175g</div><div class="mb-cell-lbl">Carbs</div></div>
+        <div class="mb-cell"><div class="mb-cell-val">52g</div><div class="mb-cell-lbl">Fat</div></div>
       </div>
     </div>
 
-    <div class="section-title">Meal 1 — Morning</div>
+    <div class="sec-head">
+      <div class="sec-title">Your Meals</div>
+      <div class="sec-count">4 meals · 1 shake</div>
+    </div>
 
     <div class="meal-card" onclick="toggleMeal(this)">
-      <div class="meal-header">
-        <div class="meal-icon">🍳</div>
-        <div class="meal-info">
-          <div class="meal-time">8:00 AM</div>
-          <div class="meal-name">Eggs + Rice + Vegetables</div>
-          <div class="meal-macros">
-            <span class="mm"><b>~600</b> cal</span>
-            <span class="mm"><b>42g</b> protein</span>
-            <span class="mm"><b>65g</b> carbs</span>
-          </div>
+      <div class="meal-head">
+        <div class="meal-emoji">🥣</div>
+        <div class="meal-mid">
+          <div class="meal-time">8:00 AM · Breakfast</div>
+          <div class="meal-name">Oats + Eggs + Banana</div>
+          <div class="meal-stats"><span><b>520</b> cal</span><span><b>32g</b> protein</span></div>
         </div>
-        <div class="meal-chevron">▼</div>
+        <div class="meal-chev">▼</div>
       </div>
       <div class="meal-body">
-        <ul class="ingredient-list">
-          <li><span class="ing-dot"></span>Whole eggs<span class="ing-amount">3 eggs</span></li>
-          <li><span class="ing-dot"></span>Cooked white rice<span class="ing-amount">150g</span></li>
-          <li><span class="ing-dot"></span>Mixed vegetables (broccoli / beans / carrot)<span class="ing-amount">100g</span></li>
-          <li><span class="ing-dot"></span>Olive oil / mustard oil<span class="ing-amount">1 tsp</span></li>
-          <li><span class="ing-dot"></span>Salt, turmeric, pepper<span class="ing-amount">to taste</span></li>
-        </ul>
+        <div class="body-section">
+          <div class="body-label">Ingredients</div>
+          <ul class="ing-list">
+            <li><span class="ing-name">Rolled oats</span><span class="ing-qty">60g (dry)</span></li>
+            <li><span class="ing-name">Whole eggs</span><span class="ing-qty">3 eggs</span></li>
+            <li><span class="ing-name">Banana</span><span class="ing-qty">1 medium</span></li>
+            <li><span class="ing-name">Milk or water</span><span class="ing-qty">200ml</span></li>
+            <li><span class="ing-name">Cinnamon · honey (optional)</span><span class="ing-qty">to taste</span></li>
+          </ul>
+        </div>
+        <div class="body-section">
+          <div class="body-label">Method · ~10 min</div>
+          <ol class="cook-steps">
+            <li>Cook oats with milk in a pot or microwave for 3-4 minutes</li>
+            <li>Scramble 3 eggs in a non-stick pan with a tiny drop of oil</li>
+            <li>Slice banana on top of oats; sprinkle cinnamon</li>
+            <li>Eat eggs on the side; drink water</li>
+          </ol>
+        </div>
       </div>
     </div>
 
-    <div class="section-title">Post-Workout — Immediately After Gym</div>
+    <div class="meal-card" onclick="toggleMeal(this)">
+      <div class="meal-head">
+        <div class="meal-emoji">🍗</div>
+        <div class="meal-mid">
+          <div class="meal-time">1:00 PM · Lunch</div>
+          <div class="meal-name">Air-Fried Chicken + Sweet Potato</div>
+          <div class="meal-stats"><span><b>620</b> cal</span><span><b>48g</b> protein</span></div>
+        </div>
+        <div class="meal-chev">▼</div>
+      </div>
+      <div class="meal-body">
+        <div class="body-section">
+          <div class="body-label">Ingredients</div>
+          <ul class="ing-list">
+            <li><span class="ing-name">Chicken breast</span><span class="ing-qty">180g (raw)</span></li>
+            <li><span class="ing-name">Sweet potato</span><span class="ing-qty">250g</span></li>
+            <li><span class="ing-name">Olive oil</span><span class="ing-qty">1 tsp</span></li>
+            <li><span class="ing-name">Salt · pepper · paprika · garlic powder</span><span class="ing-qty">to taste</span></li>
+            <li><span class="ing-name">Lemon</span><span class="ing-qty">half, juiced</span></li>
+          </ul>
+        </div>
+        <div class="body-section">
+          <div class="body-label">Method · ~25 min (15 active)</div>
+          <ol class="cook-steps">
+            <li>Cut sweet potato into cubes; toss with ½ tsp oil and salt</li>
+            <li>Cut chicken into strips; rub with remaining oil + spices + lemon</li>
+            <li>Air fry sweet potato at 200°C for 15 mins</li>
+            <li>Add chicken in last 10 mins (or fry separately at 180°C for 12 mins)</li>
+            <li>Flip once halfway through</li>
+          </ol>
+        </div>
+      </div>
+    </div>
 
     <div class="whey-card">
-      <div class="whey-icon">💪</div>
+      <div class="whey-emoji">💪</div>
       <div class="whey-info">
-        <div class="whey-label">VPA Premium Whey WPC</div>
-        <div class="whey-name">Protein Shake</div>
+        <div class="whey-tag">Post-Workout</div>
+        <div class="whey-name">VPA Whey Shake</div>
         <div class="whey-sub">1 scoop (30g) + 250ml water · 23g protein · 124 cal</div>
       </div>
     </div>
 
-    <div class="section-title">Meal 2 — Evening / Dinner</div>
-
     <div class="meal-card" onclick="toggleMeal(this)">
-      <div class="meal-header">
-        <div class="meal-icon">🍗</div>
-        <div class="meal-info">
-          <div class="meal-time">7:00 PM</div>
-          <div class="meal-name">Chicken + Rice + Daal</div>
-          <div class="meal-macros">
-            <span class="mm"><b>~720</b> cal</span>
-            <span class="mm"><b>59g</b> protein</span>
-            <span class="mm"><b>80g</b> carbs</span>
-          </div>
+      <div class="meal-head">
+        <div class="meal-emoji">🥜</div>
+        <div class="meal-mid">
+          <div class="meal-time">5:30 PM · Snack</div>
+          <div class="meal-name">Fruit + Nuts</div>
+          <div class="meal-stats"><span><b>280</b> cal</span><span><b>9g</b> protein</span></div>
         </div>
-        <div class="meal-chevron">▼</div>
+        <div class="meal-chev">▼</div>
       </div>
       <div class="meal-body">
-        <ul class="ingredient-list">
-          <li><span class="ing-dot"></span>Chicken breast (skinless)<span class="ing-amount">180g (raw)</span></li>
-          <li><span class="ing-dot"></span>Cooked white rice<span class="ing-amount">150g</span></li>
-          <li><span class="ing-dot"></span>Red/masoor daal<span class="ing-amount">50g dry</span></li>
-          <li><span class="ing-dot"></span>Onion, garlic, ginger<span class="ing-amount">small amounts</span></li>
-          <li><span class="ing-dot"></span>Mustard oil<span class="ing-amount">1 tsp</span></li>
-          <li><span class="ing-dot"></span>Spices (cumin, turmeric, chili)<span class="ing-amount">to taste</span></li>
-        </ul>
+        <div class="body-section">
+          <div class="body-label">Pick one combo</div>
+          <ul class="ing-list">
+            <li><span class="ing-name">Apple + 20g almonds</span><span class="ing-qty">option 1</span></li>
+            <li><span class="ing-name">Banana + 30g peanut butter</span><span class="ing-qty">option 2</span></li>
+            <li><span class="ing-name">Orange + 25g mixed nuts</span><span class="ing-qty">option 3</span></li>
+            <li><span class="ing-name">Greek yogurt + berries</span><span class="ing-qty">option 4</span></li>
+          </ul>
+        </div>
+        <div class="body-section">
+          <div class="body-label">Method · 1 min</div>
+          <ol class="cook-steps">
+            <li>Grab fruit, grab nuts, eat them. That's it.</li>
+          </ol>
+        </div>
       </div>
     </div>
 
     <div class="meal-card" onclick="toggleMeal(this)">
-      <div class="meal-header">
-        <div class="meal-icon">🐟</div>
-        <div class="meal-info">
-          <div class="meal-time">Alt. Option</div>
-          <div class="meal-name">Fish + Rice + Daal</div>
-          <div class="meal-macros">
-            <span class="mm"><b>~680</b> cal</span>
-            <span class="mm"><b>52g</b> protein</span>
-            <span class="mm"><b>78g</b> carbs</span>
-          </div>
+      <div class="meal-head">
+        <div class="meal-emoji">🐟</div>
+        <div class="meal-mid">
+          <div class="meal-time">8:00 PM · Dinner</div>
+          <div class="meal-name">Air-Fried Fish + Chickpeas</div>
+          <div class="meal-stats"><span><b>530</b> cal</span><span><b>35g</b> protein</span></div>
         </div>
-        <div class="meal-chevron">▼</div>
+        <div class="meal-chev">▼</div>
       </div>
       <div class="meal-body">
-        <ul class="ingredient-list">
-          <li><span class="ing-dot"></span>Rui / Catla / Tilapia (fillet)<span class="ing-amount">200g (raw)</span></li>
-          <li><span class="ing-dot"></span>Cooked white rice<span class="ing-amount">150g</span></li>
-          <li><span class="ing-dot"></span>Masoor daal<span class="ing-amount">50g dry</span></li>
-          <li><span class="ing-dot"></span>Mustard oil, spices<span class="ing-amount">to taste</span></li>
-        </ul>
+        <div class="body-section">
+          <div class="body-label">Ingredients</div>
+          <ul class="ing-list">
+            <li><span class="ing-name">Rui or Catla fillet</span><span class="ing-qty">180g (raw)</span></li>
+            <li><span class="ing-name">Boiled chickpeas</span><span class="ing-qty">120g (cooked)</span></li>
+            <li><span class="ing-name">Olive oil</span><span class="ing-qty">1 tsp</span></li>
+            <li><span class="ing-name">Cucumber · tomato · onion</span><span class="ing-qty">handful</span></li>
+            <li><span class="ing-name">Turmeric · chili · salt · lemon</span><span class="ing-qty">to taste</span></li>
+          </ul>
+        </div>
+        <div class="body-section">
+          <div class="body-label">Method · ~20 min</div>
+          <ol class="cook-steps">
+            <li>Rub fish with oil, turmeric, chili, salt, lemon juice</li>
+            <li>Air fry at 180°C for 12-15 mins until edges crisp</li>
+            <li>Toss boiled chickpeas with chopped veggies + lemon as salad</li>
+            <li>Plate together; serve fresh</li>
+          </ol>
+        </div>
       </div>
     </div>
 
-    <div class="bottom-space"></div>
-  </div>
-
-  <!-- ── ROUTINE TAB ── -->
-  <div id="tab-routine" class="section">
-    <div class="today-hero">
-      <div class="today-label">Daily Structure</div>
-      <div class="today-day" style="font-size:22px">Recomp Protocol</div>
+    <div class="sec-head">
+      <div class="sec-title">Alt Options</div>
+      <div class="sec-count">swap anytime</div>
     </div>
 
-    <div class="section-title">Daily Schedule</div>
+    <div class="meal-card" onclick="toggleMeal(this)">
+      <div class="meal-head">
+        <div class="meal-emoji">🫘</div>
+        <div class="meal-mid">
+          <div class="meal-time">Veg Day · Dinner</div>
+          <div class="meal-name">Chickpea Bowl + Eggs</div>
+          <div class="meal-stats"><span><b>510</b> cal</span><span><b>30g</b> protein</span></div>
+        </div>
+        <div class="meal-chev">▼</div>
+      </div>
+      <div class="meal-body">
+        <div class="body-section">
+          <div class="body-label">Ingredients</div>
+          <ul class="ing-list">
+            <li><span class="ing-name">Boiled chickpeas</span><span class="ing-qty">200g</span></li>
+            <li><span class="ing-name">Whole eggs</span><span class="ing-qty">3</span></li>
+            <li><span class="ing-name">Onion · tomato · cucumber</span><span class="ing-qty">handful</span></li>
+            <li><span class="ing-name">Olive oil · lemon · chaat masala</span><span class="ing-qty">to taste</span></li>
+          </ul>
+        </div>
+        <div class="body-section">
+          <div class="body-label">Method · ~10 min</div>
+          <ol class="cook-steps">
+            <li>Boil-fry eggs (air fryer or pan)</li>
+            <li>Toss chickpeas with chopped veg, lemon, oil, salt, chaat masala</li>
+            <li>Top with sliced eggs</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROUTINE -->
+  <section id="sec-routine" class="section">
+    <div class="day-banner">
+      <div class="day-banner-label">Your Daily Blueprint</div>
+      <div class="day-banner-title">6 AM → 10:30 PM</div>
+      <div class="day-banner-sub">Built around sunlight, deep work, gym, and protected sleep. Total cooking time: 1-2 hours max.</div>
+    </div>
+
+    <div class="sec-head"><div class="sec-title">Daily Schedule</div></div>
 
     <div class="timeline">
-      <div class="tl-item highlight">
-        <div class="tl-dot"></div>
-        <div class="tl-time">7:00 – 8:00 AM</div>
-        <div class="tl-card">
-          <div class="tl-title">🍳 Meal 1 — High Protein Breakfast</div>
-          <div class="tl-desc">3 eggs + 150g rice + 100g vegetables. Eat this before or right after you wake up. Don't skip; this primes your metabolism for the day.</div>
-          <span class="tl-tag">~42g protein</span>
-        </div>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-time">10:00 AM – 12:00 PM</div>
-        <div class="tl-card">
-          <div class="tl-title">💧 Hydration Window</div>
-          <div class="tl-desc">2–3 litres of water throughout the day. Start here. Recomp doesn't work if you're dehydrated.</div>
-        </div>
-      </div>
-
-      <div class="tl-item highlight">
-        <div class="tl-dot"></div>
-        <div class="tl-time">4:00 – 6:00 PM</div>
-        <div class="tl-card">
-          <div class="tl-title">🏋️ Gym Session</div>
-          <div class="tl-desc">Weight training. Aim for 45–60 min. Focus on compound movements; squats, bench, rows, deadlifts, overhead press. Progressive overload is the goal.</div>
-          <span class="tl-tag">Every day</span>
-        </div>
-      </div>
-
-      <div class="tl-item highlight">
-        <div class="tl-dot"></div>
-        <div class="tl-time">Within 30 min post-gym</div>
-        <div class="tl-card">
-          <div class="tl-title">💪 Whey Shake — VPA Premium WPC</div>
-          <div class="tl-desc">1 scoop in 250ml water. Drink immediately after gym. This is your recovery window; don't delay it beyond 30 minutes.</div>
-          <span class="tl-tag">23g protein · 124 cal</span>
-        </div>
-      </div>
-
-      <div class="tl-item highlight">
-        <div class="tl-dot"></div>
-        <div class="tl-time">7:00 – 8:00 PM</div>
-        <div class="tl-card">
-          <div class="tl-title">🍗 Meal 2 — Dinner</div>
-          <div class="tl-desc">Chicken or fish (180–200g) + 150g rice + daal. Reduce chicken by 30–40g on days you had the shake; the shake already covers that protein gap.</div>
-          <span class="tl-tag">~52–59g protein</span>
-        </div>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-time">9:00 PM onward</div>
-        <div class="tl-card">
-          <div class="tl-title">😴 Wind Down</div>
-          <div class="tl-desc">Sleep is where muscle is actually built. Aim for 7–8 hours. No heavy eating after 9 PM; if hungry, have a glass of water or a small banana.</div>
-        </div>
-      </div>
+      <div class="tl-item active"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">6:00 AM</div><div class="tl-title">☀️ Wake + Sunlight</div>
+        <div class="tl-desc">Phone stays off. 10 min direct sunlight outside. Sets your circadian rhythm. Drink 500ml water.</div>
+      </div></div>
+      <div class="tl-item gym"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">6:30 – 7:30 AM</div><div class="tl-title">🏋️ Gym Session</div>
+        <div class="tl-desc">Weight training; 45-60 min. Compound lifts; squats, bench, rows, deadlifts, overhead press.</div>
+        <span class="tl-pill">Daily</span>
+      </div></div>
+      <div class="tl-item active"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">7:35 AM</div><div class="tl-title">💪 Whey Shake</div>
+        <div class="tl-desc">1 scoop VPA WPC in 250ml water. Within 30 mins of last set.</div>
+        <span class="tl-pill green">23g Protein</span>
+      </div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">8:00 AM</div><div class="tl-title">🥣 Breakfast</div>
+        <div class="tl-desc">Oats + 3 eggs + banana. Eat at the table, not at your desk.</div>
+      </div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">9:00 AM – 1:00 PM</div><div class="tl-title">🧠 Deep Work Block 1</div>
+        <div class="tl-desc">Most important client work. No Slack, no email. Phone face-down or in another room.</div>
+      </div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">1:00 PM</div><div class="tl-title">🍗 Lunch</div>
+        <div class="tl-desc">Air-fried chicken + sweet potato. Eat away from screens. 20 min minimum.</div>
+      </div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">2:00 – 5:00 PM</div><div class="tl-title">⚙️ Deep Work Block 2</div>
+        <div class="tl-desc">Admin, calls, lighter creative. Reply to messages. Run the agency.</div>
+      </div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">5:30 PM</div><div class="tl-title">🥜 Snack</div>
+        <div class="tl-desc">Fruit + nuts. Keeps blood sugar stable; prevents overeating at dinner.</div>
+      </div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">6:00 – 7:30 PM</div><div class="tl-title">🚶 Walk + Wind Down</div>
+        <div class="tl-desc">Light walk, sauna (when accessible), or read. Screens off as much as possible.</div>
+      </div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">8:00 PM</div><div class="tl-title">🐟 Dinner</div>
+        <div class="tl-desc">Air-fried fish + chickpeas. Finish eating by 8:30 to give 2hr digest window.</div>
+      </div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">9:00 PM</div><div class="tl-title">📵 Digital Sunset</div>
+        <div class="tl-desc">Phone out of bedroom. No gaming, no YouTube. Read, journal, or just sit.</div>
+      </div></div>
+      <div class="tl-item active"><div class="tl-dot"></div><div class="tl-card">
+        <div class="tl-time">10:30 PM</div><div class="tl-title">😴 Sleep</div>
+        <div class="tl-desc">8 hours protected. Sleep is when muscle is built and the brain consolidates.</div>
+        <span class="tl-pill green">Non-Negotiable</span>
+      </div></div>
     </div>
 
-    <div class="section-title">Weekly Approach</div>
+    <div class="sec-head"><div class="sec-title">The 7 Rules</div></div>
+
+    <div class="rule-card"><div class="rule-num">1</div><div class="rule-info">
+      <div class="rule-title">Phone out of the bedroom</div>
+      <div class="rule-desc">Biggest single ROI habit. Use a separate alarm clock or smart watch.</div>
+    </div></div>
+    <div class="rule-card"><div class="rule-num">2</div><div class="rule-info">
+      <div class="rule-title">Sunlight before screens</div>
+      <div class="rule-desc">10 mins outside, no sunglasses. Anchors your circadian rhythm hard.</div>
+    </div></div>
+    <div class="rule-card"><div class="rule-num">3</div><div class="rule-info">
+      <div class="rule-title">Workout every day</div>
+      <div class="rule-desc">Daily ≠ heavy daily. 4 heavy days, 2 light days, 1 active rest.</div>
+    </div></div>
+    <div class="rule-card"><div class="rule-num">4</div><div class="rule-info">
+      <div class="rule-title">Protein every meal</div>
+      <div class="rule-desc">Minimum 25g per meal. Hits 126g target without thinking about it.</div>
+    </div></div>
+    <div class="rule-card"><div class="rule-num">5</div><div class="rule-info">
+      <div class="rule-title">2.5L water daily</div>
+      <div class="rule-desc">500ml on wake, 500ml pre-gym, 250ml each meal, 250ml mid-afternoon.</div>
+    </div></div>
+    <div class="rule-card"><div class="rule-num">6</div><div class="rule-info">
+      <div class="rule-title">No screens after 9 PM</div>
+      <div class="rule-desc">Cuts gaming/scrolling and gives your brain a real wind-down.</div>
+    </div></div>
+    <div class="rule-card"><div class="rule-num">7</div><div class="rule-info">
+      <div class="rule-title">Cooking under 2 hrs/day total</div>
+      <div class="rule-desc">Air fryer + batch prep. If it takes longer, simplify the meal.</div>
+    </div></div>
+  </section>
+
+  <!-- GROCERY -->
+  <section id="sec-grocery" class="section">
+    <div class="toggle-seg">
+      <button class="seg-btn active" onclick="switchGrocery('day', this)">Daily</button>
+      <button class="seg-btn" onclick="switchGrocery('week', this)">Weekly</button>
+      <button class="seg-btn" onclick="switchGrocery('month', this)">Monthly</button>
+    </div>
+
+    <div id="gview-day" class="gview">
+      <div class="budget-box">
+        <div class="bb-row"><div class="bb-label">Daily Budget</div><div class="bb-val ok">~530 / 500 ৳</div></div>
+        <div class="bb-track"><div class="bb-fill ok" style="width: 100%"></div></div>
+        <div class="bb-foot">Slight over; balances out across the month (~14,420 ৳ monthly total)</div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~218 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Chicken breast</div><div class="gi-meta">180g · lunch</div></div>
+          <div><div class="gi-price">90 ৳</div><div class="gi-where">Bazar</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Rui / Catla fillet</div><div class="gi-meta">180g · dinner</div></div>
+          <div><div class="gi-price">90 ৳</div><div class="gi-where">Bazar</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Eggs</div><div class="gi-meta">3 · breakfast</div></div>
+          <div><div class="gi-price">38 ৳</div><div class="gi-where">Local</div></div></div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~38 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Sweet potato</div><div class="gi-meta">250g · lunch</div></div>
+          <div><div class="gi-price">15 ৳</div><div class="gi-where">Bazar</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Rolled oats</div><div class="gi-meta">60g · breakfast</div></div>
+          <div><div class="gi-price">12 ৳</div><div class="gi-where">Shop</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Chickpeas (boiled)</div><div class="gi-meta">120g · dinner</div></div>
+          <div><div class="gi-price">11 ৳</div><div class="gi-where">Bazar</div></div></div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Snack + Veg</div><div class="gc-total">~92 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Fruit (banana / apple)</div><div class="gi-meta">2 pieces</div></div>
+          <div><div class="gi-price">35 ৳</div><div class="gi-where">Local</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Mixed nuts</div><div class="gi-meta">25g · snack</div></div>
+          <div><div class="gi-price">35 ৳</div><div class="gi-where">Shop</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Salad veg</div><div class="gi-meta">handful</div></div>
+          <div><div class="gi-price">22 ৳</div><div class="gi-where">Bazar</div></div></div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Supplement</div><div class="gc-total">~182 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">VPA Whey (1 scoop)</div><div class="gi-meta">30g · post-workout</div></div>
+          <div><div class="gi-price">182 ৳</div><div class="gi-where">Iron Valley</div></div></div>
+      </div>
+
+      <div class="grand-total"><div class="gt-l">Daily Total</div><div class="gt-v">~530 ৳</div></div>
+    </div>
+
+    <div id="gview-week" class="gview" style="display:none">
+      <div class="budget-box">
+        <div class="bb-row"><div class="bb-label">Weekly Budget</div><div class="bb-val ok">~3,605 / 3,750 ৳</div></div>
+        <div class="bb-track"><div class="bb-fill ok" style="width: 96%"></div></div>
+        <div class="bb-foot">15,000 ৳ ÷ 4 weeks</div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~1,330 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Chicken breast</div><div class="gi-meta">1.3 kg</div></div>
+          <div><div class="gi-price">630 ৳</div><div class="gi-where">Bazar</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Rui / Catla</div><div class="gi-meta">1.3 kg</div></div>
+          <div><div class="gi-price">450 ৳</div><div class="gi-where">Bazar</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Eggs</div><div class="gi-meta">21 pcs</div></div>
+          <div><div class="gi-price">250 ৳</div><div class="gi-where">Local</div></div></div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~280 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Sweet potato</div><div class="gi-meta">1.75 kg</div></div>
+          <div><div class="gi-price">105 ৳</div><div class="gi-where">Bazar</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Rolled oats</div><div class="gi-meta">500g pack</div></div>
+          <div><div class="gi-price">90 ৳</div><div class="gi-where">Shop</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Dried chickpeas</div><div class="gi-meta">500g</div></div>
+          <div><div class="gi-price">85 ৳</div><div class="gi-where">Bazar</div></div></div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Snack + Veg</div><div class="gc-total">~640 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Fruit (mixed)</div><div class="gi-meta">14 pcs</div></div>
+          <div><div class="gi-price">245 ৳</div><div class="gi-where">Local</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Mixed nuts</div><div class="gi-meta">200g</div></div>
+          <div><div class="gi-price">240 ৳</div><div class="gi-where">Shop</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Veggies + onion + garlic</div><div class="gi-meta">weekly</div></div>
+          <div><div class="gi-price">155 ৳</div><div class="gi-where">Bazar</div></div></div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Cooking</div><div class="gc-total">~80 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Olive oil</div><div class="gi-meta">100ml</div></div>
+          <div><div class="gi-price">80 ৳</div><div class="gi-where">Shop</div></div></div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Supplement</div><div class="gc-total">~1,275 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">VPA Whey (7 scoops)</div><div class="gi-meta">week portion</div></div>
+          <div><div class="gi-price">1,275 ৳</div><div class="gi-where">Iron Valley</div></div></div>
+      </div>
+
+      <div class="grand-total"><div class="gt-l">Weekly Total</div><div class="gt-v">~3,605 ৳</div></div>
+    </div>
+
+    <div id="gview-month" class="gview" style="display:none">
+      <div class="budget-box">
+        <div class="bb-row"><div class="bb-label">Monthly Budget</div><div class="bb-val ok">~14,420 / 15,000 ৳</div></div>
+        <div class="bb-track"><div class="bb-fill ok" style="width: 96%"></div></div>
+        <div class="bb-foot">580 ৳ buffer remaining</div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Protein</div><div class="gc-total">~5,630 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Chicken breast</div><div class="gi-meta">5.5 kg</div></div>
+          <div><div class="gi-price">2,750 ৳</div><div class="gi-where">Bazar</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Rui / Catla</div><div class="gi-meta">5.5 kg</div></div>
+          <div><div class="gi-price">1,800 ৳</div><div class="gi-where">Bazar</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Eggs</div><div class="gi-meta">90 pcs</div></div>
+          <div><div class="gi-price">1,080 ৳</div><div class="gi-where">Local</div></div></div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Carbs</div><div class="gc-total">~1,180 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Sweet potato</div><div class="gi-meta">7.5 kg</div></div>
+          <div><div class="gi-price">450 ৳</div><div class="gi-where">Bazar</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Rolled oats</div><div class="gi-meta">2 kg</div></div>
+          <div><div class="gi-price">360 ৳</div><div class="gi-where">Shop</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Dried chickpeas</div><div class="gi-meta">2 kg</div></div>
+          <div><div class="gi-price">370 ৳</div><div class="gi-where">Bazar</div></div></div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Snack + Veg</div><div class="gc-total">~2,520 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Fruit</div><div class="gi-meta">60 pcs</div></div>
+          <div><div class="gi-price">1,050 ৳</div><div class="gi-where">Local</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Mixed nuts</div><div class="gi-meta">800g</div></div>
+          <div><div class="gi-price">850 ৳</div><div class="gi-where">Shop</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Veggies + aromatics</div><div class="gi-meta">monthly stock</div></div>
+          <div><div class="gi-price">620 ৳</div><div class="gi-where">Bazar</div></div></div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Cooking</div><div class="gc-total">~420 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Olive oil</div><div class="gi-meta">500ml</div></div>
+          <div><div class="gi-price">300 ৳</div><div class="gi-where">Shop</div></div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">Spices · salt · lemon</div><div class="gi-meta">refill</div></div>
+          <div><div class="gi-price">120 ৳</div><div class="gi-where">Local</div></div></div>
+      </div>
+
+      <div class="grocery-cat">
+        <div class="gc-head"><div class="gc-name">Supplement</div><div class="gc-total">6,000 ৳</div></div>
+        <div class="gi" onclick="this.classList.toggle('done')"><div class="gi-check"><span class="gi-checkmark">✓</span></div>
+          <div class="gi-info"><div class="gi-name">VPA Premium Whey 1kg</div><div class="gi-meta">33 servings</div></div>
+          <div><div class="gi-price">6,000 ৳</div><div class="gi-where">Iron Valley</div></div></div>
+      </div>
+
+      <div class="grand-total"><div class="gt-l">Monthly Total</div><div class="gt-v">~14,420 ৳</div></div>
+    </div>
+  </section>
+
+  <!-- PORTIONS -->
+  <section id="sec-portions" class="section">
+    <div class="day-banner">
+      <div class="day-banner-label">Protein Target · 63 kg × 2g</div>
+      <div class="day-banner-title">126g / day</div>
+      <div class="day-banner-sub">4 meals + 1 shake hits the number without thinking. Each meal carries its own load.</div>
+    </div>
+
+    <div class="sec-head"><div class="sec-title">Protein Per Meal</div></div>
 
     <div class="portion-card">
-      <div class="tl-desc" style="font-size:13px; line-height:1.8; color: var(--text);">
-        <b style="color:var(--accent)">Mon–Fri:</b> Full protocol every day; gym + 2 meals + shake.<br>
-        <b style="color:var(--accent)">Sat:</b> Active rest; light walk or stretching. Eat same meals, skip the shake.<br>
-        <b style="color:var(--accent)">Sun:</b> Full rest. Eat the same meals. Your body repairs on rest days too.
-      </div>
+      <div class="pc-top"><div class="pc-name">🥣 Breakfast</div><div class="pc-amt">32g</div></div>
+      <div class="pc-bar"><div class="pc-fill" style="width: 25%"></div></div>
+      <div class="pc-tip">3 eggs (19g) + 60g oats (8g) + 200ml milk (5g). Sustained energy + protein in one shot.</div>
     </div>
-
-    <div class="bottom-space"></div>
-  </div>
-
-  <!-- ── GROCERY TAB ── -->
-  <div id="tab-grocery" class="section">
-
-    <div class="grocery-toggle">
-      <button class="gt-btn active" onclick="switchGrocery('day', this)">Daily</button>
-      <button class="gt-btn" onclick="switchGrocery('week', this)">Weekly</button>
-      <button class="gt-btn" onclick="switchGrocery('month', this)">Monthly</button>
-    </div>
-
-    <!-- DAILY VIEW -->
-    <div id="grocery-day" class="grocery-view active">
-      <div class="budget-bar-wrap">
-        <div class="bb-header">
-          <div class="bb-label">Daily Budget Usage</div>
-          <div class="bb-val ok" id="daily-spent">~325 ৳ / 500 ৳</div>
-        </div>
-        <div class="bb-track"><div class="bb-fill ok" style="width: 65%"></div></div>
-        <div class="bb-sub">Based on 15,000 ৳/month ÷ 30 days</div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Protein Sources</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Chicken Breast</div>
-            <div class="gi-qty">180g per day</div>
-          </div>
-          <div>
-            <div class="gi-price">~90 ৳</div>
-            <div class="gi-where">Local bazar</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Whole Eggs</div>
-            <div class="gi-qty">3 eggs per day</div>
-          </div>
-          <div>
-            <div class="gi-price">~36 ৳</div>
-            <div class="gi-where">Local shop</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Carbs</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">White Rice</div>
-            <div class="gi-qty">300g cooked (2 meals)</div>
-          </div>
-          <div>
-            <div class="gi-price">~18 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Masoor Daal</div>
-            <div class="gi-qty">50g dry per day</div>
-          </div>
-          <div>
-            <div class="gi-price">~8 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Vegetables</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Mixed Veg (broccoli / beans / carrot)</div>
-            <div class="gi-qty">100g per day</div>
-          </div>
-          <div>
-            <div class="gi-price">~20 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Supplement</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">VPA Whey (1 scoop)</div>
-            <div class="gi-qty">30g per day (33 servings/1kg tub)</div>
-          </div>
-          <div>
-            <div class="gi-price">~182 ৳</div>
-            <div class="gi-where">Iron Valley</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-total">
-        <div class="gt-label">Daily Total</div>
-        <div class="gt-total">~354 ৳</div>
-      </div>
-    </div>
-
-    <!-- WEEKLY VIEW -->
-    <div id="grocery-week" class="grocery-view">
-      <div class="budget-bar-wrap">
-        <div class="bb-header">
-          <div class="bb-label">Weekly Budget Usage</div>
-          <div class="bb-val ok" id="weekly-spent">~2,880 ৳ / 3,750 ৳</div>
-        </div>
-        <div class="bb-track"><div class="bb-fill ok" style="width: 77%"></div></div>
-        <div class="bb-sub">15,000 ৳ budget ÷ 4 weeks</div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Protein Sources</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Chicken Breast</div>
-            <div class="gi-qty">~1.3 kg (7 days)</div>
-          </div>
-          <div>
-            <div class="gi-price">~630 ৳</div>
-            <div class="gi-where">Local bazar</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Whole Eggs</div>
-            <div class="gi-qty">21 eggs (3 per day)</div>
-          </div>
-          <div>
-            <div class="gi-price">~252 ৳</div>
-            <div class="gi-where">Local shop</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Fish (Rui/Catla) — alt. 2x/week</div>
-            <div class="gi-qty">400g (2 meals)</div>
-          </div>
-          <div>
-            <div class="gi-price">~200 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Carbs</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">White Rice</div>
-            <div class="gi-qty">~2 kg</div>
-          </div>
-          <div>
-            <div class="gi-price">~130 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Masoor Daal</div>
-            <div class="gi-qty">350g</div>
-          </div>
-          <div>
-            <div class="gi-price">~56 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Vegetables &amp; Cooking</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Mixed Vegetables</div>
-            <div class="gi-qty">~700g</div>
-          </div>
-          <div>
-            <div class="gi-price">~140 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Mustard Oil</div>
-            <div class="gi-qty">~100ml</div>
-          </div>
-          <div>
-            <div class="gi-price">~40 ৳</div>
-            <div class="gi-where">Local shop</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Onion, Garlic, Ginger, Spices</div>
-            <div class="gi-qty">Weekly stock</div>
-          </div>
-          <div>
-            <div class="gi-price">~80 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Supplement (weekly portion)</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">VPA Whey (7 scoops)</div>
-            <div class="gi-qty">1kg tub lasts ~33 days</div>
-          </div>
-          <div>
-            <div class="gi-price">~1,273 ৳</div>
-            <div class="gi-where">Iron Valley</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-total">
-        <div class="gt-label">Weekly Total</div>
-        <div class="gt-total">~2,801 ৳</div>
-      </div>
-    </div>
-
-    <!-- MONTHLY VIEW -->
-    <div id="grocery-month" class="grocery-view">
-      <div class="budget-bar-wrap">
-        <div class="bb-header">
-          <div class="bb-label">Monthly Budget</div>
-          <div class="bb-val ok" id="monthly-spent">~11,500 ৳ / 15,000 ৳</div>
-        </div>
-        <div class="bb-track"><div class="bb-fill ok" style="width: 77%"></div></div>
-        <div class="bb-sub">~3,500 ৳ remaining for flexibility / eating out</div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Protein Sources</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Chicken Breast</div>
-            <div class="gi-qty">~5.5 kg/month</div>
-          </div>
-          <div>
-            <div class="gi-price">~2,750 ৳</div>
-            <div class="gi-where">Local bazar</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Whole Eggs</div>
-            <div class="gi-qty">90 eggs</div>
-          </div>
-          <div>
-            <div class="gi-price">~1,080 ৳</div>
-            <div class="gi-where">Local shop</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Fish (Rui/Catla) — ~8x/month</div>
-            <div class="gi-qty">1.6 kg</div>
-          </div>
-          <div>
-            <div class="gi-price">~800 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Carbs</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">White Rice</div>
-            <div class="gi-qty">~8 kg</div>
-          </div>
-          <div>
-            <div class="gi-price">~520 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Masoor Daal</div>
-            <div class="gi-qty">1.5 kg</div>
-          </div>
-          <div>
-            <div class="gi-price">~240 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Vegetables &amp; Cooking</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Mixed Vegetables</div>
-            <div class="gi-qty">~3 kg</div>
-          </div>
-          <div>
-            <div class="gi-price">~600 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Mustard Oil</div>
-            <div class="gi-qty">500ml</div>
-          </div>
-          <div>
-            <div class="gi-price">~180 ৳</div>
-            <div class="gi-where">Local shop</div>
-          </div>
-        </div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">Onion, Garlic, Ginger, Spices</div>
-            <div class="gi-qty">Monthly stock</div>
-          </div>
-          <div>
-            <div class="gi-price">~320 ৳</div>
-            <div class="gi-where">Bazar</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-category">
-        <div class="gc-title">Supplement</div>
-        <div class="grocery-item" onclick="toggleCheck(this)">
-          <div class="gi-check"><span class="gi-check-icon">✓</span></div>
-          <div class="gi-info">
-            <div class="gi-name">VPA Premium Whey WPC (1kg tub)</div>
-            <div class="gi-qty">33 servings — lasts ~1 month</div>
-          </div>
-          <div>
-            <div class="gi-price">6,000 ৳</div>
-            <div class="gi-where">Iron Valley (theironvalley.com)</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grocery-total">
-        <div class="gt-label">Monthly Total</div>
-        <div class="gt-total">~12,490 ৳</div>
-      </div>
-
-      <div style="margin-top: 10px; padding: 12px 14px; background: rgba(66,245,137,0.06); border: 1px solid rgba(66,245,137,0.15); border-radius: 10px;">
-        <div style="font-size: 12px; font-weight: 700; color: var(--green); margin-bottom: 4px;">✓ Within 15,000 ৳ Budget</div>
-        <div style="font-size: 11px; color: var(--muted); line-height: 1.5;">~2,510 ৳ buffer remaining. Use it for extra protein (more fish days), occasional fruit, or eating out once.</div>
-      </div>
-    </div>
-
-    <div class="bottom-space"></div>
-  </div>
-
-  <!-- ── PORTIONS TAB ── -->
-  <div id="tab-portions" class="section">
-
-    <div class="today-hero">
-      <div class="today-label">Your Daily Protein Target</div>
-      <div class="today-day">63 kg × 2g = <span style="color:var(--accent)">126g</span></div>
-    </div>
-
-    <div class="section-title">How You Hit 126g</div>
-
     <div class="portion-card">
-      <div class="pc-header">
-        <div>
-          <div class="pc-name">🍳 Meal 1 — 3 Eggs</div>
-        </div>
-        <div>
-          <div class="pc-amount">19g</div>
-          <div class="pc-unit">protein</div>
-        </div>
-      </div>
-      <div class="pc-bar"><div class="pc-fill" style="width: 15%"></div></div>
-      <div class="pc-tip">3 whole eggs = ~19g protein. Don't throw the yolk; that's where the healthy fat and micronutrients are. Scramble, boil, or fry; doesn't matter.</div>
+      <div class="pc-top"><div class="pc-name">🍗 Lunch</div><div class="pc-amt">48g</div></div>
+      <div class="pc-bar"><div class="pc-fill" style="width: 38%"></div></div>
+      <div class="pc-tip">180g raw chicken breast. Palm-sized + a bit. Weigh once, eyeball forever after.</div>
     </div>
-
     <div class="portion-card">
-      <div class="pc-header">
-        <div>
-          <div class="pc-name">🍳 Meal 1 — Rice (150g cooked)</div>
-        </div>
-        <div>
-          <div class="pc-amount">3g</div>
-          <div class="pc-unit">protein + 45g carbs</div>
-        </div>
-      </div>
-      <div class="pc-bar"><div class="pc-fill" style="width: 50%; background: var(--orange)"></div></div>
-      <div class="pc-tip">150g cooked rice = roughly 1 medium bowl. This is your fuel, not your enemy. Recomp needs carbs for energy and muscle glycogen.</div>
-    </div>
-
-    <div class="portion-card">
-      <div class="pc-header">
-        <div>
-          <div class="pc-name">💪 Post-Workout Shake</div>
-        </div>
-        <div>
-          <div class="pc-amount">23g</div>
-          <div class="pc-unit">protein</div>
-        </div>
-      </div>
+      <div class="pc-top"><div class="pc-name">💪 Whey Shake</div><div class="pc-amt">23g</div></div>
       <div class="pc-bar"><div class="pc-fill" style="width: 18%"></div></div>
-      <div class="pc-tip">1 scoop (30g) VPA WPC in 250ml water. Drink within 30 minutes of finishing your last set. This is non-negotiable timing.</div>
+      <div class="pc-tip">1 scoop VPA WPC. Window: within 30 min of last gym set.</div>
     </div>
+    <div class="portion-card">
+      <div class="pc-top"><div class="pc-name">🥜 Snack</div><div class="pc-amt">9g</div></div>
+      <div class="pc-bar"><div class="pc-fill" style="width: 7%"></div></div>
+      <div class="pc-tip">25g mixed nuts (6g) + fruit (1-3g). Bridge calories; protein bonus.</div>
+    </div>
+    <div class="portion-card">
+      <div class="pc-top"><div class="pc-name">🐟 Dinner</div><div class="pc-amt">35g</div></div>
+      <div class="pc-bar"><div class="pc-fill" style="width: 28%"></div></div>
+      <div class="pc-tip">180g raw fish (28g) + 120g chickpeas (7g). Lighter on gut before sleep.</div>
+    </div>
+
+    <div class="sec-head"><div class="sec-title">Carb Portions</div></div>
 
     <div class="portion-card">
-      <div class="pc-header">
-        <div>
-          <div class="pc-name">🍗 Meal 2 — Chicken Breast</div>
-        </div>
-        <div>
-          <div class="pc-amount">45g</div>
-          <div class="pc-unit">protein</div>
-        </div>
-      </div>
-      <div class="pc-bar"><div class="pc-fill" style="width: 36%"></div></div>
-      <div class="pc-tip">150g raw chicken breast (not 180g on shake days). Your palm size = roughly 120–150g. Weigh it once to calibrate your eye; after that you won't need a scale.</div>
+      <div class="pc-top"><div class="pc-name">🍠 Sweet Potato</div><div class="pc-amt">250g</div></div>
+      <div class="pc-bar"><div class="pc-fill carb" style="width: 60%"></div></div>
+      <div class="pc-tip">~1 medium-large sweet potato. ~50g carbs, way better blood sugar profile than rice.</div>
     </div>
-
     <div class="portion-card">
-      <div class="pc-header">
-        <div>
-          <div class="pc-name">🍲 Meal 2 — Masoor Daal (50g dry)</div>
-        </div>
-        <div>
-          <div class="pc-amount">12g</div>
-          <div class="pc-unit">protein + 30g carbs</div>
-        </div>
-      </div>
-      <div class="pc-bar"><div class="pc-fill" style="width: 10%"></div></div>
-      <div class="pc-tip">50g dry = roughly 3 heaped tablespoons before cooking. Expands 2–3x when cooked. This + chicken = a complete amino acid profile.</div>
+      <div class="pc-top"><div class="pc-name">🌾 Oats</div><div class="pc-amt">60g dry</div></div>
+      <div class="pc-bar"><div class="pc-fill carb" style="width: 30%"></div></div>
+      <div class="pc-tip">~½ cup dry; doubles when cooked. ~36g slow-burning carbs.</div>
     </div>
-
     <div class="portion-card">
-      <div class="pc-header">
-        <div>
-          <div class="pc-name">🐟 Alt: Fish (200g raw)</div>
-        </div>
-        <div>
-          <div class="pc-amount">38g</div>
-          <div class="pc-unit">protein</div>
-        </div>
-      </div>
-      <div class="pc-bar"><div class="pc-fill" style="width: 30%"></div></div>
-      <div class="pc-tip">Swap chicken for fish 2x a week. Rui, Catla, or Tilapia work. Lighter on digestion, still high protein. 200g raw = roughly your full hand size.</div>
+      <div class="pc-top"><div class="pc-name">🫘 Chickpeas</div><div class="pc-amt">120g cooked</div></div>
+      <div class="pc-bar"><div class="pc-fill carb" style="width: 30%"></div></div>
+      <div class="pc-tip">~½ cup cooked. Pre-boil a week's worth Sunday night; store in fridge.</div>
     </div>
 
-    <div style="background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-top: 8px;">
-      <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px;">Daily Protein Breakdown</div>
-      <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-        <span style="color: var(--muted)">Meal 1 (eggs)</span>
-        <span style="font-weight: 700;">19g</span>
-      </div>
-      <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-        <span style="color: var(--muted)">Post-workout shake</span>
-        <span style="font-weight: 700; color: var(--accent)">23g</span>
-      </div>
-      <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-        <span style="color: var(--muted)">Meal 2 (chicken)</span>
-        <span style="font-weight: 700;">45g</span>
-      </div>
-      <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-        <span style="color: var(--muted)">Meal 2 (daal)</span>
-        <span style="font-weight: 700;">12g</span>
-      </div>
-      <div style="display: flex; justify-content: space-between; padding: 8px 0 0; font-size: 15px;">
-        <span style="font-weight: 700;">Total</span>
-        <span style="font-weight: 800; color: var(--green)">99–124g ✓</span>
-      </div>
+    <div style="background: var(--surface); border-radius: 16px; padding: 16px; margin-top: 16px;">
+      <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px;">Daily Total</div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;"><span style="color: var(--text-mid)">Breakfast</span><span style="font-weight: 700;">32g</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;"><span style="color: var(--text-mid)">Lunch</span><span style="font-weight: 700;">48g</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;"><span style="color: var(--text-mid)">Shake</span><span style="font-weight: 700; color: var(--green)">23g</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;"><span style="color: var(--text-mid)">Snack</span><span style="font-weight: 700;">9g</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px;"><span style="color: var(--text-mid)">Dinner</span><span style="font-weight: 700;">35g</span></div>
+      <div style="display: flex; justify-content: space-between; padding: 12px 0 0; font-size: 18px;"><span style="font-weight: 800;">Total</span><span style="font-weight: 800; color: var(--green)">147g ✓</span></div>
     </div>
-
-    <div class="bottom-space"></div>
-  </div>
+  </section>
 
 </div>
 
+<nav class="bot-nav">
+  <button class="nav-btn active" onclick="switchTab('today', this)">
+    <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9v9a2 2 0 01-2 2h-4v-7H9v7H5a2 2 0 01-2-2v-9z"/></svg></div>
+    <div class="nav-lbl">Today</div>
+  </button>
+  <button class="nav-btn" onclick="switchTab('routine', this)">
+    <div class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+    <div class="nav-lbl">Routine</div>
+  </button>
+  <button class="nav-btn" onclick="switchTab('grocery', this)">
+    <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 7h13l-1.5 9a2 2 0 01-2 1.7H9.5a2 2 0 01-2-1.7L6 7zM6 7L5 3H2"/><circle cx="9" cy="21" r="1"/><circle cx="17" cy="21" r="1"/></svg></div>
+    <div class="nav-lbl">Grocery</div>
+  </button>
+  <button class="nav-btn" onclick="switchTab('portions', this)">
+    <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><rect x="7" y="13" width="3" height="6"/><rect x="12" y="9" width="3" height="10"/><rect x="17" y="5" width="3" height="14"/></svg></div>
+    <div class="nav-lbl">Portions</div>
+  </button>
+</nav>
+
 <script>
-  // Set today's day
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  document.getElementById('today-day').textContent = days[new Date().getDay()];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const d = new Date();
+  document.getElementById('hdr-day').textContent = `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
 
-  function switchTab(name) {
+  function switchTab(name, btn) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
-    event.target.classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('sec-' + name).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
-  function toggleMeal(card) {
-    card.classList.toggle('open');
-  }
-
-  function toggleCheck(item) {
-    item.classList.toggle('checked');
-  }
+  function toggleMeal(card) { card.classList.toggle('open'); }
 
   function switchGrocery(view, btn) {
-    document.querySelectorAll('.grocery-view').forEach(v => v.classList.remove('active'));
-    document.querySelectorAll('.gt-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('grocery-' + view).classList.add('active');
+    document.querySelectorAll('.gview').forEach(v => v.style.display = 'none');
+    document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('gview-' + view).style.display = 'block';
     btn.classList.add('active');
   }
 
-  // PWA
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   }
