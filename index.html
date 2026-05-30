@@ -2091,41 +2091,83 @@
 
   let modalType = 'bad';
   function openAddModal(type) {
-    modalType = type;
-    const state = loadHabits();
-    if (state[type].length >= 3) {
-      alert('Max 3 active habits. Remove one first.');
-      return;
-    }
-    document.getElementById('modal-title').textContent = type === 'bad' ? 'Quit a Bad Habit' : 'Build a Good Habit';
-    document.getElementById('modal-sub').textContent = `Pick one to track. ${3 - state[type].length} slot${3 - state[type].length === 1 ? '' : 's'} left.`;
-    const activeIds = state[type].map(h => h.id);
-    const opts = habitCatalog[type].filter(o => !activeIds.includes(o.id));
-    document.getElementById('habit-options').innerHTML = opts.map(o => `
-      <div class="habit-option" onclick="addHabit('${o.id}')">
-        <div class="habit-option-emoji">${o.emoji}</div>
-        <div class="habit-option-info">
-          <div class="habit-option-name">${o.name}</div>
-          <div class="habit-option-desc">${o.desc}</div>
+    try {
+      modalType = type;
+      const state = loadHabits();
+      if (state[type].length >= 3) {
+        alert('Max 3 active habits. Remove one first.');
+        return;
+      }
+      const titleEl = document.getElementById('modal-title');
+      const subEl = document.getElementById('modal-sub');
+      const optsEl = document.getElementById('habit-options');
+      const modalEl = document.getElementById('habit-modal');
+
+      if (!titleEl || !subEl || !optsEl || !modalEl) {
+        alert('Modal elements missing. Try refreshing the page.');
+        return;
+      }
+
+      titleEl.textContent = type === 'bad' ? 'Quit a Bad Habit' : 'Build a Good Habit';
+      const slotsLeft = 3 - state[type].length;
+      subEl.textContent = `Pick one to track. ${slotsLeft} slot${slotsLeft === 1 ? '' : 's'} left.`;
+      const activeIds = state[type].map(h => h.id);
+      const opts = habitCatalog[type].filter(o => !activeIds.includes(o.id));
+      optsEl.innerHTML = opts.map(o => `
+        <div class="habit-option" onclick="addHabit('${o.id}')">
+          <div class="habit-option-emoji">${o.emoji}</div>
+          <div class="habit-option-info">
+            <div class="habit-option-name">${o.name}</div>
+            <div class="habit-option-desc">${o.desc}</div>
+          </div>
         </div>
-      </div>
-    `).join('');
-    document.getElementById('habit-modal').classList.add('open');
+      `).join('');
+      modalEl.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    } catch (e) {
+      alert('Error opening modal: ' + e.message);
+      console.error(e);
+    }
   }
 
   function closeAddModal() {
     document.getElementById('habit-modal').classList.remove('open');
+    document.body.style.overflow = '';
   }
 
   function addHabit(id) {
-    const state = loadHabits();
-    const item = habitCatalog[modalType].find(o => o.id === id);
-    if (!item) return;
-    state[modalType].push({ ...item, log: {} });
-    saveHabits(state);
-    closeAddModal();
-    renderHabits();
+    try {
+      const state = loadHabits();
+      const item = habitCatalog[modalType].find(o => o.id === id);
+      if (!item) return;
+      state[modalType].push({ ...item, log: {} });
+      saveHabits(state);
+      closeAddModal();
+      renderHabits();
+    } catch (e) {
+      alert('Error adding habit: ' + e.message);
+      console.error(e);
+    }
   }
+
+  // Expose functions globally so inline onclick handlers can find them
+  window.openAddModal = openAddModal;
+  window.closeAddModal = closeAddModal;
+  window.addHabit = addHabit;
+  window.cycleDay = cycleDay;
+  window.removeHabit = removeHabit;
+  window.setHabitView = setHabitView;
+  window.navMonth = navMonth;
+  window.switchTab = switchTab;
+  window.switchGrocery = switchGrocery;
+  window.switchView = switchView;
+  window.toggleCard = toggleCard;
+  window.openExModal = openExModal;
+  window.closeExModal = closeExModal;
+  window.exRowClick = exRowClick;
+
+  // Initial render of habits (this was missing!)
+  renderHabits();
 
   // ──────── EXERCISE DATABASE ────────
   // Curated YouTube IDs from Jeff Nippard, Athlean-X, Renaissance Periodization
